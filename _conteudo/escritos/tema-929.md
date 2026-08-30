@@ -14,6 +14,45 @@ cancelado.
 
 Não havia sido. O tema segue afetado desde 2021, sem tese definida.
 
+:::verbete stj-tema-929
+tipo: consulta
+credito: STJ, Tema Repetitivo 929 — Corte Especial, consulta ao andamento
+url: https://processo.stj.jus.br/repetitivos/temas_repetitivos/pesquisa.jsp?novaConsulta=true&tipo_pesquisa=T&cod_tema_inicial=929&cod_tema_final=929
+acesso: 2026-08-30
+inteiro_teor_conferido: sim
+---
+Tema Repetitivo 929 
+Situação
+Em Julgamento
+Órgão julgador
+CORTE ESPECIAL
+Ramo do direito
+DIREITO DO CONSUMIDOR
+Questão submetida a julgamento
+
+Discussão quanto às hipóteses de aplicação da repetição em dobro prevista no art. 42, parágrafo único, do CDC.
+
+[…]
+
+REsp 1963770/CE 
+Tribunal de Origem
+TJCE
+RRC
+Sim
+Relator
+HUMBERTO MARTINS
+Embargos de Declaração
+-
+Afetação
+11/11/2021
+Julgado em
+-
+
+[…]
+
+Última atualização: 18/09/2025
+:::
+
 O erro não é interessante por si. É interessante pelo que ele revela sobre o
 único ponto em que a pesquisa automatizada e a advocacia se desencontram: a
 ferramenta produz uma afirmação com a mesma fluência quando está certa e quando
