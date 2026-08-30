@@ -205,7 +205,10 @@ def montar_capa(escritos):
 
 
 def montar_indice(escritos):
-    return u'''  <ul class="grade">
+    """O índice. O h2 não aparece na tela, mas existe: os cartões são h3, e
+    h3 direto sob h1 é degrau quebrado para quem navega por títulos."""
+    return u'''  <h2 class="so-leitor">Todos os escritos</h2>
+  <ul class="grade">
 %s
   </ul>''' % u"\n".join(cartao(e) for e in escritos)
 

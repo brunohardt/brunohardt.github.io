@@ -227,7 +227,13 @@ a:focus-visible{
 .sanfona .barras{width:18px;height:12px;position:relative;display:inline-block}
 .sanfona .barras::before,.sanfona .barras::after,.sanfona .barras i{
   content:"";position:absolute;left:0;right:0;height:1.5px;background:currentColor;
-  transition:transform .28s var(--ease), opacity .28s var(--ease);
+}
+/* as barras viram X ao abrir: isso desloca, e portanto vive sob o guard.
+   O estado-base é o final — quem pede redução recebe o X pronto. (ESPEC §2.3) */
+@media (prefers-reduced-motion:no-preference){
+  .sanfona .barras::before,.sanfona .barras::after,.sanfona .barras i{
+    transition:transform .28s var(--ease), opacity .28s var(--ease);
+  }
 }
 .sanfona .barras::before{top:0}
 .sanfona .barras i{top:5.2px}
@@ -251,6 +257,16 @@ a:focus-visible{
   .navega{display:none}
   .sanfona{display:block}
   .barra-interna{min-height:4.6rem}
+}
+
+/* Abaixo de 400px a marca e as ações deixam de caber na mesma linha — a barra
+   estourava 45px em 320px. O rótulo do botão sai e fica o ícone, que já tem
+   nome acessível pelo aria-label. */
+@media (max-width:399px){
+  a.botao-barra > span{
+    position:absolute;width:1px;height:1px;overflow:hidden;
+    clip-path:inset(50%);white-space:nowrap;
+  }
 }
 
 /* ============================================================================
