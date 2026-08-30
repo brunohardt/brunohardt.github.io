@@ -121,8 +121,16 @@ def render_verbetes(md, slug, rascunho, problemas):
         selo = u"" if conferido == "sim" else \
             u'\n    <p class="pendente">Inteiro teor ainda n&#227;o conferido na fonte.</p>'
 
+        # ementa longa entra recortada, e o rótulo diz isso: o leitor precisa
+        # saber que está vendo um trecho antes de julgar o peso (ESPEC §2.2)
+        rotulo = ROTULO_PROVA[tipo]
+        if meta.get("recorte", u"").strip().lower() == u"sim":
+            rotulo += u" (trecho)"
+
+        # o crédito é o julgado, montado pelo citar.py dos campos do verbete.
+        # O `fonte` do corpus não entra aqui: é nota de trabalho (ESPEC §2.2).
         # a consulta mostra onde e quando: sem isso ela não é verificável
-        credito = esc(meta.get("fonte", vid))
+        credito = esc(meta.get("credito", vid))
         if tipo == u"consulta" and meta.get("url"):
             credito = u'<a href="%s" rel="noopener">%s</a>' % (
                 esc(meta["url"]), credito)
@@ -134,7 +142,7 @@ def render_verbetes(md, slug, rascunho, problemas):
                 u'    <blockquote>%s</blockquote>\n'
                 u'    <figcaption>%s</figcaption>%s\n'
                 u'  </figure>') % (
-            tipo, esc(vid), ROTULO_PROVA[tipo],
+            tipo, esc(vid), rotulo,
             u"\n".join(u"<p>%s</p>" % esc(p.strip())
                        for p in m.group("corpo").strip().split(u"\n\n") if p.strip()),
             credito,

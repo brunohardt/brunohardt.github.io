@@ -86,6 +86,17 @@ O leitor vê o rótulo e julga o peso. O andamento de um tema repetitivo não é
 uma ementa, e o site não finge que é. **Extração programática nos três** — nada
 é redigitado, nunca.
 
+**Ementa longa entra recortada, e o corte aparece.** Ementa de acórdão passa de
+oitocentas palavras sem esforço, e uma página em que a citação pesa o triplo da
+prosa não é periódico: é repositório. O recorte é feito pelo `citar.py` sobre os
+itens numerados do próprio acórdão — a divisão é do relator, não do autor —,
+cada corte vira `[…]` posto pelo script, e o rótulo passa a dizer **Ementa
+(trecho)**, porque o leitor precisa saber que está vendo um pedaço antes de
+julgar o peso. Nada disso afrouxa a extração programática: o que ficou é byte a
+byte o que estava lá, e o que saiu está marcado. Recortar de modo a inverter o
+que o acórdão decidiu é a única coisa que a marca não impede, e essa continua
+sendo responsabilidade de quem assina.
+
 **Conferência no primeiro uso.** Um verbete nasce `inteiro_teor_conferido: nao`.
 Na primeira vez que ele entra num escrito ou numa petição, o Bruno abre a fonte
 e confere — uma vez, para sempre. A montagem recusa escrito não-rascunho que
@@ -112,12 +123,21 @@ inverso — verbete que reprova derruba parágrafo já polido. Quando acontecer,
 **cai o parágrafo**. Trocar o precedente para salvar a prosa é exatamente como
 se cita mal.
 
-**A linha de crédito é pública.** O campo `fonte` do verbete sai impresso no
-`figcaption`, embaixo da citação. No corpus ele guarda rastro interno, inclusive
-caminhos como `casos/<caso>/…`, que nomeiam cliente e parte contrária —
-publicá-los é violação da §2.1 que nenhum despublicar desfaz. A revisão é do
-Bruno, a cada bloco colado. O verificador põe a rede embaixo, e recusa `fonte`
-com forma de caminho interno.
+**A linha de crédito é o julgado, e nada mais.** O que sai impresso no
+`figcaption` é o campo `credito`, que o `citar.py` monta dos campos do próprio
+verbete: tribunal, classe, número, órgão e data de julgamento. É o que um
+leitor precisa para achar o acórdão, e é a única coisa naquele arquivo que
+credita alguma coisa. O relator fica de fora: nome próprio está gravado sem
+acento em parte do corpus, e adivinhar acento de nome é inventar.
+
+**O campo `fonte` do corpus não é publicável, e não entra no escrito.** Lá ele
+é nota de trabalho: guarda como a pesquisa começou — a ferramenta que trouxe o
+julgado à tela — e às vezes o caminho da pasta do caso, que nomeia cliente e
+parte contrária de uma vez só. Rastro de pesquisa não credita julgado nenhum;
+o julgado se credita sozinho. E publicar o caminho seria violação da §2.1 que
+nenhum despublicar desfaz. O verificador recusa bloco que traga `fonte`, e põe
+a mesma rede burra embaixo do `credito`: reconhece a *forma* de um caminho, não
+entende o conteúdo.
 
 Peça errada se corrige; publicado erra na frente de todo mundo.
 

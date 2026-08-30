@@ -163,14 +163,19 @@ def checar_prova():
 
 # ================================================== 3. credito publicavel
 #
-# O `fonte` do verbete sai impresso no figcaption, embaixo da citacao. No corpus
-# da advocacia ele guarda rastro interno, e `casos/so_calcario_tim/juris_md`
-# nomeia cliente e parte contraria de uma vez so. Publicar isso viola a 2.1, e
-# despublicar nao desfaz: a web ja indexou.
+# O `credito` sai impresso no figcaption, embaixo da citacao, e o citar.py o
+# monta dos campos do julgado: tribunal, classe, numero, orgao e data.
 #
-# A rede e deliberadamente burra. Nao entende o campo -- reconhece a *forma* de
-# um caminho. Prefere reprovar um credito legitimo, que se conserta em dez
-# segundos, a deixar passar o nome de um cliente uma vez.
+# O `fonte` do corpus da advocacia NAO entra no escrito. La ele e nota de
+# trabalho -- guarda como a pesquisa comecou, e as vezes o caminho da pasta do
+# caso, que nomeia cliente e parte contraria de uma vez so (o verbete 52
+# declarava `casos/so_calcario_tim/juris_md`). Isso nao credita nada, viola a
+# 2.1 se for a publico, e despublicar nao desfaz: a web ja indexou. Por isso um
+# bloco que traga `fonte` reprova aqui, mesmo que o conteudo pareca inofensivo.
+#
+# A rede embaixo do `credito` e deliberadamente burra. Nao entende o campo --
+# reconhece a *forma* de um caminho. Prefere reprovar um credito legitimo, que
+# se conserta em dez segundos, a deixar passar o nome de um cliente uma vez.
 URL = re.compile(r"https?://\S+")
 DATA_BR = re.compile(r"\b\d{1,2}/\d{1,2}/\d{2,4}\b")
 SIGLA = re.compile(r"\b(?:OAB|TJ|TRF|TRT|STJ|STF|CNJ)/[A-Z]{2}\b")
@@ -187,8 +192,16 @@ def checar_credito():
     for caminho in sorted(glob.glob(os.path.join(ESCRITOS_MD, "*.md"))):
         nome = os.path.basename(caminho)
         for b in VERBETE.finditer(ler(caminho)):
-            fonte = campos(b.group("meta")).get("fonte", u"")
+            meta = campos(b.group("meta"))
+            if meta.get("fonte"):
+                ruins.append(
+                    u"%s: o verbete %s traz o campo `fonte`, que é nota de "
+                    u"trabalho do corpus e não vai a público — recole o bloco "
+                    u"com o citar.py" % (nome, b.group("id")))
+            fonte = meta.get("credito", u"")
             if not fonte:
+                ruins.append(u"%s: o verbete %s não tem crédito"
+                             % (nome, b.group("id")))
                 continue
             # o que e legitimo sai antes de a rede olhar: URL de fonte oficial,
             # data em formato brasileiro, sigla de tribunal ou de seccional
