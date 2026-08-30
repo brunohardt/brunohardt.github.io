@@ -1,59 +1,70 @@
 # Handoff — site brunohardt
 
-**Gerado em 30/08/2026.** Para retomar o trabalho numa sessão nova, ou para o
-Bruno tocar sozinho.
+**Atualizado em 30/08/2026, depois da sessão de grill e da implementação.**
+Para retomar numa sessão nova, ou para o Bruno tocar sozinho.
 
 Repositório: `C:\Users\Hardt\Dev\site-bruno-hardt`
-**Atenção: nada disto está commitado.** O último commit é `52b205a`, a versão
-anterior do site. Todo o trabalho descrito aqui está na árvore de trabalho, sem
-commit — vale fazer um antes de qualquer outra coisa.
 
-No ar hoje: <https://brunohardt.github.io/> — **ainda a versão antiga**.
-Nada do que está descrito aqui foi publicado.
+**Onde o trabalho vive:** branch **`periodico`**, oito commits, de `c172513` a
+`72e46d3`. A `main` continua em `52b205a`, servindo o site antigo — e é de lá
+que o GitHub Pages publica. **O merge é o ato de estrear**, nunca efeito
+colateral de um push.
+
+No ar hoje: <https://brunohardt.github.io/> — ainda a versão antiga.
+
+**A fonte da verdade é a [`ESPEC.md`](ESPEC.md).** Este handoff é o mapa; ela é
+a lei. Toda mudança de comportamento começa emendando-a.
 
 ---
 
-## 1. Onde parou
+## 1. Estado
 
-O site foi refeito do zero como **periódico**, no registro da Sullivan &
-Cromwell. Existem, funcionando localmente:
+Código: **completo**. `python montar.py` monta e verifica num comando só, e
+falha se qualquer das nove checagens reprovar.
 
-- **capa** (`index.html`) — um escrito em destaque e os demais em cartões
-- **escritos.html** — o índice
-- **três páginas de artigo**, geradas de Markdown
-- **atuacao.html** e **sobre.html**
-- barra fixa sem fio, rodapé com marca e botões de contato, cartão `.vcf`
+O verificador está em **11 reprovações, todas presas à redação**:
 
-O que **falta** para publicar está na §6.
+| | |
+|---|---|
+| 9 de rascunho | os três escritos estão `rascunho: sim`, e o verificador recusa página gerada, link na capa e link no índice para texto não assumido |
+| 2 de prova | `telas-sistemicas` e `tema-929` não citam nada, e todo escrito precisa carregar prova (§2.2) |
+
+As duas listas fecham com o mesmo trabalho: o Bruno ler, alongar, conferir os
+verbetes e assumir a autoria.
 
 ---
 
 ## 2. As decisões, e por que elas são assim
 
-Saíram de uma sessão de grill em 30/08. Não reabrir sem motivo novo.
+Saíram das sessões de grill de 30/08. Não reabrir sem motivo novo.
 
 | Decisão | Ficou | Por quê |
 |---|---|---|
-| Formato do site | periódico, não cartão de visita | a autoridade de advogado novo vem do que ele demonstra saber |
-| Cadência | **um escrito por mês** | 12/ano é o mínimo para a seção não parecer morta, e cabe numa banca em formação |
-| Autoria | o agente rascunha; **o Bruno lê, corrige e confere as fontes** | ele é o autor; sem a correção dele o texto soa como outra pessoa |
-| Home | **capa de revista pura** — só manchete e cartões | escolha do Bruno, contra a recomendação (ver §7) |
-| Páginas | Escritos, Atuação e Sobre, todas próprias | menu que aponta para âncora da mesma página é incoerente |
-| Fonte do escrito | `_conteudo/escritos/*.md`, no repo do site | o site publica sozinho, sem depender de outro repositório |
-| Formato | Markdown com `python-markdown` | primeira e única dependência do projeto |
-| Prova da citação | o escrito **carrega o verbete dentro de si** | referência entre repositórios quebra em silêncio |
-| Hospedagem | **GitHub Pages**, onde já está | não havia problema a resolver; Firebase seria downgrade |
-| Foto | retrato pequeno com os 400px de hoje | é miniatura de LinkedIn; troca prevista |
-| Comissão | **não entra no Sobre até a nomeação sair** | pedir para entrar não é ser membro |
-| Estreia | quando os escritos estiverem revistos pelo Bruno | periódico não estreia sem texto assumido |
+| Formato | periódico, não cartão de visita | a autoridade de advogado novo vem do que ele demonstra saber |
+| Cadência | um escrito por mês, **escrito adiantado** | o teste não é a estreia, é o primeiro mês sem vontade de escrever |
+| Extensão | **900 a 1200 palavras** | em 350 não cabe tese, contra-argumento e os dois lados — e os três textos nasceram com ~350 |
+| Autoria | o agente rascunha; o Bruno corrige, confere e **assume** | sem a correção dele o texto soa como outra pessoa |
+| Home | capa de revista pura | escolha do Bruno, contra a recomendação (ver §6) |
+| **Estreia** | **dois escritos**: Súmula 479 em manchete, telas sistêmicas em cartão | capa com um item só parece site quebrado; e sobra estoque |
+| **Tema 929** | segurado para **outubro**; um quarto texto escrito agora, para novembro | entrar em outubro com estoque é o que impede o padrão do blog abandonado |
+| Prova | **todo escrito carrega prova, ou não monta** | invariante opcional não é invariante |
+| Tipos de prova | `ementa`, `enunciado`, `consulta` — e a página **exibe qual é qual** | andamento de tema repetitivo não é ementa, e o site não finge que é |
+| **Conferência** | **no primeiro uso**, uma vez por verbete, para sempre | ninguém confere 56 acórdãos em mutirão — o corpus provou isso ficando meses inteiro em `nao` |
+| **Fonte da conferência** | a **página de jurisprudência do JusBrasil** | a base é real e validada; a resposta da Jus IA é prosa gerada, e já disse aqui que o Tema 929 fora cancelado |
+| Verificação | `verificar.py` com **Playwright**, dentro da montagem | contraste, movimento e estouro só existem depois do CSS aplicado |
+| Hospedagem | GitHub Pages, e a estreia é em `github.io` | o `.adv.br` vem depois, com o custo de migração assumido |
+| Comissão | não entra no Sobre até a nomeação sair | pedir para entrar não é ser membro |
 
 ---
 
 ## 3. Como o site se monta
 
 ```
-python montar.py       # gera tudo
-python citar.py <escrito> <verbete>   # cola a prova dentro de um escrito
+python montar.py     # monta E verifica. Falha = nao publica.
+python og.py         # as imagens de card (caro: abre navegador)
+python guilhoche.py  # regenera os SVG
+python citar.py <escrito> <verbete>                       # do corpus
+python citar.py <escrito> --consulta <arq> --url <URL>    # de fonte oficial
 ```
 
 ```
@@ -61,32 +72,24 @@ _fonte/partes/     cabeca · topo · rodape        a casca, uma vez só
 _fonte/paginas/    index · escritos · atuacao · sobre    o miolo de cada uma
 _conteudo/escritos/*.md    UM arquivo por escrito
 ativos/estilo/     9 módulos numerados de CSS
+ativos/og/         as chapas 1200×630, uma por escrito
 
 index.html · escritos.html · atuacao.html · sobre.html
 escritos/*.html · ativos/estilo.css        GERADOS — nunca editar
 ```
 
 **A regra que sustenta tudo:** de um único Markdown saem três coisas — a página
-do artigo, a entrada do índice e o cartão da capa. Escrito novo é arquivo novo,
-e nada mais.
+do artigo, a entrada do índice e o cartão da capa. Escrito novo é arquivo novo.
 
-### O bloco de prova
+### O que o verificador checa
 
-`citar.py` lê o corpus em `Dev\HARDT - ADVOCACIA\conhecimento\jurisprudencia`,
-extrai a ementa entre `<!--EMENTA_BEGIN-->` e `<!--EMENTA_END-->` — extração
-programática, nunca redigitada — e cola no fim do escrito:
+Léxico do Provimento 205 · prova · rascunho vazado · imagem de card ·
+estrutura de títulos · links **e âncoras** · contraste AA nos dois temas ·
+movimento sob `prefers-reduced-motion` · estouro de 320 a 1600px.
 
-```
-:::verbete 10-sumula-479-fortuito-interno
-fonte: ...
-inteiro_teor_conferido: nao
----
-<ementa literal>
-:::
-```
-
-**A montagem recusa publicar** escrito não-rascunho que cite verbete com
-`inteiro_teor_conferido: nao`. Sai com código 1 e nomeia o culpado. Testado.
+O léxico mira **frase**, não palavra, e ignora os blocos de prova: a carteira do
+Bruno é consumidor bancário, "desconto" e "cobrança" são o objeto dos escritos,
+e ementa fala de honorário sucumbencial o tempo todo.
 
 ---
 
@@ -96,95 +99,77 @@ inteiro_teor_conferido: nao
 |---|---|
 | Fundo | marfim `#FBF9F2` · faixa `#F2EFE3` · escuro `#12161A` |
 | Acento | pinho `#245C53` (claro) · `#7FCFBD` (escuro) — **um só** |
-| Marca | **Prata**, caixa-alta, 2,3rem, entreletra 0,095em |
-| Título e corpo | **Crimson Pro** (garalda, peso 500 nos títulos) |
-| Rótulo, dek, data, navegação | **Archivo** (grotesca) |
-| Figura | guilhoché — epitrocoides geradas, uma por escrito |
+| Marca | **Prata**, caixa-alta, entreletra 0,095em |
+| Título e corpo | **Crimson Pro** |
+| Rótulo, dek, data, navegação | **Archivo** |
+| Figura | guilhoché gerado — quadrado no cartão, **faixa 16:5 nativa** no artigo |
 
-**A regra tipográfica, que veio de medir o site da S&C:** serifada só em título,
-marca e corpo. Rótulo, data e navegação são grotesca. Data em serifada é o que
-faz um site parecer blog.
+**A regra tipográfica, medida no site da S&C:** serifada só em título, marca e
+corpo. Data em serifada é o que faz um site parecer blog.
 
-O gerador dos guilhochés é o `guilhoche.py`, na raiz do repositório. Ele recria
-os três SVG do zero — são epitrocoides, não desenho à mão, então variante nova é
-parâmetro novo, não arquivo novo.
+A faixa do artigo usa `faixa-1..3.svg` — variantes horizontais da curva de
+interferência, em 1600×500 nativo. A roseta não sobrevive ao recorte em 16:5.
 
 ---
 
-## 5. Regulatório — Provimento 205/2021
+## 5. O que falta
 
-Página passiva e meramente informativa. Proibido: caso, cliente, depoimento,
-resultado, honorário, forma de pagamento, superlativo, "especialista" sem
-título, comparação com colega, formulário, chat, pixel, símbolo da OAB.
+**Do Bruno, e ninguém faz por ele:**
 
-Os escritos são **tese, nunca caso** — é o que os põe dentro do art. 4º.
+- [ ] Alongar, revisar e **assumir** `sumula-479` e `telas-sistemicas`
+      (`rascunho: nao`)
+- [ ] Conferir no JusBrasil os verbetes que esses dois citarem, virando cada um
+      para `inteiro_teor_conferido: sim` no corpus **e** no bloco colado
+- [ ] Escrever o quarto texto, para novembro
+- [ ] Foto nova para o Sobre (a de hoje tem 400px)
 
----
+**Depois, e só depois:** `python montar.py` verde → merge de `periodico` em
+`main` → push. Antes do merge, apagar `_fonte/especime/`.
 
-## 6. O que falta para publicar
+**Adiado com data:**
 
-- [ ] **Bruno revisa e assume os três escritos** (estão como `rascunho: sim`)
-- [ ] Fechar `inteiro_teor_conferido` nos acórdãos citados, no site do tribunal
-- [ ] **Escrever `verificar.py`** — e a peça que falta para o método existir de
-      verdade. Hoje as regras do Provimento 205 são disciplina escrita em
-      `ESPEC.md`; o verificador as transforma em teste que derruba a montagem.
-      Precisa checar: léxico proibido (honorário, garantia, superlativo,
-      depoimento, "melhor", menção a caso ou cliente), contraste AA nos dois
-      temas, ordem de títulos, `h1` presente, link interno existente, marcador
-      de rascunho vazado para arquivo gerado, e `animation` fora de
-      `prefers-reduced-motion`. As quatro primeiras são estáticas; as demais
-      pedem navegador
-- [ ] Buscar no índice de escritos — só quando houver ~10 textos
-- [ ] `og.png` 1200×630 e as linhas `og:image` de volta
-- [ ] Domínio `.adv.br`: trocar `SITE` em `montar.py` e remontar
-- [ ] Foto nova (a de hoje tem 400px); trocar = trocar `ativos/img/bruno-hardt.jpg`
-- [ ] **A faixa de guilhoche no topo do artigo** esta em 16:5 com recorte, e a
-      roseta vira uma forma espelhada que parece acidental. Ou ela cabe inteira
-      (com sobra nas laterais), ou se desenha uma curva propria para faixa larga
-      — a de interferencia (`guilhoche-2`) ja funciona bem nesse formato, entao
-      o caminho mais barato e gerar variantes horizontais dela
-- [ ] Apagar `_fonte/especime/` antes de publicar
-- [ ] Apagar a branch `claude/brazilian-lawyer-site-nfc709` do repo do ORDIR
+- [ ] Busca no índice — quando houver ~10 textos; o botão da barra está
+      comentado no `topo.html` esperando por ela
+- [ ] Domínio `.adv.br` — trocar `SITE` no `montar.py` e remontar
+- [ ] Apagar a branch `claude/brazilian-lawyer-site-nfc709` no repo do ORDIR
+      — **depois da estreia**, não antes
 
 ---
 
-## 7. As três tensões que sobreviveram ao grill
+## 6. As três tensões que sobreviveram ao grill
 
 **A capa pura aposta num leitor que ainda não existe.** O Bruno escolheu a home
-sem nenhuma informação sobre quem ele é, e aceitou explicitamente perder o
-visitante que chega sem conhecê-lo. A fonte de tráfego prevista é o Instagram,
-onde `@hardt.adv` tem zero seguidores. Se em três meses o site só receber gente
-que não o conhece, **a decisão da home é a primeira a revisar.**
+sem nenhuma informação sobre quem ele é, e aceitou perder o visitante que chega
+sem conhecê-lo. A fonte de tráfego prevista é o Instagram, onde `@hardt.adv` tem
+zero seguidores. **Se em três meses o site só receber gente que não o conhece, a
+decisão da home é a primeira a revisar.**
 
-**A rajada.** Três ou quatro textos de uma vez, com prazo em 21/09 no meio, e
-depois um por mês. Rajada seguida de silêncio é o padrão de todo blog jurídico
-abandonado, e a data no cartão carimba o abandono. **O teste real não é a
-estreia: é o texto de outubro.**
+**A rajada, agora domada — mas não resolvida.** Estreia com dois, Tema 929 em
+outubro, o quarto em novembro. Isso compra três meses. Dezembro depende de o
+Bruno escrever em novembro, que é a mesma aposta que todo blog jurídico
+abandonado fez.
 
-**A dependência.** O projeto deixou de clonar-e-montar em qualquer máquina —
-agora exige `pip install -r requirements.txt`. Registrado, mas é o tipo de coisa
-que quebra numa máquina nova daqui a seis meses.
+**A dependência.** O projeto exige `pip install -r requirements.txt` **e**
+`playwright install`. Foi escolhido de propósito, contra a recomendação — as
+regras do Provimento 205 e o contraste valem mais que clonar-e-montar em
+qualquer máquina. É o que vai quebrar numa máquina nova daqui a seis meses.
 
 ---
 
-## 8. Contexto que não está no repositório
+## 7. Contexto que não está no repositório
 
 - **Instagram:** `@hardtbruno` (pessoal, privada, 502 seguidores) →
   `@hardt.adv` (profissional, nova) e `@ordir.com.br` (o software).
-  A bio da pessoal é `Advogado @hardt.adv / Fundador @ordir.com.br`.
-- **Comissões:** o Bruno vai pedir para entrar na Comissão de Direito Digital e
-  IA da Subseção de Blumenau (presidente Alexa Schmitt de Sousa) e talvez em
-  criminal ou constitucional. Inscrição por e-mail para
-  `comissoes@oab-bnu.org.br` com nome, número da OAB, telefone e a comissão.
-  **Quando sair a nomeação, ela entra no Sobre e na bio do Instagram** — é a
-  credencial verificável que hoje falta.
-- **A carteira real** é toda consumidor bancário e de telecom (cinco ações
-  Johann, uma Só Calcário × TIM), mas o site anuncia público, criminal e cível
-  **por decisão dele**: a carteira é nova e não define o alcance pretendido.
-
----
-
-## 9. Especificação
-
-`ESPEC.md`, na raiz do repositório, é a fonte da verdade. Toda mudança de
-comportamento começa por emendá-la — depois a verificação, depois o código.
+- **Comissões:** pedido de entrada na Comissão de Direito Digital e IA da
+  Subseção de Blumenau (presidente Alexa Schmitt de Sousa), por e-mail para
+  `comissoes@oab-bnu.org.br`. **Quando sair a nomeação, entra no Sobre e na bio
+  do Instagram** — é a credencial verificável que hoje falta.
+- **A carteira real** é toda consumidor bancário e de telecom, mas o site
+  anuncia público, criminal e cível **por decisão dele**: a carteira é nova e
+  não define o alcance pretendido.
+- **O outro lado da mesma regra** vive no repo da advocacia
+  (`C:\Users\Hardt\Dev\HARDT - ADVOCACIA`): o corpus em
+  `conhecimento/jurisprudencia/`, o pré-passe `verificar_citacoes.py` — que
+  desde 30/08 varre aquele corpus como cânone — e a skill `protocolo`, cujo
+  Estágio 5b trava a montagem da pasta se a peça citar verbete não conferido.
+  Prazo aberto: **Ação 1 do Johann (Rico/Banco XP), 21/09/2026.**
