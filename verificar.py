@@ -7,7 +7,7 @@ A ESPEC não é boa intenção: as regras dela viram teste aqui, e teste que fal
 derruba a publicação. O ciclo da §6 é emendar a espec, escrever a verificação,
 implementar, provar.
 
-São oito checagens (ESPEC §6). Cinco leem os arquivos; três precisam de
+São nove checagens (ESPEC §6). Seis leem os arquivos; três precisam de
 navegador e rodam com Playwright, porque contraste, movimento e estouro só
 existem depois que o CSS foi aplicado.
 
@@ -24,7 +24,8 @@ except AttributeError:
 
 RAIZ = os.path.dirname(os.path.abspath(__file__))
 ESCRITOS_MD = os.path.join(RAIZ, "_conteudo", "escritos")
-ESTILO = os.path.join(RAIZ, "ativos", "estilo")
+ATIVOS = os.path.join(RAIZ, "ativos")
+ESTILO = os.path.join(ATIVOS, "estilo")
 
 # As páginas geradas que se verifica. Descobertas, não listadas: página nova
 # não toca no verificador, pela mesma razão que não toca no montador.
@@ -190,7 +191,31 @@ def checar_rascunho(paginas):
     return ruins
 
 
-# =========================================================== 4. estrutura
+# ====================================================== 4. imagem de card
+#
+# Gerar a imagem é caro (abre navegador), então não entra na montagem: entra
+# como verificação. O que se proíbe não é esquecer de rodar `python og.py` — é
+# publicar com o card faltando, ou com um card que mostra um título antigo.
+OG = os.path.join(ATIVOS, "og")
+
+
+def checar_og(paginas):
+    ruins = []
+    esperados = [u"site"] + [os.path.basename(c)[:-3]
+                             for c in sorted(glob.glob(os.path.join(ESCRITOS_MD, "*.md")))]
+    for slug in esperados:
+        png = os.path.join(OG, slug + ".png")
+        if not os.path.exists(png):
+            ruins.append(u"falta ativos/og/%s.png — rode `python og.py`" % slug)
+            continue
+        md = os.path.join(ESCRITOS_MD, slug + ".md")
+        if os.path.exists(md) and os.path.getmtime(md) > os.path.getmtime(png):
+            ruins.append(u"ativos/og/%s.png e mais velha que o escrito — "
+                         u"rode `python og.py`" % slug)
+    return ruins
+
+
+# =========================================================== 5. estrutura
 CABECALHO = re.compile(r"<h([1-6])\b", re.I)
 
 
@@ -211,7 +236,7 @@ def checar_estrutura(paginas):
     return ruins
 
 
-# =============================================================== 5. links
+# =============================================================== 6. links
 HREF = re.compile(r'(?:href|src)="([^"]+)"')
 
 
@@ -248,7 +273,7 @@ def checar_links(paginas):
     return ruins
 
 
-# ================================================= 6, 7, 8. com navegador
+# ================================================= 7, 8, 9. com navegador
 #
 # Contraste, movimento e estouro só existem depois do CSS aplicado. Grep em
 # folha de estilo não vê cascata, não vê herança de fundo e não vê estilo
@@ -372,6 +397,7 @@ CHECAGENS = (
     (u"léxico regulatório", lambda pgs: checar_lexico(pgs)),
     (u"prova", lambda pgs: checar_prova()),
     (u"rascunho", lambda pgs: checar_rascunho(pgs)),
+    (u"imagem de card", lambda pgs: checar_og(pgs)),
     (u"estrutura", lambda pgs: checar_estrutura(pgs)),
     (u"links", lambda pgs: checar_links(pgs)),
     (u"navegador", lambda pgs: checar_no_navegador(pgs)),

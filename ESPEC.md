@@ -173,9 +173,10 @@ _conteudo/
 ativos/estilo/                 ESTILO — um módulo por assunto
   00-fontes 10-tokens 20-base 30-topo 40-vitrine
   50-cartoes 60-rodape 70-leitura 90-movimento
-montar.py                      MONTAGEM
+montar.py                      MONTAGEM (monta e verifica)
 citar.py                       cola o bloco de prova dentro de um escrito
 guilhoche.py                   gera as epitrocoides
+og.py                          as imagens de card, uma por escrito
 verificar.py                   VERIFICAÇÃO
 
 index.html · escritos.html · atuacao.html · sobre.html
@@ -225,13 +226,18 @@ não deixa isso ser uma escolha de quem digita. Verde, commita.
 | **Prova** | escrito sem nenhum bloco de prova, ou citando verbete com `inteiro_teor_conferido: nao` |
 | Estrutura | falta `h1`, ordem de títulos quebrada, marco ausente |
 | Links | href interno aponta para arquivo que não existe |
-| Rascunho | sobrou marcador `RASCUNHO` num arquivo gerado |
+| Rascunho | escrito com `rascunho: sim` tem pagina gerada, esta linkado na capa ou no indice, ou vazou o marcador |
+| **Imagem de card** | falta `ativos/og/<slug>.png`, ou ela e mais velha que o escrito |
 | Contraste AA | qualquer texto abaixo de 4.5:1 (3:1 se grande), nos dois temas |
 | Movimento | `animation` fora de `prefers-reduced-motion` |
 | Estouro | largura de rolagem maior que a janela, de 320 a 1600px |
 
-As cinco primeiras são estáticas — leem os arquivos. As três últimas rodam no
+As seis primeiras são estáticas — leem os arquivos. As três últimas rodam no
 navegador, com Playwright (§2.3).
+
+A imagem de card não é gerada pela montagem: abrir navegador para fotografar
+quatro chapas é caro para pagar a cada build. `python og.py` gera; a montagem
+apenas recusa publicar sem elas, ou com elas velhas.
 
 > O léxico regulatório é o mesmo padrão que `scripts/verificar_lexico.py` já faz
 > no repositório da advocacia. Vale portar a ideia, não o código.
@@ -257,12 +263,6 @@ navegador, com Playwright (§2.3).
 
 ## 8. O que está pendente
 
-- [ ] `verificar.py` — as oito checagens da §6
-- [ ] Blocos de prova `enunciado` e `consulta` no `citar.py`, com o rótulo do
-      tipo visível na página
-- [ ] Variantes horizontais da curva de interferência, e a faixa do artigo
-      trocada por elas
-- [ ] `og.png` por escrito
 - [ ] Os escritos da estreia: alongados a 900–1200, revistos e assumidos pelo
       Bruno, com os verbetes conferidos no JusBrasil
 - [ ] Foto nova para o Sobre (a de hoje tem 400px)

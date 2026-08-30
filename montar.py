@@ -296,9 +296,13 @@ def casca(miolo, meta, saida_rel, jsonld=u""):
         miolo.rstrip(u"\n"), u"",
         ler(os.path.join(PARTES, "rodape.html")).rstrip(u"\n"), u"",
         u"</body>", u"</html>"])
+    # og:image é URL absoluta, sempre: quem lê o card não resolve caminho
+    # relativo. Escrito tem a sua; o resto do site divide a chapa geral.
     doc = (doc.replace(u"{{titulo}}", esc(meta.get("titulo", u"Bruno Hardt")))
               .replace(u"{{descricao}}", esc(meta.get("descricao", u"")))
               .replace(u"{{canonical}}", canonical)
+              .replace(u"{{ogimagem}}",
+                       SITE + u"ativos/og/%s.png" % meta.get("ogslug", u"site"))
               .replace(u"{{ogtipo}}", meta.get("ogtipo", u"website"))
               .replace(u"{{jsonld}}", jsonld)
               .replace(u"{{raiz}}", raiz))
@@ -347,7 +351,7 @@ def pagina_escrito(e):
               u"\n".join(u"      " + l for l in e["html"].split(u"\n")))
     return casca(miolo, {"titulo": u"%s — Bruno Hardt" % e["titulo"],
                          "descricao": e["dek"], "ativo": "escritos",
-                         "ogtipo": "article"},
+                         "ogtipo": "article", "ogslug": e["slug"]},
                  u"escritos/%s.html" % e["slug"], jsonld_artigo(e))
 
 
