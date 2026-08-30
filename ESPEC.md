@@ -9,14 +9,28 @@
 ## 1. O que este site é
 
 O periódico de um advogado. A referência declarada é a **Sullivan & Cromwell**:
-fundo marfim, uma só família serifada, a home como publicação datada, e nenhuma
-chamada para ação em lugar nenhum.
+fundo marfim, a home como publicação datada, e nenhuma chamada para ação em
+lugar nenhum.
 
 A autoridade de um advogado que ninguém conhece ainda não vem de dizer que é
 bom. Vem do que ele demonstra saber. Por isso a escrita é a primeira coisa da
 página, e não um blog escondido no menu.
 
 **Não é** um cartão de visita, um Linktree, nem uma vitrine de serviços.
+
+### 1.1 Regime editorial
+
+| | |
+|---|---|
+| **Cadência** | um escrito por mês. Doze por ano é o mínimo para a seção não parecer morta, e cabe numa banca em formação. |
+| **Extensão** | 900 a 1200 palavras. Abaixo disso não cabe tese, contra-argumento e os julgados dos dois lados — e escrito que não cumpre o próprio dek trabalha contra a autoridade que o site existe para construir. |
+| **Autoria** | o agente rascunha; o Bruno lê, corrige, confere as fontes e assume. Sem a correção dele o texto soa como outra pessoa. |
+| **Estoque** | escreve-se adiantado. Um mês publicado é um mês que já estava escrito. |
+
+Rajada seguida de silêncio é o padrão de todo blog jurídico abandonado, e a
+data no cartão carimba o abandono. O teste de um periódico não é a estreia: é
+o primeiro mês em que não houve vontade de escrever. O estoque é a forma de
+sobreviver a esse mês.
 
 ---
 
@@ -46,9 +60,38 @@ desde que verdadeiro e verificável.
 ### 2.2 Citação
 
 Herdado do repositório da advocacia: **jurisprudência nunca de memória, nunca
-de resumo de terceiro**. Um acórdão só entra num escrito publicado depois de
-`inteiro_teor_conferido: sim` no verbete de origem. Peça errada se corrige;
-publicado erra na frente de todo mundo.
+de resumo de terceiro.**
+
+**Todo escrito carrega prova dentro de si.** Escrito sem ao menos um bloco de
+prova não monta. A regra é dura de propósito: a promessa "eu cito o que
+conferi" não pode ser opcional, porque invariante opcional não é invariante.
+Referência a outro repositório também não serve — ela quebra em silêncio.
+
+São três tipos de bloco, e a página **exibe qual é qual**:
+
+| Tipo | O que guarda |
+|---|---|
+| `ementa` | ementa de acórdão, extraída entre `EMENTA_BEGIN`/`EMENTA_END` do corpus |
+| `enunciado` | súmula ou enunciado de turma recursal — o texto é o próprio verbete |
+| `consulta` | consulta a fonte oficial: URL, data de acesso e o trecho literal da página |
+
+O leitor vê o rótulo e julga o peso. O andamento de um tema repetitivo não é
+uma ementa, e o site não finge que é. **Extração programática nos três** — nada
+é redigitado, nunca.
+
+**Conferência no primeiro uso.** Um verbete nasce `inteiro_teor_conferido: nao`.
+Na primeira vez que ele entra num escrito ou numa petição, o Bruno abre a fonte
+e confere — uma vez, para sempre. A montagem recusa escrito não-rascunho que
+cite verbete com `nao`, e nomeia o culpado. O gate não é burocracia: é o que faz
+a conferência acontecer na hora em que o julgado já está aberto na tela, em vez
+de virar mutirão de cinquenta acórdãos que nunca acontece.
+
+**A fonte de conferência é a página de jurisprudência do JusBrasil** — a base,
+que é real e validada. **Não** a resposta da Jus IA, que é prosa gerada e que
+neste projeto já afirmou que o Tema 929 havia sido cancelado. São camadas
+diferentes do mesmo produto, e essa distinção é a razão de o campo existir.
+
+Peça errada se corrige; publicado erra na frente de todo mundo.
 
 ### 2.3 Técnico
 
@@ -61,6 +104,11 @@ publicado erra na frente de todo mundo.
   **estado-base é o final** — quem pede movimento reduzido recebe a página
   pronta, sem piscar.
 - Identidade **única**: o Ordir aparece descrito, nunca com a marca dele.
+- **A montagem exige navegador.** `verificar.py` roda com Playwright, e sem ele
+  não há build. É a segunda dependência do projeto e a mais pesada, assumida de
+  propósito: as regras da §2.1 e o contraste valem mais que a propriedade de
+  clonar e montar em qualquer máquina. Quem clonar precisa de
+  `pip install -r requirements.txt` e `playwright install`.
 
 ---
 
@@ -68,13 +116,22 @@ publicado erra na frente de todo mundo.
 
 | | |
 |---|---|
-| Fundo | marfim quente `--papel` · faixa `--papel-2` |
+| Fundo | marfim `--papel` · faixa `--papel-2` · escuro |
 | Tinta | `--tinta` · secundária `--tinta-2` · muda `--mudo` |
 | Acento | **um só**: pinho `--acento` |
-| Marca | Cormorant, caixa-alta, entreletra larga |
-| Título | Source Serif 4, corte óptico de display |
-| Texto e rótulo | Source Serif 4, corte óptico de texto |
-| Figura | guilhoché — epitrocoides, uma marca por escrito |
+| Marca | **Prata** (família `Marca`), caixa-alta, entreletra larga |
+| Título e corpo | **Crimson Pro** (família `Serifada`), garalda |
+| Rótulo, dek, data, navegação | **Archivo** (família `Grotesca`) |
+| Figura | guilhoché — epitrocoides geradas, uma por escrito |
+
+**A regra tipográfica, medida no site da S&C:** serifada só em título, marca e
+corpo. Rótulo, data e navegação são grotesca. **Data em serifada é o que faz um
+site parecer blog.**
+
+As figuras são **geradas** por `guilhoche.py`, nunca desenhadas: variante nova é
+parâmetro novo, não arquivo novo. A faixa larga do topo do artigo usa
+**variantes horizontais da curva de interferência** — a roseta não sobrevive ao
+recorte em 16:5, e uma forma espelhada por acidente é pior que figura nenhuma.
 
 Nenhum valor de cor, corpo ou espaço é escrito à mão fora de
 `ativos/estilo/10-tokens.css`.
@@ -83,16 +140,24 @@ Nenhum valor de cor, corpo ou espaço é escrito à mão fora de
 
 ## 4. As páginas
 
-| Página | Existe? | O que tem |
-|---|---|---|
-| **Home** | sim | vitrine (carrossel de escritos) · lista de escritos · atuação · contato |
-| **Escritos** | não | índice completo, datado; a busca nasce aqui quando houver ~10 textos |
-| **Escrito** (artigo) | não | título, dek, data, corpo, citações literais com fonte |
-| **Atuação** | não | três áreas, dois ou três parágrafos cada — não lista de tópicos |
-| **Sobre** | não | foto, e-mail, cartão `.vcf`, localização, formação e comissões |
+| Página | O que tem |
+|---|---|
+| **Capa** (`index.html`) | capa de revista pura: um escrito em manchete e os demais em cartões |
+| **Escritos** | índice completo, datado; a busca nasce aqui quando houver ~10 textos |
+| **Escrito** | faixa, título, dek, data, corpo, blocos de prova com o rótulo do tipo |
+| **Atuação** | três áreas, dois ou três parágrafos cada — não lista de tópicos |
+| **Sobre** | foto, e-mail, cartão `.vcf`, localização, formação e comissões |
 
-**Sobre só nasce quando houver o que dizer.** Uma página de biografia com nome e
-OAB e nada mais é pior que não ter página.
+Cada uma é página própria: menu que aponta para âncora da mesma página é
+incoerente.
+
+**A capa pura é uma aposta declarada.** Ela não diz nada sobre quem é o autor, e
+por isso perde o visitante que chega sem conhecê-lo. A fonte de tráfego prevista
+é o Instagram. Se em três meses o site só receber gente que não o conhece, esta
+é a primeira decisão a revisar.
+
+**Comissão só entra no Sobre depois da nomeação.** Pedir para entrar não é ser
+membro.
 
 ---
 
@@ -101,16 +166,20 @@ OAB e nada mais é pior que não ter página.
 ```
 _fonte/                        FONTE — é isto que se edita
   partes/    cabeca · topo · rodape      a casca, uma vez só
-  paginas/   *.html                      só o miolo de cada página
+  paginas/   index · escritos · atuacao · sobre    só o miolo de cada uma
   especime/                              provas de tipografia (não publica)
-_conteudo/                     CONTEÚDO — previsto, ainda não implementado
-  escritos/  *.md                        um arquivo por texto
+_conteudo/
+  escritos/  *.md                        UM arquivo por escrito
 ativos/estilo/                 ESTILO — um módulo por assunto
-  00-fontes 10-tokens 20-base 30-topo 40-vitrine 50-colunas 60-rodape 90-movimento
+  00-fontes 10-tokens 20-base 30-topo 40-vitrine
+  50-cartoes 60-rodape 70-leitura 90-movimento
 montar.py                      MONTAGEM
-verificar.py                   VERIFICAÇÃO (previsto)
+citar.py                       cola o bloco de prova dentro de um escrito
+guilhoche.py                   gera as epitrocoides
+verificar.py                   VERIFICAÇÃO
 
-index.html · ativos/estilo.css        GERADOS — nunca editar à mão
+index.html · escritos.html · atuacao.html · sobre.html
+escritos/*.html · ativos/estilo.css      GERADOS — nunca editar
 ```
 
 **As cinco regras que sustentam a separação:**
@@ -118,15 +187,15 @@ index.html · ativos/estilo.css        GERADOS — nunca editar à mão
 1. **Um assunto por arquivo.** Módulo de CSS se divide por *componente*, nunca
    por página. Se um seletor serve duas páginas, ele não pertence a nenhuma das
    duas — pertence ao componente.
-2. **Gerado não se edita.** `index.html` e `ativos/estilo.css` trazem aviso no
-   topo. A próxima montagem sobrescreve, e é para sobrescrever mesmo.
+2. **Gerado não se edita.** Os arquivos gerados trazem aviso no topo. A próxima
+   montagem sobrescreve, e é para sobrescrever mesmo.
 3. **Página nova não toca no montador.** Basta um arquivo em `_fonte/paginas/`
-   com o bloco de metadados. O montador descobre sozinho.
-4. **Escrito novo não toca em HTML.** É um arquivo de conteúdo; a montagem gera
-   a página, a entrada no índice e o card do carrossel a partir dele. *(É o
-   passo que falta implementar — hoje o escrito ainda é HTML na mão.)*
-5. **A montagem falha alto.** Marcador não substituído derruba o build. Nada
-   sobe quebrado em silêncio.
+   com o bloco de metadados. O montador descobre sozinho — e descobre também os
+   módulos de CSS, por varredura do diretório.
+4. **Escrito novo é arquivo novo, e nada mais.** De um único Markdown saem três
+   coisas: a página do artigo, a entrada do índice e o cartão da capa.
+5. **A montagem falha alto.** Marcador não substituído, metadados ausentes ou
+   verbete não conferido derrubam o build. Nada sobe quebrado em silêncio.
 
 ---
 
@@ -151,29 +220,49 @@ termos que derruba a montagem.
 | Verificação | Falha quando |
 |---|---|
 | **Léxico regulatório** | aparece termo da lista da §2.1 |
-| Contraste AA | qualquer texto abaixo de 4.5:1 (3:1 se grande), nos dois temas |
+| **Prova** | escrito sem nenhum bloco de prova, ou citando verbete com `inteiro_teor_conferido: nao` |
 | Estrutura | falta `h1`, ordem de títulos quebrada, marco ausente |
 | Links | href interno aponta para arquivo que não existe |
 | Rascunho | sobrou marcador `RASCUNHO` num arquivo gerado |
-| Citação | escrito cita acórdão com `inteiro_teor_conferido: nao` |
+| Contraste AA | qualquer texto abaixo de 4.5:1 (3:1 se grande), nos dois temas |
 | Movimento | `animation` fora de `prefers-reduced-motion` |
 | Estouro | largura de rolagem maior que a janela, de 320 a 1600px |
 
-As quatro primeiras são estáticas — leem os arquivos. As demais precisam de
-navegador, e rodam com o Chrome DevTools.
+As cinco primeiras são estáticas — leem os arquivos. As três últimas rodam no
+navegador, com Playwright (§2.3).
 
 > O léxico regulatório é o mesmo padrão que `scripts/verificar_lexico.py` já faz
 > no repositório da advocacia. Vale portar a ideia, não o código.
 
 ---
 
-## 7. O que está pendente
+## 7. Publicação
 
-- [ ] Páginas: Escritos, Escrito, Atuação, Sobre
-- [ ] `_conteudo/escritos/*.md` e a montagem a partir deles (regra 4 da §5)
-- [ ] `verificar.py`
-- [ ] Os três escritos de rascunho: revisão e assunção de autoria pelo Bruno,
-      e `inteiro_teor_conferido` fechado nos acórdãos citados
+- **`main` é de onde o GitHub Pages publica.** O site novo vive na branch
+  `periodico` até a estreia. O merge é ato deliberado, nunca efeito colateral de
+  um push distraído — o que está na branch tem escritos em `rascunho: sim`, e
+  publicar rascunho sob o nome e a OAB do autor é caro sob o Provimento 205.
+- **A estreia é em `brunohardt.github.io`.** O domínio `.adv.br` vem depois,
+  aceitando o custo da migração: `SITE` no `montar.py`, canonical, `og:url` e os
+  dois `@id` do JSON-LD, mais todo link já compartilhado apontando para o
+  endereço velho.
+- **`og.png` 1200×630 por escrito**, gerada do guilhoché. Todo o tráfego previsto
+  vem do Instagram, e link compartilhado sem `og:image` renderiza caixa cinza —
+  justamente nas semanas de divulgação do lançamento.
+- **Antes do merge:** apagar `_fonte/especime/`.
+
+---
+
+## 8. O que está pendente
+
+- [ ] `verificar.py` — as oito checagens da §6
+- [ ] Blocos de prova `enunciado` e `consulta` no `citar.py`, com o rótulo do
+      tipo visível na página
+- [ ] Variantes horizontais da curva de interferência, e a faixa do artigo
+      trocada por elas
+- [ ] `og.png` por escrito
+- [ ] Os escritos da estreia: alongados a 900–1200, revistos e assumidos pelo
+      Bruno, com os verbetes conferidos no JusBrasil
+- [ ] Foto nova para o Sobre (a de hoje tem 400px)
 - [ ] Busca no índice de escritos — só quando houver ~10 textos
-- [ ] Foto para o Sobre; `og.png` 1200×630
-- [ ] Domínio `.adv.br` (trocar canonical, og:url e os dois `@id` do JSON-LD)
+- [ ] Domínio `.adv.br`
