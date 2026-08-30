@@ -1,0 +1,3 @@
+# a pagina foi auditada byte a byte em LF; manter assim no checkout
+*.html text eol=lf
+.nojekyll text eol=lf
