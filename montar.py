@@ -76,14 +76,23 @@ def metadados(bruto, padrao):
 # Bloco de prova, escrito por citar.py e congelado dentro do escrito:
 #
 #   :::verbete 41-dobro-independe-do-elemento-volitivo
+#   tipo: ementa
 #   fonte: TJSC, Apelação n. ...
 #   inteiro_teor_conferido: nao
 #   ---
-#   <ementa literal, byte a byte>
+#   <texto literal, byte a byte>
 #   :::
 VERBETE = re.compile(
     r"^:::verbete[ \t]+(?P<id>[\w\-]+)[ \t]*\n(?P<meta>.*?)\n---[ \t]*\n(?P<corpo>.*?)\n:::[ \t]*$",
     re.S | re.M)
+
+# O leitor vê o rótulo e julga o peso: andamento de tema repetitivo não é
+# ementa, e o site não finge que é (ESPEC §2.2).
+ROTULO_PROVA = {
+    u"ementa": u"Ementa",
+    u"enunciado": u"Enunciado",
+    u"consulta": u"Consulta &#224; fonte oficial",
+}
 
 
 def render_verbetes(md, slug, rascunho, problemas):
@@ -95,20 +104,37 @@ def render_verbetes(md, slug, rascunho, problemas):
             if u":" in linha:
                 k, v = linha.split(u":", 1)
                 meta[k.strip()] = v.strip()
+
+        tipo = meta.get("tipo", u"").strip().lower()
+        if tipo not in ROTULO_PROVA:
+            problemas.append(u"%s: o bloco %s tem tipo '%s' (esperado: %s)"
+                             % (slug, vid, tipo, u", ".join(sorted(ROTULO_PROVA))))
+            tipo = u"ementa"
+
         conferido = meta.get("inteiro_teor_conferido", "nao").strip().lower()
         if conferido != "sim" and not rascunho:
             problemas.append(
                 u"%s cita o verbete %s com inteiro_teor_conferido: %s" % (slug, vid, conferido))
         selo = u"" if conferido == "sim" else \
             u'\n    <p class="pendente">Inteiro teor ainda n&#227;o conferido na fonte.</p>'
-        return (u'<figure class="verbete" id="v-%s">\n'
+
+        # a consulta mostra onde e quando: sem isso ela não é verificável
+        credito = esc(meta.get("fonte", vid))
+        if tipo == u"consulta" and meta.get("url"):
+            credito = u'<a href="%s" rel="noopener">%s</a>' % (
+                esc(meta["url"]), credito)
+            if meta.get("acesso"):
+                credito += u" &#183; consulta em %s" % por_extenso(meta["acesso"])
+
+        return (u'<figure class="verbete verbete--%s" id="v-%s">\n'
+                u'    <p class="rotulo-prova">%s</p>\n'
                 u'    <blockquote>%s</blockquote>\n'
                 u'    <figcaption>%s</figcaption>%s\n'
                 u'  </figure>') % (
-            esc(vid),
+            tipo, esc(vid), ROTULO_PROVA[tipo],
             u"\n".join(u"<p>%s</p>" % esc(p.strip())
                        for p in m.group("corpo").strip().split(u"\n\n") if p.strip()),
-            esc(meta.get("fonte", vid)),
+            credito,
             selo)
     return VERBETE.sub(troca, md)
 

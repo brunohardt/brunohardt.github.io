@@ -45,6 +45,7 @@ com o horário, com o rol de indícios de atipicidade, e com o que a instituiç�
 não juntou aos autos quando podia.
 
 :::verbete 10-sumula-479-fortuito-interno
+tipo: enunciado
 fonte: Jus.ai — curadoria de Bruno Hardt, 14/08/2026
 inteiro_teor_conferido: nao
 ---

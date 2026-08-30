@@ -1,21 +1,32 @@
 # -*- coding: utf-8 -*-
-"""Puxa um verbete do corpus da advocacia e congela dentro de um escrito.
+"""Cola um bloco de prova dentro de um escrito.
+
+Do corpus da advocacia (tipo `ementa` ou `enunciado`, inferido pela classe):
 
     python citar.py <escrito> <verbete>
-    python citar.py sumula-479 01-sumula-479-fortuito-interno
-    python citar.py sumula-479 01            # o prefixo basta
+    python citar.py sumula-479 10-sumula-479-fortuito-interno
+    python citar.py sumula-479 10            # o prefixo basta
+
+De uma consulta a fonte oficial (tipo `consulta`) — andamento de tema
+repetitivo, texto de lei, enunciado que não está no corpus:
+
+    python citar.py <escrito> --consulta <arquivo> --url <URL> [--titulo "..."]
+    python citar.py tema-929 --consulta trecho.txt --url https://processo.stj.jus.br/...
+
+O arquivo é lido verbatim e vai inteiro para o bloco: o trecho se copia da
+página e se salva num arquivo, nunca se redigita na linha de comando.
 
 Por que congelar em vez de referenciar: a fonte do escrito mora no repo do
 site, e o corpus mora no repo da advocacia. Referência entre repositórios
 quebra em silêncio — no dia em que o site publicar de outra máquina, ou de um
-CI, o verbete simplesmente não está lá. Copiando a ementa e o campo de
-conferência para dentro do escrito, o texto carrega a própria prova, e o
+CI, o verbete simplesmente não está lá. Copiando o texto e o campo de
+conferência para dentro do escrito, ele carrega a própria prova, e o
 `montar.py` consegue recusar a publicação sozinho.
 
-A ementa é copiada por extração programática, nunca redigitada — é a RED LINE 2
-do repositório da advocacia, aplicada ao que vai a público.
+Extração programática nos três tipos, nunca redigitação — é a RED LINE 2 do
+repositório da advocacia, aplicada ao que vai a público (ESPEC §2.2).
 """
-import io, os, re, sys
+import io, os, re, sys, datetime
 
 CORPUS = r"C:\Users\Hardt\Dev\HARDT - ADVOCACIA\conhecimento\jurisprudencia"
 ESCRITOS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_conteudo", "escritos")
@@ -71,38 +82,96 @@ def extrair(texto):
     sys.exit(u"nao achei ementa literal no verbete (sem LITERAL_BEGIN/END nem citacao em bloco)")
 
 
+def inferir_tipo(campos, vid):
+    """Súmula e enunciado não têm inteiro teor a conferir: o enunciado é o
+    próprio texto. O resto é ementa de acórdão."""
+    classe = (campos.get("classe") or u"").strip().lower()
+    if classe.startswith(u"súmula") or classe.startswith(u"sumula") \
+            or classe.startswith(u"enunciado"):
+        return u"enunciado"
+    if re.match(r"^\d+-(sumula|enunciado)", vid):
+        return u"enunciado"
+    return u"ementa"
+
+
+def colar(alvo, escrito, vid, linhas, corpo):
+    texto = ler(alvo)
+    if (u":::verbete %s\n" % vid) in texto:
+        sys.exit(u"o escrito ja cita %s — nada a fazer" % vid)
+    bloco = u"\n:::verbete %s\n%s---\n%s\n:::\n" % (
+        vid, u"".join(u"%s: %s\n" % (k, v) for k, v in linhas), corpo)
+    io.open(alvo, "a", encoding="utf-8", newline="\n").write(bloco)
+    print(u"  bloco %s colado em %s" % (vid, escrito))
+    for k, v in linhas:
+        print(u"  %s: %s" % (k, v))
+
+
+def do_corpus(alvo, escrito, chave):
+    nome = achar_verbete(chave)
+    campos, ementa = extrair(ler(os.path.join(CORPUS, nome)))
+    vid = nome[:-3]
+    tipo = inferir_tipo(campos, vid)
+    conferido = str(campos.get("inteiro_teor_conferido", "nao")).strip().lower()
+    fonte = campos.get("fonte") or campos.get("origem") or campos.get("tribunal") or vid
+
+    colar(alvo, escrito, vid, [(u"tipo", tipo),
+                               (u"fonte", fonte),
+                               (u"inteiro_teor_conferido", conferido)], ementa)
+
+    if conferido != u"sim":
+        print(u"\n  ATENCAO: a montagem vai RECUSAR publicar este escrito enquanto\n"
+              u"  este verbete nao for conferido. E a conferencia no primeiro uso\n"
+              u"  (ESPEC 2.2): abra o julgado na pagina de jurisprudencia do\n"
+              u"  JusBrasil -- a base, nao a resposta da Jus IA -- confira numero,\n"
+              u"  orgao, relator e datas, e mude o campo no verbete de origem\n"
+              u"  (%s) e aqui." % os.path.join(CORPUS, nome))
+
+
+def do_consulta(alvo, escrito, args):
+    """Consulta a fonte oficial. Aqui o Bruno esteve na fonte ele mesmo — não
+    há intermediário para conferir depois, então o bloco já nasce conferido."""
+    arquivo = args.get("--consulta")
+    url = args.get("--url")
+    if not arquivo or not url:
+        sys.exit(u"--consulta exige o arquivo do trecho e --url da pagina")
+    if not os.path.isfile(arquivo):
+        sys.exit(u"arquivo do trecho nao encontrado: %s" % arquivo)
+    trecho = ler(arquivo).strip()
+    if not trecho:
+        sys.exit(u"o arquivo do trecho esta vazio: %s" % arquivo)
+
+    vid = args.get("--id") or re.sub(r"[^a-z0-9]+", "-",
+                                     os.path.splitext(os.path.basename(arquivo))[0].lower()).strip("-")
+    titulo = args.get("--titulo") or url
+    hoje = datetime.date.today().isoformat()
+
+    colar(alvo, escrito, vid, [(u"tipo", u"consulta"),
+                               (u"fonte", titulo),
+                               (u"url", url),
+                               (u"acesso", hoje),
+                               (u"inteiro_teor_conferido", u"sim")], trecho)
+
+
 def main():
-    if len(sys.argv) != 3:
+    if len(sys.argv) < 3:
         sys.exit(__doc__)
-    escrito, chave = sys.argv[1], sys.argv[2]
+    escrito = sys.argv[1]
     alvo = os.path.join(ESCRITOS, escrito if escrito.endswith(".md") else escrito + ".md")
     if not os.path.isfile(alvo):
         sys.exit(u"escrito nao encontrado: %s" % alvo)
 
-    nome = achar_verbete(chave)
-    campos, ementa = extrair(ler(os.path.join(CORPUS, nome)))
-    vid = nome[:-3]
-    conferido = str(campos.get("inteiro_teor_conferido", "nao")).strip().lower()
-    fonte = campos.get("fonte") or campos.get("origem") or campos.get("tribunal") or vid
-
-    bloco = (u"\n:::verbete %s\n"
-             u"fonte: %s\n"
-             u"inteiro_teor_conferido: %s\n"
-             u"---\n%s\n:::\n") % (vid, fonte, conferido, ementa)
-
-    texto = ler(alvo)
-    if (u":::verbete %s\n" % vid) in texto:
-        sys.exit(u"o escrito ja cita %s — nada a fazer" % vid)
-    io.open(alvo, "a", encoding="utf-8", newline="\n").write(bloco)
-
-    print(u"  verbete %s colado em %s" % (vid, escrito))
-    print(u"  fonte: %s" % fonte)
-    print(u"  inteiro_teor_conferido: %s%s" % (
-        conferido,
-        u"" if conferido == "sim" else
-        u"\n\n  ATENCAO: a montagem vai RECUSAR publicar este escrito enquanto o\n"
-        u"  inteiro teor nao for conferido na fonte. Abra o acordao no site do\n"
-        u"  tribunal, confira, e mude o campo no verbete de origem e aqui."))
+    resto = sys.argv[2:]
+    if resto[0].startswith("--"):
+        args = {}
+        i = 0
+        while i < len(resto):
+            if not resto[i].startswith("--") or i + 1 >= len(resto):
+                sys.exit(u"argumento solto: %s" % resto[i])
+            args[resto[i]] = resto[i + 1]
+            i += 2
+        do_consulta(alvo, escrito, args)
+    else:
+        do_corpus(alvo, escrito, resto[0])
 
 
 if __name__ == "__main__":

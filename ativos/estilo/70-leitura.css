@@ -55,6 +55,13 @@
   margin:1.8em 0;padding:clamp(18px,2.2vw,26px);
   background:var(--papel-2);border-left:2px solid var(--acento);
 }
+/* o rótulo do tipo de prova: o leitor vê o que está lendo e julga o peso.
+   Grotesca, como todo rótulo do site — data e rótulo em serifada é o que faz
+   um site parecer blog (ESPEC §3). */
+.verbete .rotulo-prova{
+  margin:0 0 .7em;font-family:var(--sans);font-size:.72rem;font-weight:600;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--acento);
+}
 .verbete blockquote{margin:0;font-size:.99rem;line-height:1.56;color:var(--tinta-2)}
 .verbete blockquote p{margin:0 0 .8em;font-size:inherit}
 .verbete blockquote p:last-child{margin-bottom:0}
