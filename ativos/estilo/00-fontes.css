@@ -1,0 +1,53 @@
+/* ============================================================================
+   FONTES — duas famílias, como na Sullivan & Cromwell
+
+   Medido no site deles: serifada SÓ nos títulos e na marca; rótulo, dek, data,
+   navegação e busca são todos em grotesca. Data e categoria em serifada é o
+   que um blog faz — num periódico, elas são sans.
+
+   Eles usam Martina Plantijn (serifada) + Graphik (grotesca), as duas
+   comerciais. Aqui, os parentes livres mais próximos:
+
+   Crimson Pro  — garalda, mesma família de desenho do Plantin. Títulos, marca
+                  e corpo de artigo. © 2018 The Crimson Pro Project Authors.
+   Archivo      — grotesca neutra, de caixa-alta firme. Rótulo, dek, data,
+                  navegação. © 2012 The Archivo Project Authors.
+
+   As duas sob SIL OFL 1.1. Instâncias estáticas geradas com fonttools a partir
+   das variáveis, com subset latino. Licenças em ativos/OFL-*.txt.
+   ========================================================================= */
+/* A MARCA tem letra própria: Prata, didone de serifa reta e afiada — a que
+   chega perto do desenho do logotipo do original, onde a Crimson (garalda,
+   serifa macia) fica sem punção. Subset de caixa-alta apenas: 3,1 KB.
+   © 2012 Viktoriya Grabowska, SIL OFL 1.1. */
+@font-face{
+  font-family:"Marca";
+  src:url("marca.woff2") format("woff2");
+  font-weight:400; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:"Serifada";
+  src:url("serif.woff2") format("woff2-variations");
+  font-weight:300 700; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:"Serifada";
+  src:url("serif-italico.woff2") format("woff2-variations");
+  font-weight:400 600; font-style:italic; font-display:swap;
+}
+@font-face{
+  font-family:"Grotesca";
+  src:url("sans.woff2") format("woff2-variations");
+  font-weight:300 700; font-style:normal; font-display:swap;
+}
+/* Fallbacks com métricas alinhadas: se a fonte demorar um quadro, nada pula. */
+@font-face{
+  font-family:"Serifada Fallback";
+  src:local("Georgia"), local("Times New Roman"), local("serif");
+  ascent-override:92%; descent-override:26%; line-gap-override:0%; size-adjust:96%;
+}
+@font-face{
+  font-family:"Grotesca Fallback";
+  src:local("Segoe UI"), local("Helvetica Neue"), local("Arial"), local("sans-serif");
+  ascent-override:94%; descent-override:24%; line-gap-override:0%; size-adjust:101%;
+}

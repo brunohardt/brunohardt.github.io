@@ -1,0 +1,25 @@
+/* ============================================================================
+   O RODAPÉ — a marca de novo, e os contatos em botão
+
+   O padrão da Sullivan & Cromwell: faixa mais fechada, marca à esquerda que
+   volta ao topo, botões quadrados de contorno à direita.
+   ========================================================================= */
+.rodape{background:var(--papel-2);border-top:1px solid var(--linha)}
+.rodape-interna{
+  max-width:var(--larg);margin-inline:auto;padding:clamp(28px,4vw,44px) var(--gutter);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:clamp(20px,4vw,40px);flex-wrap:wrap;
+}
+.rodape .marca{font-size:clamp(1.15rem,2.3vw,1.5rem);color:var(--tinta-2)}
+.rodape .marca a:hover{color:var(--tinta)}
+
+.selos{display:flex;gap:10px;list-style:none;margin:0;padding:0}
+.selos a{
+  display:grid;place-items:center;width:38px;height:38px;
+  border:1px solid var(--linha-forte);color:var(--mudo);
+  text-decoration:none;
+  transition:border-color .22s var(--ease), color .22s var(--ease);
+}
+.selos a:hover{border-color:var(--acento);color:var(--acento)}
+.selos a:focus-visible{outline:3px solid var(--foco);outline-offset:3px}
+.selos svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.5}

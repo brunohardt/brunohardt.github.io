@@ -1,0 +1,65 @@
+/* ============================================================================
+   BASE
+   A regra da casa: SERIFADA em título, marca e corpo de artigo. GROTESCA em
+   rótulo, dek, data, navegação e qualquer coisa de interface.
+   ========================================================================= */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:6.5rem}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{
+  margin:0;
+  background:var(--papel);
+  color:var(--tinta);
+  font-family:var(--serif);
+  font-weight:400;
+  font-size:clamp(1.02rem,.98rem + .2vw,1.12rem);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+address{font-style:normal}
+img,svg{max-width:100%}
+
+a{
+  color:inherit;
+  text-decoration-line:underline;
+  text-decoration-thickness:.055em;
+  text-underline-offset:.2em;
+  text-decoration-color:color-mix(in srgb, currentColor 30%, transparent);
+  transition:text-decoration-color .2s var(--ease), color .2s var(--ease);
+}
+a:hover{text-decoration-color:currentColor}
+a:focus-visible{
+  outline:3px solid var(--foco); outline-offset:3px; border-radius:2px;
+  text-decoration-color:currentColor;
+}
+
+.pular{
+  position:absolute;left:-9999px;top:0;z-index:60;font-family:var(--sans);
+  background:var(--papel);color:var(--tinta);
+  padding:.7em 1.1em;border:1px solid var(--linha-forte);
+}
+.pular:focus{left:var(--gutter);top:.6rem}
+.so-leitor{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* ---- os três elementos de interface, todos em grotesca ----
+   Entreletra medida no original: 0,6px em 16px = 0,037em. O versalete muito
+   espaçado é justamente o que denuncia amadorismo — lá é quase nada. */
+.rotulo{
+  font-family:var(--sans);
+  font-size:.8rem;font-weight:560;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--tinta-2);margin:0;line-height:1.4;
+}
+.dek{
+  font-family:var(--sans);
+  font-size:.98rem;font-weight:400;line-height:1.42;color:var(--mudo);
+  letter-spacing:.001em;
+}
+.data{
+  font-family:var(--sans);
+  font-size:.86rem;font-weight:330;letter-spacing:.012em;
+  color:var(--mudo);white-space:nowrap;
+}
+.fio{border:0;border-top:1px solid var(--linha);margin:0}
+.envelope{max-width:var(--larg);margin-inline:auto;padding-inline:var(--gutter)}
+.numero{font-variant-numeric:tabular-nums;white-space:nowrap}

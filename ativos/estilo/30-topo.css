@@ -1,0 +1,83 @@
+/* ============================================================================
+   A BARRA
+   Sem fio nenhum: no original a separação vem da mudança de plano, não de uma
+   linha. A barra é opaca, o conteúdo passa por baixo e some.
+   ========================================================================= */
+.barra{
+  position:sticky;top:0;z-index:40;
+  background:var(--papel);
+}
+.barra-interna{
+  max-width:var(--larg);margin-inline:auto;padding-inline:var(--gutter);
+  min-height:6rem;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:clamp(14px,3vw,40px);
+}
+
+/* a marca é a serifada, em corpo modesto — no original ela tem 20px */
+.marca{
+  margin:0;
+  font-family:var(--marca);
+  font-weight:400;
+  font-size:clamp(1.55rem,3.4vw,2.3rem);
+  letter-spacing:.095em;
+  text-transform:uppercase;
+  line-height:1;white-space:nowrap;
+  color:var(--tinta);
+}
+.marca a{text-decoration:none}
+.marca a:hover{text-decoration:none;color:var(--tinta)}
+
+.acoes{display:flex;align-items:center;gap:clamp(14px,2.4vw,30px)}
+.navega{
+  display:flex;gap:clamp(15px,2.2vw,28px);align-items:center;
+  font-family:var(--sans);
+  font-size:.86rem;letter-spacing:.02em;font-weight:450;
+  color:var(--tinta-2);
+}
+.navega a{text-decoration:none}
+.navega a:hover{color:var(--tinta);text-decoration:none}
+.navega a[aria-current="page"]{color:var(--acento)}
+
+.botao-barra{
+  display:inline-flex;align-items:center;gap:.5em;
+  background:none;border:0;padding:.3em .1em;margin:0;
+  font-family:var(--sans);font-size:.86rem;letter-spacing:.02em;font-weight:450;
+  color:var(--tinta-2);cursor:pointer;text-decoration:none;
+}
+.botao-barra:hover{color:var(--tinta)}
+.botao-barra:focus-visible{outline:3px solid var(--foco);outline-offset:4px;border-radius:2px}
+.botao-barra svg{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6}
+
+/* o sanfona: <details>, sem uma linha de JavaScript */
+.sanfona{display:none}
+.sanfona > summary{list-style:none;cursor:pointer}
+.sanfona > summary::-webkit-details-marker{display:none}
+.sanfona .barras{width:18px;height:12px;position:relative;display:inline-block}
+.sanfona .barras::before,.sanfona .barras::after,.sanfona .barras i{
+  content:"";position:absolute;left:0;right:0;height:1.5px;background:currentColor;
+  transition:transform .28s var(--ease), opacity .28s var(--ease);
+}
+.sanfona .barras::before{top:0}
+.sanfona .barras i{top:5.2px}
+.sanfona .barras::after{bottom:0}
+.sanfona[open] .barras::before{transform:translateY(5.2px) rotate(45deg)}
+.sanfona[open] .barras i{opacity:0}
+.sanfona[open] .barras::after{transform:translateY(-5.2px) rotate(-45deg)}
+
+.gaveta{position:absolute;left:0;right:0;top:100%;background:var(--papel)}
+.gaveta ul{
+  list-style:none;margin:0 auto;padding:.4rem var(--gutter) 1.6rem;
+  max-width:var(--larg);display:grid;gap:.1rem;
+}
+.gaveta a{
+  display:block;padding:.85em 0;font-family:var(--serif);
+  font-size:1.2rem;text-decoration:none;border-bottom:1px solid var(--linha);
+}
+.gaveta li:last-child a{border-bottom:0}
+
+@media (max-width:759px){
+  .navega{display:none}
+  .sanfona{display:block}
+  .barra-interna{min-height:4.6rem}
+}

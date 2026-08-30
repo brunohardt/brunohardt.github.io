@@ -1,0 +1,11 @@
+/* ============================================================================
+   O MOMENTO DE ENTRADA
+   Discreto, uma vez só. O estado-base é o final: quem pede movimento reduzido
+   recebe a página pronta, sem piscar.
+   ========================================================================= */
+@media (prefers-reduced-motion:no-preference){
+  .vitrine {animation:surge .8s var(--ease) .16s both}
+  .secao   {animation:surge .8s var(--ease) .26s both}
+  .leitura .abertura{animation:surge .8s var(--ease) .1s both}
+  @keyframes surge{from{opacity:0;transform:translateY(9px)}}
+}

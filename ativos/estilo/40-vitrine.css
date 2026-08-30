@@ -1,0 +1,44 @@
+/* ============================================================================
+   A VITRINE — o escrito em destaque
+   Proporções medidas no original: manchete serifada em peso 500, entrelinha
+   1,0, entreletra levemente negativa. Rótulo, dek e data em grotesca.
+   ========================================================================= */
+.vitrine{position:relative;padding-block:clamp(20px,3vw,36px) clamp(30px,4.6vw,52px)}
+.trilho{
+  display:grid;grid-auto-flow:column;grid-auto-columns:100%;
+  overflow-x:auto;overscroll-behavior-x:contain;
+  scroll-snap-type:x mandatory;scrollbar-width:none;
+}
+.trilho::-webkit-scrollbar{display:none}
+.lamina{scroll-snap-align:start;min-width:0}
+.lamina-interna{display:grid;gap:clamp(20px,3.4vw,48px);align-items:center}
+@media (min-width:700px){
+  .lamina-interna{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr)}
+}
+.guilhoche{
+  display:block;width:100%;height:auto;aspect-ratio:16/10;
+  object-fit:contain;padding:clamp(14px,2.4vw,32px);
+  background:var(--papel-2);border:1px solid var(--linha);
+}
+@media (min-width:700px){.guilhoche{aspect-ratio:4/3}}
+
+.lamina h2{
+  margin:.34em 0 0;
+  font-family:var(--serif);font-weight:500;
+  font-size:clamp(1.9rem,4.6vw,3.4rem);
+  line-height:1.02;letter-spacing:-.005em;text-wrap:balance;
+  color:var(--tinta);
+}
+.lamina h2 a{text-decoration-color:transparent}
+.lamina h2 a:hover{text-decoration-color:color-mix(in srgb, currentColor 38%, transparent)}
+.lamina .dek{margin:.85em 0 0;max-width:36rem;font-size:1.02rem;line-height:1.45}
+.lamina .data{display:block;margin-top:1.15em}
+
+.reguas{display:flex;gap:9px;align-items:center;margin-top:clamp(20px,2.8vw,30px)}
+.reguas a{
+  display:block;width:38px;height:2px;background:var(--linha-forte);
+  text-indent:-999em;overflow:hidden;text-decoration:none;
+  transition:background .22s var(--ease);
+}
+.reguas a:hover{background:var(--acento)}
+.reguas a:focus-visible{outline:2px solid var(--foco);outline-offset:6px}

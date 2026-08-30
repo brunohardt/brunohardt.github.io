@@ -1,0 +1,483 @@
+@charset "utf-8";
+/* GERADO por montar.py a partir de ativos/estilo/*.css.
+   Não edite: a próxima montagem sobrescreve.
+   Módulos: 00-fontes.css, 10-tokens.css, 20-base.css, 30-topo.css, 40-vitrine.css, 50-cartoes.css, 60-rodape.css, 70-leitura.css, 90-movimento.css */
+
+/* ============================================================================
+   FONTES — duas famílias, como na Sullivan & Cromwell
+
+   Medido no site deles: serifada SÓ nos títulos e na marca; rótulo, dek, data,
+   navegação e busca são todos em grotesca. Data e categoria em serifada é o
+   que um blog faz — num periódico, elas são sans.
+
+   Eles usam Martina Plantijn (serifada) + Graphik (grotesca), as duas
+   comerciais. Aqui, os parentes livres mais próximos:
+
+   Crimson Pro  — garalda, mesma família de desenho do Plantin. Títulos, marca
+                  e corpo de artigo. © 2018 The Crimson Pro Project Authors.
+   Archivo      — grotesca neutra, de caixa-alta firme. Rótulo, dek, data,
+                  navegação. © 2012 The Archivo Project Authors.
+
+   As duas sob SIL OFL 1.1. Instâncias estáticas geradas com fonttools a partir
+   das variáveis, com subset latino. Licenças em ativos/OFL-*.txt.
+   ========================================================================= */
+/* A MARCA tem letra própria: Prata, didone de serifa reta e afiada — a que
+   chega perto do desenho do logotipo do original, onde a Crimson (garalda,
+   serifa macia) fica sem punção. Subset de caixa-alta apenas: 3,1 KB.
+   © 2012 Viktoriya Grabowska, SIL OFL 1.1. */
+@font-face{
+  font-family:"Marca";
+  src:url("marca.woff2") format("woff2");
+  font-weight:400; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:"Serifada";
+  src:url("serif.woff2") format("woff2-variations");
+  font-weight:300 700; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:"Serifada";
+  src:url("serif-italico.woff2") format("woff2-variations");
+  font-weight:400 600; font-style:italic; font-display:swap;
+}
+@font-face{
+  font-family:"Grotesca";
+  src:url("sans.woff2") format("woff2-variations");
+  font-weight:300 700; font-style:normal; font-display:swap;
+}
+/* Fallbacks com métricas alinhadas: se a fonte demorar um quadro, nada pula. */
+@font-face{
+  font-family:"Serifada Fallback";
+  src:local("Georgia"), local("Times New Roman"), local("serif");
+  ascent-override:92%; descent-override:26%; line-gap-override:0%; size-adjust:96%;
+}
+@font-face{
+  font-family:"Grotesca Fallback";
+  src:local("Segoe UI"), local("Helvetica Neue"), local("Arial"), local("sans-serif");
+  ascent-override:94%; descent-override:24%; line-gap-override:0%; size-adjust:101%;
+}
+
+/* ============================================================================
+   TOKENS — marfim e pinho
+   ========================================================================= */
+:root{
+  color-scheme:light dark;
+
+  --papel:#FBF9F2;         /* marfim quente */
+  --papel-2:#F2EFE3;       /* faixa do rodapé, cartão */
+  --tinta:#14181A;
+  --tinta-2:#394145;
+  --mudo:#5F686C;
+  --acento:#245C53;        /* pinho — o único acento */
+  --linha:#DED9C9;
+  --linha-forte:#C9C2AC;
+  --separador:#A79E84;
+  --foco:#245C53;
+  --barra:rgba(251,249,242,.92);
+
+  --marca:"Marca","Serifada","Serifada Fallback",Georgia,serif;
+  --serif:"Serifada","Serifada Fallback",Georgia,"Times New Roman",serif;
+  --sans:"Grotesca","Grotesca Fallback","Segoe UI",Helvetica,Arial,sans-serif;
+
+  --gutter:clamp(20px,4.4vw,72px);
+  --larg:1280px;
+  --ease:cubic-bezier(.22,.7,.2,1);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --papel:#12161A;
+    --papel-2:#171C21;
+    --tinta:#EDEAE0;
+    --tinta-2:#C6C8C1;
+    --mudo:#969C9C;
+    --acento:#7FCFBD;
+    --linha:#282F34;
+    --linha-forte:#3A4348;
+    --separador:#6C7579;
+    --foco:#7FCFBD;
+    --barra:rgba(18,22,26,.92);
+  }
+}
+@media (prefers-contrast:more){
+  :root{--mudo:#454D51;--linha:#B9B09A}
+  @media (prefers-color-scheme:dark){:root{--mudo:#B9BEBE;--linha:#485258}}
+}
+
+/* ============================================================================
+   BASE
+   A regra da casa: SERIFADA em título, marca e corpo de artigo. GROTESCA em
+   rótulo, dek, data, navegação e qualquer coisa de interface.
+   ========================================================================= */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:6.5rem}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{
+  margin:0;
+  background:var(--papel);
+  color:var(--tinta);
+  font-family:var(--serif);
+  font-weight:400;
+  font-size:clamp(1.02rem,.98rem + .2vw,1.12rem);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+address{font-style:normal}
+img,svg{max-width:100%}
+
+a{
+  color:inherit;
+  text-decoration-line:underline;
+  text-decoration-thickness:.055em;
+  text-underline-offset:.2em;
+  text-decoration-color:color-mix(in srgb, currentColor 30%, transparent);
+  transition:text-decoration-color .2s var(--ease), color .2s var(--ease);
+}
+a:hover{text-decoration-color:currentColor}
+a:focus-visible{
+  outline:3px solid var(--foco); outline-offset:3px; border-radius:2px;
+  text-decoration-color:currentColor;
+}
+
+.pular{
+  position:absolute;left:-9999px;top:0;z-index:60;font-family:var(--sans);
+  background:var(--papel);color:var(--tinta);
+  padding:.7em 1.1em;border:1px solid var(--linha-forte);
+}
+.pular:focus{left:var(--gutter);top:.6rem}
+.so-leitor{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* ---- os três elementos de interface, todos em grotesca ----
+   Entreletra medida no original: 0,6px em 16px = 0,037em. O versalete muito
+   espaçado é justamente o que denuncia amadorismo — lá é quase nada. */
+.rotulo{
+  font-family:var(--sans);
+  font-size:.8rem;font-weight:560;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--tinta-2);margin:0;line-height:1.4;
+}
+.dek{
+  font-family:var(--sans);
+  font-size:.98rem;font-weight:400;line-height:1.42;color:var(--mudo);
+  letter-spacing:.001em;
+}
+.data{
+  font-family:var(--sans);
+  font-size:.86rem;font-weight:330;letter-spacing:.012em;
+  color:var(--mudo);white-space:nowrap;
+}
+.fio{border:0;border-top:1px solid var(--linha);margin:0}
+.envelope{max-width:var(--larg);margin-inline:auto;padding-inline:var(--gutter)}
+.numero{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ============================================================================
+   A BARRA
+   Sem fio nenhum: no original a separação vem da mudança de plano, não de uma
+   linha. A barra é opaca, o conteúdo passa por baixo e some.
+   ========================================================================= */
+.barra{
+  position:sticky;top:0;z-index:40;
+  background:var(--papel);
+}
+.barra-interna{
+  max-width:var(--larg);margin-inline:auto;padding-inline:var(--gutter);
+  min-height:6rem;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:clamp(14px,3vw,40px);
+}
+
+/* a marca é a serifada, em corpo modesto — no original ela tem 20px */
+.marca{
+  margin:0;
+  font-family:var(--marca);
+  font-weight:400;
+  font-size:clamp(1.55rem,3.4vw,2.3rem);
+  letter-spacing:.095em;
+  text-transform:uppercase;
+  line-height:1;white-space:nowrap;
+  color:var(--tinta);
+}
+.marca a{text-decoration:none}
+.marca a:hover{text-decoration:none;color:var(--tinta)}
+
+.acoes{display:flex;align-items:center;gap:clamp(14px,2.4vw,30px)}
+.navega{
+  display:flex;gap:clamp(15px,2.2vw,28px);align-items:center;
+  font-family:var(--sans);
+  font-size:.86rem;letter-spacing:.02em;font-weight:450;
+  color:var(--tinta-2);
+}
+.navega a{text-decoration:none}
+.navega a:hover{color:var(--tinta);text-decoration:none}
+.navega a[aria-current="page"]{color:var(--acento)}
+
+.botao-barra{
+  display:inline-flex;align-items:center;gap:.5em;
+  background:none;border:0;padding:.3em .1em;margin:0;
+  font-family:var(--sans);font-size:.86rem;letter-spacing:.02em;font-weight:450;
+  color:var(--tinta-2);cursor:pointer;text-decoration:none;
+}
+.botao-barra:hover{color:var(--tinta)}
+.botao-barra:focus-visible{outline:3px solid var(--foco);outline-offset:4px;border-radius:2px}
+.botao-barra svg{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6}
+
+/* o sanfona: <details>, sem uma linha de JavaScript */
+.sanfona{display:none}
+.sanfona > summary{list-style:none;cursor:pointer}
+.sanfona > summary::-webkit-details-marker{display:none}
+.sanfona .barras{width:18px;height:12px;position:relative;display:inline-block}
+.sanfona .barras::before,.sanfona .barras::after,.sanfona .barras i{
+  content:"";position:absolute;left:0;right:0;height:1.5px;background:currentColor;
+  transition:transform .28s var(--ease), opacity .28s var(--ease);
+}
+.sanfona .barras::before{top:0}
+.sanfona .barras i{top:5.2px}
+.sanfona .barras::after{bottom:0}
+.sanfona[open] .barras::before{transform:translateY(5.2px) rotate(45deg)}
+.sanfona[open] .barras i{opacity:0}
+.sanfona[open] .barras::after{transform:translateY(-5.2px) rotate(-45deg)}
+
+.gaveta{position:absolute;left:0;right:0;top:100%;background:var(--papel)}
+.gaveta ul{
+  list-style:none;margin:0 auto;padding:.4rem var(--gutter) 1.6rem;
+  max-width:var(--larg);display:grid;gap:.1rem;
+}
+.gaveta a{
+  display:block;padding:.85em 0;font-family:var(--serif);
+  font-size:1.2rem;text-decoration:none;border-bottom:1px solid var(--linha);
+}
+.gaveta li:last-child a{border-bottom:0}
+
+@media (max-width:759px){
+  .navega{display:none}
+  .sanfona{display:block}
+  .barra-interna{min-height:4.6rem}
+}
+
+/* ============================================================================
+   A VITRINE — o escrito em destaque
+   Proporções medidas no original: manchete serifada em peso 500, entrelinha
+   1,0, entreletra levemente negativa. Rótulo, dek e data em grotesca.
+   ========================================================================= */
+.vitrine{position:relative;padding-block:clamp(20px,3vw,36px) clamp(30px,4.6vw,52px)}
+.trilho{
+  display:grid;grid-auto-flow:column;grid-auto-columns:100%;
+  overflow-x:auto;overscroll-behavior-x:contain;
+  scroll-snap-type:x mandatory;scrollbar-width:none;
+}
+.trilho::-webkit-scrollbar{display:none}
+.lamina{scroll-snap-align:start;min-width:0}
+.lamina-interna{display:grid;gap:clamp(20px,3.4vw,48px);align-items:center}
+@media (min-width:700px){
+  .lamina-interna{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr)}
+}
+.guilhoche{
+  display:block;width:100%;height:auto;aspect-ratio:16/10;
+  object-fit:contain;padding:clamp(14px,2.4vw,32px);
+  background:var(--papel-2);border:1px solid var(--linha);
+}
+@media (min-width:700px){.guilhoche{aspect-ratio:4/3}}
+
+.lamina h2{
+  margin:.34em 0 0;
+  font-family:var(--serif);font-weight:500;
+  font-size:clamp(1.9rem,4.6vw,3.4rem);
+  line-height:1.02;letter-spacing:-.005em;text-wrap:balance;
+  color:var(--tinta);
+}
+.lamina h2 a{text-decoration-color:transparent}
+.lamina h2 a:hover{text-decoration-color:color-mix(in srgb, currentColor 38%, transparent)}
+.lamina .dek{margin:.85em 0 0;max-width:36rem;font-size:1.02rem;line-height:1.45}
+.lamina .data{display:block;margin-top:1.15em}
+
+.reguas{display:flex;gap:9px;align-items:center;margin-top:clamp(20px,2.8vw,30px)}
+.reguas a{
+  display:block;width:38px;height:2px;background:var(--linha-forte);
+  text-indent:-999em;overflow:hidden;text-decoration:none;
+  transition:background .22s var(--ease);
+}
+.reguas a:hover{background:var(--acento)}
+.reguas a:focus-visible{outline:2px solid var(--foco);outline-offset:6px}
+
+/* ============================================================================
+   A GRADE DE CARTÕES — a estrutura que separa periódico de blog
+
+   Lista com fio entre linhas é lista de blog. Aqui cada escrito é um cartão
+   com moldura própria: categoria em grotesca, título em serifada, data, e a
+   figura no rodapé do cartão — a ordem exata da grade de notícias do original.
+   ========================================================================= */
+.secao{padding-block:clamp(26px,3.6vw,44px)}
+.secao > .cabeca{
+  display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+  padding-bottom:.85em;margin-bottom:clamp(18px,2.4vw,26px);
+  border-bottom:1px solid var(--tinta);
+}
+.cabeca .mais{
+  font-family:var(--sans);font-size:.84rem;font-weight:450;
+  letter-spacing:.01em;color:var(--mudo);
+}
+.cabeca .mais:hover{color:var(--tinta)}
+
+.grade{
+  list-style:none;margin:0;padding:0;
+  display:grid;gap:clamp(14px,1.8vw,20px);
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));
+}
+.cartao{
+  border:1px solid var(--linha);
+  background:var(--papel);
+  display:flex;flex-direction:column;
+  transition:border-color .24s var(--ease);
+}
+.cartao:hover{border-color:var(--linha-forte)}
+.cartao .dentro{padding:clamp(18px,2vw,24px);display:flex;flex-direction:column;gap:.55em;flex:1 1 auto}
+.cartao .rotulo{color:var(--acento);font-size:.74rem;letter-spacing:.055em}
+.cartao h3{
+  margin:0;font-family:var(--serif);font-weight:500;
+  font-size:clamp(1.22rem,1.9vw,1.45rem);
+  line-height:1.18;letter-spacing:-.003em;color:var(--tinta);
+}
+.cartao h3 a{text-decoration-color:transparent}
+.cartao h3 a:hover{text-decoration-color:color-mix(in srgb, currentColor 38%, transparent)}
+.cartao .dek{font-size:.92rem;line-height:1.4}
+.cartao .data{margin-top:auto;padding-top:.7em}
+/* a figura preenche a faixa, como a imagem larga da grade do original: o
+   guilhoche e quadrado, entao ele e recortado — o miolo da roseta e o que
+   interessa, e o recorte deixa a faixa cheia em vez de vazia nas laterais */
+.cartao .figura{
+  display:block;width:100%;height:auto;aspect-ratio:16/7;
+  object-fit:cover;object-position:center;
+  background:var(--papel-2);border-top:1px solid var(--linha);
+}
+
+/* ============================================================================
+   O RODAPÉ — a marca de novo, e os contatos em botão
+
+   O padrão da Sullivan & Cromwell: faixa mais fechada, marca à esquerda que
+   volta ao topo, botões quadrados de contorno à direita.
+   ========================================================================= */
+.rodape{background:var(--papel-2);border-top:1px solid var(--linha)}
+.rodape-interna{
+  max-width:var(--larg);margin-inline:auto;padding:clamp(28px,4vw,44px) var(--gutter);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:clamp(20px,4vw,40px);flex-wrap:wrap;
+}
+.rodape .marca{font-size:clamp(1.15rem,2.3vw,1.5rem);color:var(--tinta-2)}
+.rodape .marca a:hover{color:var(--tinta)}
+
+.selos{display:flex;gap:10px;list-style:none;margin:0;padding:0}
+.selos a{
+  display:grid;place-items:center;width:38px;height:38px;
+  border:1px solid var(--linha-forte);color:var(--mudo);
+  text-decoration:none;
+  transition:border-color .22s var(--ease), color .22s var(--ease);
+}
+.selos a:hover{border-color:var(--acento);color:var(--acento)}
+.selos a:focus-visible{outline:3px solid var(--foco);outline-offset:3px}
+.selos svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.5}
+
+/* ============================================================================
+   A PÁGINA DE LEITURA — artigo, Atuação, Sobre
+   Medida curta, serifada no corpo, grotesca só nos metadados.
+   ========================================================================= */
+.cabeca-pagina{
+  padding-block:clamp(28px,4vw,52px) clamp(18px,2.4vw,26px);
+  border-bottom:1px solid var(--tinta);
+  margin-bottom:clamp(24px,3.4vw,40px);
+}
+.cabeca-pagina h1{
+  margin:0;font-family:var(--serif);font-weight:500;
+  font-size:clamp(2rem,4.6vw,3.1rem);line-height:1.05;letter-spacing:-.008em;
+  color:var(--tinta);text-wrap:balance;
+}
+.cabeca-pagina .dek{margin:.7em 0 0;max-width:46ch;font-size:1.02rem}
+
+.leitura .abertura{
+  padding-block:clamp(26px,3.6vw,46px) clamp(16px,2vw,22px);
+  max-width:40rem;
+}
+.leitura .abertura h1{
+  margin:.3em 0 0;font-family:var(--serif);font-weight:500;
+  font-size:clamp(2rem,4.8vw,3.2rem);line-height:1.04;letter-spacing:-.008em;
+  text-wrap:balance;
+}
+.leitura .abertura .dek{margin:.75em 0 0;font-size:1.06rem;color:var(--tinta-2)}
+.leitura .creditos{
+  display:flex;gap:1.4em;align-items:baseline;margin:1.4em 0 0;
+  padding-top:1em;border-top:1px solid var(--linha);
+}
+.leitura .creditos .autor{font-family:var(--sans);font-size:.86rem;font-weight:450;color:var(--tinta-2)}
+
+.guilhoche--artigo{
+  aspect-ratio:16/5;object-fit:cover;margin-block:clamp(22px,3vw,38px);
+  border:1px solid var(--linha);background:var(--papel-2);
+}
+
+/* o corpo: medida de leitura, e nada mais largo que ela */
+.leitura .corpo{max-width:36rem;padding-bottom:clamp(40px,6vw,80px)}
+.leitura .corpo > *{margin-block:0}
+.leitura .corpo p{margin-block:0 1.05em;font-size:1.09rem;line-height:1.66}
+.leitura .corpo h2{
+  margin:2em 0 .6em;font-family:var(--serif);font-weight:600;
+  font-size:1.42rem;line-height:1.22;letter-spacing:-.004em;color:var(--tinta);
+}
+.leitura .corpo h3{
+  margin:1.7em 0 .5em;font-family:var(--sans);font-weight:600;
+  font-size:.94rem;letter-spacing:.04em;text-transform:uppercase;color:var(--tinta-2);
+}
+.leitura .corpo strong{font-weight:640}
+.leitura .corpo a{color:var(--acento)}
+
+/* o verbete: a prova, dentro do texto */
+.verbete{
+  margin:1.8em 0;padding:clamp(18px,2.2vw,26px);
+  background:var(--papel-2);border-left:2px solid var(--acento);
+}
+.verbete blockquote{margin:0;font-size:.99rem;line-height:1.56;color:var(--tinta-2)}
+.verbete blockquote p{margin:0 0 .8em;font-size:inherit}
+.verbete blockquote p:last-child{margin-bottom:0}
+.verbete figcaption{
+  margin-top:.9em;font-family:var(--sans);font-size:.8rem;font-weight:450;
+  color:var(--mudo);letter-spacing:.01em;
+}
+.verbete .pendente{
+  margin:.6em 0 0;font-family:var(--sans);font-size:.78rem;font-weight:500;
+  color:var(--acento);letter-spacing:.015em;
+}
+
+.volta{padding-block:0 clamp(40px,6vw,80px);font-family:var(--sans);font-size:.88rem}
+
+/* ---------- Sobre ---------- */
+.retratado{display:grid;gap:clamp(20px,3vw,36px);align-items:start}
+@media (min-width:640px){.retratado{grid-template-columns:190px minmax(0,1fr)}}
+.retrato{
+  display:block;width:190px;max-width:100%;height:auto;aspect-ratio:1;
+  object-fit:cover;border:1px solid var(--linha);background:var(--papel-2);
+}
+.retratado .corpo{max-width:36rem;padding-bottom:0}
+
+.ficha{
+  margin:clamp(34px,5vw,58px) 0 clamp(44px,7vw,88px);
+  padding-top:clamp(20px,2.6vw,28px);border-top:1px solid var(--linha-forte);
+  display:grid;gap:clamp(16px,2vw,22px);
+}
+@media (min-width:640px){.ficha{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.ficha div{display:grid;gap:.4em}
+.ficha dt{
+  font-family:var(--sans);font-size:.76rem;font-weight:560;
+  letter-spacing:.05em;text-transform:uppercase;color:var(--mudo);
+}
+.ficha dd{margin:0;font-size:1rem;line-height:1.7}
+.ficha a{color:var(--acento)}
+
+/* ============================================================================
+   O MOMENTO DE ENTRADA
+   Discreto, uma vez só. O estado-base é o final: quem pede movimento reduzido
+   recebe a página pronta, sem piscar.
+   ========================================================================= */
+@media (prefers-reduced-motion:no-preference){
+  .vitrine {animation:surge .8s var(--ease) .16s both}
+  .secao   {animation:surge .8s var(--ease) .26s both}
+  .leitura .abertura{animation:surge .8s var(--ease) .1s both}
+  @keyframes surge{from{opacity:0;transform:translateY(9px)}}
+}
+
