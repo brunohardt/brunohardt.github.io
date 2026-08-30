@@ -24,13 +24,20 @@ página, e não um blog escondido no menu.
 |---|---|
 | **Cadência** | um escrito por mês. Doze por ano é o mínimo para a seção não parecer morta, e cabe numa banca em formação. |
 | **Extensão** | 900 a 1200 palavras. Abaixo disso não cabe tese, contra-argumento e os julgados dos dois lados — e escrito que não cumpre o próprio dek trabalha contra a autoridade que o site existe para construir. |
-| **Autoria** | o agente rascunha; o Bruno lê, corrige, confere as fontes e assume. Sem a correção dele o texto soa como outra pessoa. |
-| **Estoque** | escreve-se adiantado. Um mês publicado é um mês que já estava escrito. |
+| **Autoria** | o agente rascunha; o Bruno lê, corrige, confere as fontes e assume. Sem a correção dele o texto soa como outra pessoa. **O agente escreve o argumento, nunca a citação:** todo julgado vem do corpus ou de fonte que o Bruno forneceu. Precedente que o agente "lembra" é invenção, e é o modo exato de a §2.2 ser furada por dentro. |
+| **Data** | a de **publicação**, com hora — nunca a de redação. Enquanto `rascunho: sim` o campo pode faltar; publicado sem data não monta. A hora existe porque a ordenação é por data, e dois escritos no mesmo dia empatam. |
+| **Estreia** | dois escritos, no mesmo dia, em horas diferentes. Capa com um item só parece site quebrado. |
+| **Estoque** | escreve-se adiantado. Um mês publicado é um mês que já estava escrito. O estoque é regime de cruzeiro, **não pré-requisito de decolagem**: o texto de novembro não segura a estreia. |
 
 Rajada seguida de silêncio é o padrão de todo blog jurídico abandonado, e a
 data no cartão carimba o abandono. O teste de um periódico não é a estreia: é
 o primeiro mês em que não houve vontade de escrever. O estoque é a forma de
 sobreviver a esse mês.
+
+**O que a estreia com dois compra, e o que ela não compra.** Compra setembro e
+outubro: o Tema 929 já está escrito, segurado para outubro. Não compra novembro
+— dali em diante a cadência não tem estoque nem mecanismo, só disciplina, e nada
+no sistema vai avisar. É escolha declarada, não descuido.
 
 ---
 
@@ -91,18 +98,45 @@ que é real e validada. **Não** a resposta da Jus IA, que é prosa gerada e que
 neste projeto já afirmou que o Tema 929 havia sido cancelado. São camadas
 diferentes do mesmo produto, e essa distinção é a razão de o campo existir.
 
+**A fonte varia com o tipo.** Ementa de acórdão se confere no JusBrasil; a
+transcrição da base basta, e não se vai ao tribunal. Enunciado de súmula se
+confere na página do próprio tribunal — súmula não tem inteiro teor, e o que se
+confere ali é o texto e a vigência. O campo segue chamado
+`inteiro_teor_conferido` por compatibilidade com o corpus da advocacia, e o nome
+mente um pouco no caso do enunciado.
+
+**A conferência é no fim do escrito, não durante.** Escreve-se o texto inteiro,
+corta-se o que não presta, e só então se confere o que sobreviveu: conferência
+gasta em parágrafo que morreu é conferência jogada fora. O risco assumido é o
+inverso — verbete que reprova derruba parágrafo já polido. Quando acontecer,
+**cai o parágrafo**. Trocar o precedente para salvar a prosa é exatamente como
+se cita mal.
+
+**A linha de crédito é pública.** O campo `fonte` do verbete sai impresso no
+`figcaption`, embaixo da citação. No corpus ele guarda rastro interno, inclusive
+caminhos como `casos/<caso>/…`, que nomeiam cliente e parte contrária —
+publicá-los é violação da §2.1 que nenhum despublicar desfaz. A revisão é do
+Bruno, a cada bloco colado. O verificador põe a rede embaixo, e recusa `fonte`
+com forma de caminho interno.
+
 Peça errada se corrige; publicado erra na frente de todo mundo.
 
 ### 2.3 Técnico
 
-- **Zero JavaScript** no que já existe. Se algum dia entrar, é para uma função
-  que não tem equivalente em CSS — e o site precisa continuar utilizável sem.
+- **Zero JavaScript, com uma exceção nomeada.** A regra continua valendo: só
+  entra função sem equivalente em CSS, e o site tem de continuar utilizável sem
+  ela. A exceção é **o avanço automático do trilho** (§4.1) — carrossel que anda
+  sozinho num trilho de `scroll-snap` não tem versão em CSS que não seja
+  gambiarra, e gambiarra em CSS é o que estoura em 320px. Sem o script as réguas
+  continuam navegando o trilho, e nenhum escrito fica inalcançável.
 - **Zero rastreador, zero cookie, zero coleta.**
 - Contraste **AA** em claro e escuro, os dois testados separadamente.
 - Nenhum estouro horizontal de 320px a 1600px.
 - Toda animação dentro de `prefers-reduced-motion: no-preference`, e o
   **estado-base é o final** — quem pede movimento reduzido recebe a página
-  pronta, sem piscar.
+  pronta, sem piscar. Vale igualmente para movimento **feito em JavaScript**: o
+  trilho não avança sob `reduce`, e o verificador prova isso medindo a posição
+  do trilho, não lendo o CSS.
 - Identidade **única**: o Ordir aparece descrito, nunca com a marca dele.
 - **A montagem exige navegador.** `verificar.py` roda com Playwright, e sem ele
   não há build. É a segunda dependência do projeto e a mais pesada, assumida de
@@ -142,7 +176,7 @@ Nenhum valor de cor, corpo ou espaço é escrito à mão fora de
 
 | Página | O que tem |
 |---|---|
-| **Capa** (`index.html`) | capa de revista pura: um escrito em manchete e os demais em cartões |
+| **Capa** (`index.html`) | capa de revista pura: o trilho em destaque (§4.1) e os demais em cartões |
 | **Escritos** | índice completo, datado; a busca nasce aqui quando houver ~10 textos |
 | **Escrito** | faixa, título, dek, data, corpo, blocos de prova com o rótulo do tipo |
 | **Atuação** | três áreas, dois ou três parágrafos cada — não lista de tópicos |
@@ -150,6 +184,26 @@ Nenhum valor de cor, corpo ou espaço é escrito à mão fora de
 
 Cada uma é página própria: menu que aponta para âncora da mesma página é
 incoerente.
+
+### 4.1 O trilho da capa
+
+**O trilho é metade do acervo, com teto de quatro.** Dois escritos: uma lâmina e
+um cartão. Quatro: duas e duas. Oito ou mais: quatro lâminas e o resto na grade.
+Nenhum campo marca destaque — a regra é a recência, e o frontmatter não tem mais
+`destaque`. Escolher a manchete à mão todo mês é passo manual que nada verifica,
+e num sistema que já depende inteiro da disciplina do autor, um passo manual a
+menos vale mais que a escolha que ele daria.
+
+A referência é a S&C, medida: cinco lâminas com indicadores, 450px de altura numa
+janela de 900, e dezessete cartões abaixo. Dela não se copia o número, e sim a
+proporção — **o carrossel nunca é a página inteira**. A grade não fica vazia nem
+no dia da estreia, que é o que a regra da metade garante em qualquer tamanho de
+acervo.
+
+**O trilho avança sozinho, e para sob `prefers-reduced-motion: reduce`.** Sem
+avanço, lâmina que não é a primeira depende de rolagem horizontal, que quase
+ninguém faz: publicar texto que ninguém alcança é pior que não destacá-lo. As
+réguas continuam sendo navegação de verdade — clicável, e por teclado.
 
 **A capa pura é uma aposta declarada.** Ela não diz nada sobre quem é o autor, e
 por isso perde o visitante que chega sem conhecê-lo. A fonte de tráfego prevista
@@ -224,15 +278,17 @@ não deixa isso ser uma escolha de quem digita. Verde, commita.
 |---|---|
 | **Léxico regulatório** | aparece termo da lista da §2.1 |
 | **Prova** | escrito sem nenhum bloco de prova, ou citando verbete com `inteiro_teor_conferido: nao` |
+| **Crédito** | o `fonte` de um bloco de prova tem forma de caminho interno (`casos/`, barra, nome de arquivo do repositório) |
 | Estrutura | falta `h1`, ordem de títulos quebrada, marco ausente |
 | Links | href interno aponta para arquivo que não existe |
 | Rascunho | escrito com `rascunho: sim` tem pagina gerada, esta linkado na capa ou no indice, ou vazou o marcador |
+| **Data** | escrito publicado (`rascunho: nao`) sem `data` |
 | **Imagem de card** | falta `ativos/og/<slug>.png`, ou ela e mais velha que o escrito |
 | Contraste AA | qualquer texto abaixo de 4.5:1 (3:1 se grande), nos dois temas |
-| Movimento | `animation` fora de `prefers-reduced-motion` |
+| Movimento | `animation` fora de `prefers-reduced-motion`, **ou o trilho anda sob `reduce`** — medido pela posição, porque timer de JavaScript não aparece em `getComputedStyle` |
 | Estouro | largura de rolagem maior que a janela, de 320 a 1600px |
 
-As seis primeiras são estáticas — leem os arquivos. As três últimas rodam no
+As oito primeiras são estáticas — leem os arquivos. As três últimas rodam no
 navegador, com Playwright (§2.3).
 
 A imagem de card não é gerada pela montagem: abrir navegador para fotografar
@@ -254,17 +310,27 @@ apenas recusa publicar sem elas, ou com elas velhas.
   aceitando o custo da migração: `SITE` no `montar.py`, canonical, `og:url` e os
   dois `@id` do JSON-LD, mais todo link já compartilhado apontando para o
   endereço velho.
-- **`og.png` 1200×630 por escrito**, gerada do guilhoché. Todo o tráfego previsto
-  vem do Instagram, e link compartilhado sem `og:image` renderiza caixa cinza —
-  justamente nas semanas de divulgação do lançamento.
+- **Duas chapas por escrito**, geradas do mesmo guilhoché: `og/<slug>.png` em
+  1200×630, que é a prévia de link, e `og/<slug>-feed.png` em 1080×1350, que é o
+  post do Instagram. São formatos com trabalhos diferentes, e um não substitui o
+  outro. A montagem exige só a primeira: link compartilhado sem `og:image`
+  renderiza caixa cinza, justamente nas semanas de divulgação. A de feed não
+  afeta o site, e por isso não derruba o build.
+- **O post vem depois do artigo, nunca antes.** O site é a fonte; o Instagram
+  (`@hardt.adv`) leva a ele. A conta pessoal não publica escrito — publicidade de
+  advogado vive no perfil profissional, que é o alcançado pela §2.1.
 - **Antes do merge:** apagar `_fonte/especime/`.
 
 ---
 
 ## 8. O que está pendente
 
-- [ ] Os escritos da estreia: alongados a 900–1200, revistos e assumidos pelo
-      Bruno, com os verbetes conferidos no JusBrasil
+- [ ] Os **dois** escritos da estreia: alongados a 900–1200, revistos e
+      assumidos pelo Bruno
+- [ ] Os verbetes que eles citarem, conferidos — do zero: **nenhum verbete do
+      corpus guarda URL hoje**, e a busca se faz pelo número do processo. A
+      conferência grava a URL que faltava
 - [ ] Foto nova para o Sobre (a de hoje tem 400px)
+- [ ] O quarto escrito, para novembro — **depois** da estreia, não antes
 - [ ] Busca no índice de escritos — só quando houver ~10 textos
 - [ ] Domínio `.adv.br`

@@ -22,7 +22,27 @@ ESCRITOS = os.path.join(RAIZ, "_conteudo", "escritos")
 ATIVOS = os.path.join(RAIZ, "ativos")
 SAIDA = os.path.join(ATIVOS, "og")
 
-LARG, ALT = 1200, 630
+# Duas chapas por escrito, do mesmo guilhoche (ESPEC 7): a previa de link, que
+# e deitada, e o post do Instagram, que e em pe. Sao trabalhos diferentes e um
+# nao substitui o outro -- recortar a deitada em quadrado perde o titulo pelas
+# bordas, porque ela foi desenhada deitada. So a primeira e exigida pela
+# montagem; a de feed nao afeta o site e por isso nao derruba o build.
+FORMATOS = (
+    dict(sufixo=u"", larg=1200, alt=630,
+         pad=u"74px 78px", alto=u"720px",
+         fig=u"right:-150px;top:50%;transform:translateY(-50%);"
+             u"width:660px;height:660px",
+         regua=6, rotulo_px=19, gap=26, marca_px=30, oab_px=17,
+         corpos=(76, 64, 54)),
+    dict(sufixo=u"-feed", larg=1080, alt=1350,
+         pad=u"104px 92px", alto=u"100%",
+         # em pe sobra miolo: a figura cresce e sobe para o centro, em vez
+         # de se encolher num canto e deixar meia chapa vazia
+         fig=u"right:-170px;top:52%;transform:translateY(-50%);"
+             u"width:980px;height:980px",
+         regua=8, rotulo_px=23, gap=34, marca_px=38, oab_px=21,
+         corpos=(112, 94, 78)),
+)
 
 CAB = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.S)
 
@@ -53,7 +73,8 @@ def uri(nome):
 
 
 # O cartão. Tudo em pixel absoluto — não é página responsiva, é uma chapa de
-# 1200×630 que será fotografada uma vez.
+# tamanho fixo, fotografada uma vez. A geometria vem do formato: o que muda
+# entre a prévia de link e o post do feed é proporção, nunca desenho.
 CARTAO = u"""<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
 <style>
   @font-face{font-family:"Marca";src:url("%(marca)s") format("woff2");font-display:block}
@@ -61,24 +82,21 @@ CARTAO = u"""<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
   @font-face{font-family:"Grotesca";src:url("%(sans)s") format("woff2-variations");font-display:block}
   *{margin:0;padding:0;box-sizing:border-box}
   body{
-    width:%(w)dpx;height:%(h)dpx;overflow:hidden;position:relative;
+    width:%(larg)dpx;height:%(alt)dpx;overflow:hidden;position:relative;
     background:#FBF9F2;color:#14181A;
   }
   /* o guilhoché sangra pela direita: presença, não ilustração */
-  .figura{
-    position:absolute;right:-150px;top:50%%;transform:translateY(-50%%);
-    width:660px;height:660px;opacity:.5;
-  }
-  .regua{position:absolute;left:0;top:0;width:100%%;height:6px;background:#245C53}
+  .figura{position:absolute;%(fig)s;opacity:.5}
+  .regua{position:absolute;left:0;top:0;width:100%%;height:%(regua)dpx;background:#245C53}
   .caixa{
-    position:absolute;inset:0;padding:74px 78px;
+    position:absolute;inset:0;padding:%(pad)s;
     display:flex;flex-direction:column;justify-content:space-between;
   }
-  .alto{max-width:720px}
+  .alto{max-width:%(alto)s}
   .rotulo{
-    font-family:"Grotesca",sans-serif;font-size:19px;font-weight:600;
+    font-family:"Grotesca",sans-serif;font-size:%(rotulo_px)dpx;font-weight:600;
     letter-spacing:.15em;text-transform:uppercase;color:#245C53;
-    margin-bottom:26px;
+    margin-bottom:%(gap)dpx;
   }
   h1{
     font-family:"Serifada",Georgia,serif;font-weight:500;
@@ -87,10 +105,10 @@ CARTAO = u"""<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
   }
   .baixo{display:flex;align-items:baseline;gap:20px}
   .marca{
-    font-family:"Marca","Serifada",Georgia,serif;font-size:30px;
+    font-family:"Marca","Serifada",Georgia,serif;font-size:%(marca_px)dpx;
     letter-spacing:.095em;text-transform:uppercase;color:#14181A;
   }
-  .oab{font-family:"Grotesca",sans-serif;font-size:17px;font-weight:450;color:#5F686C}
+  .oab{font-family:"Grotesca",sans-serif;font-size:%(oab_px)dpx;font-weight:450;color:#5F686C}
 </style></head><body>
   <img class="figura" src="%(figura)s" alt="">
   <div class="regua"></div>
@@ -107,24 +125,25 @@ CARTAO = u"""<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
 </body></html>"""
 
 
-def corpo_do_titulo(titulo):
+def corpo_do_titulo(titulo, corpos):
     """Título longo encolhe para caber em três linhas sem estourar a chapa."""
     n = len(titulo)
     if n <= 34:
-        return 76
+        return corpos[0]
     if n <= 52:
-        return 64
-    return 54
+        return corpos[1]
+    return corpos[2]
 
 
-def cartao(rotulo, titulo, figura):
-    return CARTAO % {
-        "w": LARG, "h": ALT,
+def cartao(rotulo, titulo, figura, f):
+    d = dict(f)
+    d.update({
         "marca": uri("marca.woff2"), "serif": uri("serif.woff2"),
         "sans": uri("sans.woff2"), "figura": figura,
         "rotulo": esc(rotulo), "titulo": esc(titulo),
-        "corpo": corpo_do_titulo(titulo),
-    }
+        "corpo": corpo_do_titulo(titulo, f["corpos"]),
+    })
+    return CARTAO % d
 
 
 def main():
@@ -156,17 +175,22 @@ def main():
     temp = os.path.join(SAIDA, "_chapa.html")
     with sync_playwright() as pw:
         navegador = pw.chromium.launch()
-        pag = navegador.new_page(viewport={"width": LARG, "height": ALT},
-                                 device_scale_factor=1)
-        for slug, rotulo, titulo, figura in chapas:
-            io.open(temp, "w", encoding="utf-8", newline="\n").write(
-                cartao(rotulo, titulo, figura))
-            pag.goto("file:///" + temp.replace("\\", "/"))
-            pag.wait_for_timeout(120)          # as fontes terminam de assentar
-            destino = os.path.join(SAIDA, slug + ".png")
-            pag.screenshot(path=destino)
-            print(u"  og/%-28s %6.1f KB" % (slug + ".png",
-                                            os.path.getsize(destino) / 1024.0))
+        for f in FORMATOS:
+            pag = navegador.new_page(
+                viewport={"width": f["larg"], "height": f["alt"]},
+                device_scale_factor=1)
+            for slug, rotulo, titulo, figura in chapas:
+                io.open(temp, "w", encoding="utf-8", newline="\n").write(
+                    cartao(rotulo, titulo, figura, f))
+                pag.goto("file:///" + temp.replace("\\", "/"))
+                pag.wait_for_timeout(120)      # as fontes terminam de assentar
+                nome = slug + f["sufixo"] + ".png"
+                destino = os.path.join(SAIDA, nome)
+                pag.screenshot(path=destino)
+                print(u"  og/%-28s %6.1f KB  %d\u00d7%d"
+                      % (nome, os.path.getsize(destino) / 1024.0,
+                         f["larg"], f["alt"]))
+            pag.close()
         navegador.close()
     os.remove(temp)
 

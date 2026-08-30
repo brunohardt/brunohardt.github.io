@@ -161,7 +161,85 @@ def checar_prova():
     return ruins
 
 
-# ======================================================== 3. rascunho vazado
+# ================================================== 3. credito publicavel
+#
+# O `fonte` do verbete sai impresso no figcaption, embaixo da citacao. No corpus
+# da advocacia ele guarda rastro interno, e `casos/so_calcario_tim/juris_md`
+# nomeia cliente e parte contraria de uma vez so. Publicar isso viola a 2.1, e
+# despublicar nao desfaz: a web ja indexou.
+#
+# A rede e deliberadamente burra. Nao entende o campo -- reconhece a *forma* de
+# um caminho. Prefere reprovar um credito legitimo, que se conserta em dez
+# segundos, a deixar passar o nome de um cliente uma vez.
+URL = re.compile(r"https?://\S+")
+DATA_BR = re.compile(r"\b\d{1,2}/\d{1,2}/\d{2,4}\b")
+SIGLA = re.compile(r"\b(?:OAB|TJ|TRF|TRT|STJ|STF|CNJ)/[A-Z]{2}\b")
+FORMA_CAMINHO = re.compile(
+    r"[\w.\-]*[A-Za-z_][\w.\-]*[/\\][\w.\-]*[A-Za-z_][\w.\-]*")
+PASTA_DO_REPO = re.compile(
+    r"(?i)\b(casos|conhecimento|geracao|anexos|templates|scripts|processos|"
+    r"_pendente_verificacao|_arquivo_onedrive)\b[/\\]")
+EXTENSAO = re.compile(r"(?i)\.(md|json|py|txt|docx|xml|yml|csv)\b")
+
+
+def checar_credito():
+    ruins = []
+    for caminho in sorted(glob.glob(os.path.join(ESCRITOS_MD, "*.md"))):
+        nome = os.path.basename(caminho)
+        for b in VERBETE.finditer(ler(caminho)):
+            fonte = campos(b.group("meta")).get("fonte", u"")
+            if not fonte:
+                continue
+            # o que e legitimo sai antes de a rede olhar: URL de fonte oficial,
+            # data em formato brasileiro, sigla de tribunal ou de seccional
+            resto = SIGLA.sub(u" ", DATA_BR.sub(u" ", URL.sub(u" ", fonte)))
+            motivo = None
+            if PASTA_DO_REPO.search(resto):
+                motivo = u"nomeia pasta do reposit\u00f3rio"
+            elif u"\\" in resto:
+                motivo = u"tem separador de caminho do Windows"
+            elif EXTENSAO.search(resto):
+                motivo = u"tem extens\u00e3o de arquivo"
+            elif FORMA_CAMINHO.search(resto):
+                motivo = u"tem forma de caminho"
+            if motivo:
+                ruins.append(
+                    u"%s: o cr\u00e9dito do verbete %s %s, e ele sai impresso "
+                    u"na p\u00e1gina \u2014 %r"
+                    % (nome, b.group("id"), motivo, fonte[:80]))
+    return ruins
+
+
+# ================================================================ 4. data
+#
+# A data e a de PUBLICACAO, com hora. Enquanto `rascunho: sim` ela pode faltar:
+# escrito em estoque ainda nao tem data, e inventa-la seria datar ficcao. A hora
+# existe porque a ordenacao e por data e dois escritos no mesmo dia empatam -- na
+# estreia sao dois, e o desempate cairia na ordem dos arquivos no disco.
+FORMA_DATA = re.compile(r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$")
+
+
+def checar_data():
+    ruins = []
+    for caminho in sorted(glob.glob(os.path.join(ESCRITOS_MD, "*.md"))):
+        nome = os.path.basename(caminho)
+        m = CAB.match(ler(caminho))
+        meta = campos(m.group(1)) if m else {}
+        if meta.get("rascunho", u"nao").lower() == u"sim":
+            continue
+        data = meta.get("data", u"")
+        if not data:
+            ruins.append(u"%s: publicado sem 'data' \u2014 ela \u00e9 a da "
+                         u"publica\u00e7\u00e3o, e o escrito n\u00e3o tem uma"
+                         % nome)
+        elif not FORMA_DATA.match(data):
+            ruins.append(u"%s: data %r fora do formato 'AAAA-MM-DD HH:MM' "
+                         u"\u2014 a hora n\u00e3o \u00e9 enfeite, \u00e9 o "
+                         u"desempate" % (nome, data))
+    return ruins
+
+
+# ======================================================== 5. rascunho vazado
 #
 # `rascunho: sim` não impedia publicação: o montador gerava a página, punha o
 # cartão na capa e no índice, e só imprimia [RASCUNHO] no console. Um merge
@@ -191,7 +269,7 @@ def checar_rascunho(paginas):
     return ruins
 
 
-# ====================================================== 4. imagem de card
+# ====================================================== 6. imagem de card
 #
 # Gerar a imagem é caro (abre navegador), então não entra na montagem: entra
 # como verificação. O que se proíbe não é esquecer de rodar `python og.py` — é
@@ -215,7 +293,7 @@ def checar_og(paginas):
     return ruins
 
 
-# =========================================================== 5. estrutura
+# =========================================================== 7. estrutura
 CABECALHO = re.compile(r"<h([1-6])\b", re.I)
 
 
@@ -236,7 +314,7 @@ def checar_estrutura(paginas):
     return ruins
 
 
-# =============================================================== 6. links
+# =============================================================== 8. links
 HREF = re.compile(r'(?:href|src)="([^"]+)"')
 
 
@@ -273,7 +351,7 @@ def checar_links(paginas):
     return ruins
 
 
-# ================================================= 7, 8, 9. com navegador
+# =============================================== 9, 10, 11. com navegador
 #
 # Contraste, movimento e estouro só existem depois do CSS aplicado. Grep em
 # folha de estilo não vê cascata, não vê herança de fundo e não vê estilo
@@ -344,6 +422,18 @@ JS_MOVIMENTO = u"""() => {
   return ruins.slice(0, 8);
 }"""
 
+# O proprio trilho diz de quanto em quanto tempo avanca: o teste nao
+# adivinha o intervalo, le. Devolve None quando nao ha trilho na pagina.
+JS_TRILHO = u"""() => {
+  const t = document.querySelector('.trilho');
+  if (!t) return null;
+  return {
+    pos: Math.round(t.scrollLeft),
+    laminas: t.querySelectorAll('.lamina').length,
+    intervalo: window.__trilhoIntervalo || 5000
+  };
+}"""
+
 LARGURAS = (320, 375, 768, 1024, 1440, 1600)
 
 
@@ -374,7 +464,34 @@ def checar_no_navegador(paginas):
             for achado in pag.evaluate(JS_MOVIMENTO):
                 ruins.append(u"%s: movimento sob prefers-reduced-motion — %s"
                              % (rel(p), achado))
+            # O trilho avanca por timer de JavaScript, e timer nao aparece
+            # em getComputedStyle: a checagem acima e cega para ele. Mede-se
+            # a posicao, que e o unico fato que importa (ESPEC 2.3 e 4.1).
+            t0 = pag.evaluate(JS_TRILHO)
+            if t0:
+                pag.wait_for_timeout(t0["intervalo"] + 900)
+                t1 = pag.evaluate(JS_TRILHO)
+                if t1 and t1["pos"] != t0["pos"]:
+                    ruins.append(
+                        u"%s: o trilho andou sob prefers-reduced-motion "
+                        u"(%dpx → %dpx)" % (rel(p), t0["pos"], t1["pos"]))
             pag.close()
+
+            # E o inverso: com movimento permitido ele PRECISA andar. Lamina
+            # que so a rolagem horizontal alcanca e escrito publicado que
+            # ninguem le, que e o motivo de o script existir.
+            if t0 and t0["laminas"] > 1:
+                pag = navegador.new_page()
+                pag.goto(url)
+                a0 = pag.evaluate(JS_TRILHO)
+                pag.wait_for_timeout(a0["intervalo"] + 900)
+                a1 = pag.evaluate(JS_TRILHO)
+                if a1["pos"] == a0["pos"]:
+                    ruins.append(
+                        u"%s: o trilho tem %d lâminas e não avança — as "
+                        u"outras dependem de rolagem horizontal"
+                        % (rel(p), a0["laminas"]))
+                pag.close()
 
             # 8. estouro horizontal
             pag = navegador.new_page()
@@ -396,6 +513,8 @@ def checar_no_navegador(paginas):
 CHECAGENS = (
     (u"léxico regulatório", lambda pgs: checar_lexico(pgs)),
     (u"prova", lambda pgs: checar_prova()),
+    (u"crédito publicável", lambda pgs: checar_credito()),
+    (u"data de publicação", lambda pgs: checar_data()),
     (u"rascunho", lambda pgs: checar_rascunho(pgs)),
     (u"imagem de card", lambda pgs: checar_og(pgs)),
     (u"estrutura", lambda pgs: checar_estrutura(pgs)),

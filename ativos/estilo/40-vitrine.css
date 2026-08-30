@@ -41,4 +41,6 @@
   transition:background .22s var(--ease);
 }
 .reguas a:hover{background:var(--acento)}
+/* a lamina em que o trilho esta. So faz sentido porque ele anda sozinho */
+.reguas a[aria-current]{background:var(--acento)}
 .reguas a:focus-visible{outline:2px solid var(--foco);outline-offset:6px}

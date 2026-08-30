@@ -51,7 +51,10 @@ def esc(s):
 
 
 def por_extenso(iso):
-    a, m, d = iso.split("-")
+    """A data por extenso. A hora existe para desempatar a ordem, nao para o
+    leitor: dois escritos publicados no mesmo dia empatam na ordenacao, e ele
+    nao precisa saber qual saiu as oito e qual as nove."""
+    a, m, d = iso.split(" ")[0].split("-")
     return u"%d de %s de %s" % (int(d), MES[int(m)], a)
 
 
@@ -152,16 +155,21 @@ def carregar_escritos(problemas):
         if meta is None:
             problemas.append(u"%s: faltou o bloco de metadados" % nome)
             continue
-        for exigido in ("titulo", "dek", "categoria", "data", "guilhoche"):
+        rascunho = meta.get("rascunho", "nao").lower() == "sim"
+        for exigido in ("titulo", "dek", "categoria", "guilhoche"):
             if not meta.get(exigido):
                 problemas.append(u"%s: falta o campo '%s'" % (nome, exigido))
-        rascunho = meta.get("rascunho", "nao").lower() == "sim"
+        # A data e a da PUBLICACAO (ESPEC 1.1). O escrito em estoque ainda nao
+        # tem uma, e inventa-la seria datar ficcao; publicado sem data nao monta.
+        if not rascunho and not meta.get("data"):
+            problemas.append(u"%s: publicado sem 'data' \u2014 ela \u00e9 a da "
+                             u"publica\u00e7\u00e3o, e falta" % nome)
         corpo = render_verbetes(corpo, slug, rascunho, problemas)
         meta.update({
             "slug": slug,
             "rascunho": rascunho,
-            "destaque": meta.get("destaque", "nao").lower() == "sim",
             "data_extenso": por_extenso(meta["data"]) if meta.get("data") else u"",
+            "data_iso": meta.get("data", u"").replace(u" ", u"T"),
             "html": markdown.markdown(corpo, extensions=["extra", "smarty"],
                                       output_format="html5"),
         })
@@ -201,10 +209,22 @@ def lamina(e, i):
 
 
 def montar_capa(escritos):
-    """A capa: as laminas em destaque, e a grade com o resto.
-    Com poucos textos a grade some — cartao solitario denuncia falta."""
-    destaques = [e for e in escritos if e["destaque"]] or escritos[:1]
-    resto = [e for e in escritos if e not in destaques]
+    """A capa: o trilho em destaque, e a grade com o resto (ESPEC 4.1).
+
+    O trilho e METADE do acervo, com teto de quatro: dois escritos dao uma
+    lamina e um cartao; quatro dao duas e duas; oito ou mais dao quatro laminas
+    e o resto na grade. A regra existe para a grade nunca ficar vazia. Na S&C,
+    que e a referencia, o carrossel tem cinco laminas e a grade tem outros
+    dezessete cartoes — o carrossel nunca e a pagina inteira, e la isso so
+    funciona porque sobra acervo. Aqui a proporcao faz o mesmo com quatro textos.
+
+    Nenhum campo marca destaque: e a recencia. Escolher a manchete a mao todo
+    mes e um passo manual que nada verifica, e num sistema que ja depende
+    inteiro da disciplina do autor, um passo manual a menos vale mais que a
+    escolha que ele daria."""
+    quantos = min(4, max(1, len(escritos) // 2))
+    destaques = escritos[:quantos]
+    resto = escritos[quantos:]
     partes = []
     if destaques:
         partes.append(u'''  <section class="vitrine" aria-labelledby="vit">
@@ -254,8 +274,8 @@ def jsonld_pessoa():
   "knowsAbout": ["Direito público", "Direito criminal", "Direito cível"],
   "knowsLanguage": "pt-BR",
   "areaServed": [
-    { "@type": "City", "name": "Blumenau", "addressRegion": "SC", "addressCountry": "BR" },
-    { "@type": "City", "name": "Pomerode", "addressRegion": "SC", "addressCountry": "BR" }
+    { "@type": "City", "name": "Pomerode", "addressRegion": "SC", "addressCountry": "BR" },
+    { "@type": "Country", "name": "Brasil" }
   ],
   "affiliation": { "@type": "Organization",
     "name": "Ordem dos Advogados do Brasil, Seccional de Santa Catarina",
@@ -282,7 +302,8 @@ def jsonld_artigo(e):
   "publisher": { "@id": "%s#bruno-hardt" },
   "mainEntityOfPage": "%sescritos/%s.html"
 }
-</script>''' % (esc(e["titulo"]), esc(e["dek"]), e["data"], SITE, SITE, SITE, e["slug"])
+</script>''' % (esc(e["titulo"]), esc(e["dek"]), e["data_iso"], SITE, SITE, SITE,
+                e["slug"])
 
 
 # ============================================================== montagem
@@ -361,10 +382,21 @@ def main():
     print(u"  estilo.css        %2d modulos  %5.1f KB" % (n, tam / 1024.0))
 
     escritos = carregar_escritos(problemas)
+    publicados = [e for e in escritos if not e["rascunho"]]
     for e in escritos:
+        if e["rascunho"]:
+            # Escrito em estoque nao vira pagina, nao entra na capa e nao entra
+            # no indice. O estoque e o que sustenta a cadencia (ESPEC 1.1) e
+            # precisa poder morar no repositorio com a montagem verde; publicar
+            # rascunho sob o nome e a OAB do autor e caro sob o Provimento 205.
+            # Se ele ja teve pagina, ela sai agora.
+            velha = os.path.join(RAIZ, "escritos", e["slug"] + ".html")
+            if os.path.exists(velha):
+                os.remove(velha)
+            print(u"  %-33s  em estoque" % (e["slug"] + ".md"))
+            continue
         t = pagina_escrito(e)
-        print(u"  escritos/%-24s %5.1f KB%s" % (e["slug"] + ".html", t / 1024.0,
-                                                u"   [RASCUNHO]" if e["rascunho"] else u""))
+        print(u"  escritos/%-24s %5.1f KB" % (e["slug"] + ".html", t / 1024.0))
 
     for nome in sorted(os.listdir(PAGINAS)):
         if not nome.endswith(".html"):
@@ -372,8 +404,8 @@ def main():
         meta, miolo = metadados(ler(os.path.join(PAGINAS, nome)), CAB_PAG)
         if meta is None:
             sys.exit(u"faltou o bloco de metadados em %s" % nome)
-        miolo = (miolo.replace(u"{{capa}}", montar_capa(escritos))
-                      .replace(u"{{indice-escritos}}", montar_indice(escritos)))
+        miolo = (miolo.replace(u"{{capa}}", montar_capa(publicados))
+                      .replace(u"{{indice-escritos}}", montar_indice(publicados)))
         jl = jsonld_pessoa() if meta.get("jsonld") == "pessoa" else u""
         rel = meta.get("saida", nome)
         t = casca(miolo, meta, rel, jl)
@@ -384,7 +416,8 @@ def main():
         for p in problemas:
             print(u"    - %s" % p)
         sys.exit(1)
-    print(u"\n  %d escrito(s) montado(s).\n" % len(escritos))
+    print(u"\n  %d escrito(s) publicado(s), %d em estoque.\n"
+          % (len(publicados), len(escritos) - len(publicados)))
 
     # A montagem exige navegador (ESPEC §2.3): montar sem verificar não é uma
     # montagem, é um rascunho de HTML. Um comando só, sem disciplina no meio.
