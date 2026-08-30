@@ -336,7 +336,7 @@ def pagina_escrito(e):
       <p class="dek">%s</p>
       <p class="creditos"><span class="data">%s</span><span class="autor">Bruno Hardt</span></p>
     </header>
-    <img class="guilhoche guilhoche--artigo" src="../ativos/guilhoche-%s.svg" alt="" width="1000" height="1000">
+    <img class="guilhoche guilhoche--artigo" src="../ativos/faixa-%s.svg" alt="" width="1600" height="500">
     <div class="corpo">
 %s
     </div>

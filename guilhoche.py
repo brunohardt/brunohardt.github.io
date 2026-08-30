@@ -11,10 +11,10 @@ mesmo sendo carregado por <img> — o mesmo truque do favicon.
 import io, math, os
 
 SAIDA = r"C:\Users\Hardt\Dev\site-bruno-hardt\ativos"
-W = H = 1000
-CX = CY = 500
+QUADRADO = (1000, 1000)
+FAIXA = (1600, 500)          # 16:5, a proporção da abertura do artigo
 
-CABECA = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000" role="img" aria-label="%s">
+CABECA = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" role="img" aria-label="%s">
 <title>%s</title>
 <style>
   .f{fill:none;stroke:#245C53;stroke-width:%s;stroke-linecap:round;opacity:%s}
@@ -22,6 +22,10 @@ CABECA = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" widt
 </style>
 """
 RODAPE = "</svg>\n"
+
+
+def cabeca(nome, w, h, sw, op):
+    return CABECA % (w, h, w, h, nome, nome, sw, op)
 
 
 def caminho(pontos):
@@ -36,7 +40,7 @@ def caminho(pontos):
     return d
 
 
-def epitrocoide(R, r, d, escala, passos=560, giro=0.0):
+def epitrocoide(R, r, d, escala, cx, cy, passos=560, giro=0.0):
     """x = (R+r)cos t - d cos((R+r)/r t);  y = idem com sen."""
     pts = []
     voltas = r / math.gcd(int(R), int(r)) if float(r).is_integer() else 12
@@ -48,61 +52,74 @@ def epitrocoide(R, r, d, escala, passos=560, giro=0.0):
         y = (R + r) * math.sin(t) - d * math.sin(k * t)
         xr = x * math.cos(giro) - y * math.sin(giro)
         yr = x * math.sin(giro) + y * math.cos(giro)
-        pts.append((CX + xr * escala, CY + yr * escala))
+        pts.append((cx + xr * escala, cy + yr * escala))
     return pts
 
 
-def marca_roseta(nome, R, r, d, n=7, base=0.86, passo=0.045, sw="1.6", op=".85"):
-    """Rosetas concêntricas — a marca clássica de apólice."""
-    partes = [CABECA % (nome, nome, sw, op)]
+def marca_roseta(nome, R, r, d, n=7, base=0.86, passo=0.045, sw="1.6", op=".85",
+                 caixa=QUADRADO):
+    """Rosetas concêntricas — a marca clássica de apólice.
+
+    Só serve em caixa quadrada: a roseta é radial, e numa faixa 16:5 ela sai
+    cortada em cima e embaixo — foi o que motivou a família horizontal abaixo.
+    """
+    w, h = caixa
+    partes = [cabeca(nome, w, h, sw, op)]
+    raio = min(w, h) / 2.0
     for i in range(n):
         e = base - i * passo
-        pts = epitrocoide(R, r, d, e * 500 / (R + r + d), giro=i * 0.16)
+        pts = epitrocoide(R, r, d, e * raio / (R + r + d), w / 2.0, h / 2.0,
+                          giro=i * 0.16)
         partes.append('<path class="f" d="%s"/>\n' % caminho(pts))
     partes.append(RODAPE)
     return "".join(partes)
 
 
-def marca_interferencia(nome, linhas=46, amp=118, ciclos=2.4, torcao=1.7, sw="1.5", op=".8"):
-    """Feixe de senoides com fase progressiva: a onda gravada."""
-    partes = [CABECA % (nome, nome, sw, op)]
+def marca_interferencia(nome, linhas=46, amp=.118, ciclos=2.4, torcao=1.7,
+                        sw="1.5", op=".8", caixa=QUADRADO, passos=96):
+    """Feixe de senoides com fase progressiva: a onda gravada.
+
+    Tudo em fração da caixa, e é por isso que esta família atravessa formato:
+    a onda é horizontal por natureza, então ela cresce para os lados sem
+    perder o desenho. `amp` é fração da altura.
+    """
+    w, h = caixa
+    partes = [cabeca(nome, w, h, sw, op)]
     for i in range(linhas):
-        y0 = 90 + (820.0 * i / (linhas - 1))
+        y0 = .09 * h + (.82 * h * i / (linhas - 1))
         fase = torcao * math.pi * i / linhas
-        a = amp * math.sin(math.pi * i / (linhas - 1)) ** 1.15
+        # o envelope não zera nas pontas: linha reta encostada na borda vira
+        # um filete duplicado, que lê como engano em vez de gravura
+        a = amp * h * (.16 + .84 * math.sin(math.pi * i / (linhas - 1)) ** 1.15)
         pts = []
-        for j in range(97):
-            x = 70 + (860.0 * j / 96)
-            t = 2 * math.pi * ciclos * (j / 96.0)
+        for j in range(passos + 1):
+            x = .07 * w + (.86 * w * j / float(passos))
+            t = 2 * math.pi * ciclos * (j / float(passos))
             pts.append((x, y0 + a * math.sin(t + fase)))
         partes.append('<path class="f" d="%s"/>\n' % caminho(pts))
     partes.append(RODAPE)
     return "".join(partes)
 
 
-def marca_trama(nome, n=34, sw="1.4", op=".78"):
-    """Duas famílias de arcos cruzando — a trama de fundo de certificado."""
-    partes = [CABECA % (nome, nome, sw, op)]
-    for fam, sinal in ((0, 1), (1, -1)):
-        for i in range(n):
-            u = i / (n - 1.0)
-            pts = []
-            for j in range(65):
-                v = j / 64.0
-                x = 70 + 860 * v
-                curva = math.sin(math.pi * v) * (150 * (u - .5)) * sinal
-                base = 110 + 780 * u
-                pts.append((x, base + curva))
-            partes.append('<path class="f" d="%s"/>\n' % caminho(pts))
-    partes.append(RODAPE)
-    return "".join(partes)
-
-
 marcas = {
-    # tres caracteres distintos: uma roseta cheia, uma onda, uma estrela aberta
+    # O CARTÃO e o ÍNDICE — quadrados, três caracteres distintos
     "guilhoche-1.svg": marca_roseta(u"Guilhoché — roseta", 7, 3, 5, n=6, passo=.058),
     "guilhoche-2.svg": marca_interferencia(u"Guilhoché — interferência"),
-    "guilhoche-3.svg": marca_roseta(u"Guilhoché — estrela", 11, 4, 9, n=5, base=.92, passo=.072, sw="1.5", op=".82"),
+    "guilhoche-3.svg": marca_roseta(u"Guilhoché — estrela", 11, 4, 9, n=5, base=.92,
+                                    passo=.072, sw="1.5", op=".82"),
+
+    # A FAIXA do artigo — 16:5 nativo. Três variantes da mesma curva de
+    # interferência, separadas por ciclo e torção: variante nova é parâmetro
+    # novo, não arquivo novo (ESPEC §3).
+    "faixa-1.svg": marca_interferencia(u"Guilhoché — faixa, onda longa",
+                                       linhas=26, amp=.145, ciclos=1.7, torcao=1.3,
+                                       sw="1.5", op=".8", caixa=FAIXA, passos=150),
+    "faixa-2.svg": marca_interferencia(u"Guilhoché — faixa, interferência",
+                                       linhas=34, amp=.115, ciclos=3.1, torcao=2.1,
+                                       sw="1.4", op=".78", caixa=FAIXA, passos=150),
+    "faixa-3.svg": marca_interferencia(u"Guilhoché — faixa, torção",
+                                       linhas=22, amp=.165, ciclos=2.3, torcao=3.0,
+                                       sw="1.6", op=".82", caixa=FAIXA, passos=150),
 }
 
 for nome, conteudo in marcas.items():
