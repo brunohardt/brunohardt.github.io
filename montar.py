@@ -354,7 +354,12 @@ def main():
         for p in problemas:
             print(u"    - %s" % p)
         sys.exit(1)
-    print(u"\n  %d escrito(s), tudo conferido." % len(escritos))
+    print(u"\n  %d escrito(s) montado(s).\n" % len(escritos))
+
+    # A montagem exige navegador (ESPEC §2.3): montar sem verificar não é uma
+    # montagem, é um rascunho de HTML. Um comando só, sem disciplina no meio.
+    import verificar
+    verificar.main()
 
 
 if __name__ == "__main__":

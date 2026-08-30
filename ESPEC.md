@@ -213,7 +213,9 @@ termos que derruba a montagem.
 
 **3. Implementar** no módulo certo — e só nele.
 
-**4. Provar.** `python montar.py && python verificar.py`. Verde, commita.
+**4. Provar.** `python montar.py` — que monta e, em seguida, verifica. Um
+comando só: montar sem verificar não é montagem, é rascunho de HTML, e a §2.3
+não deixa isso ser uma escolha de quem digita. Verde, commita.
 
 ### O que `verificar.py` precisa checar
 
