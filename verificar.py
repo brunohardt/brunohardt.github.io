@@ -197,7 +197,7 @@ CABECALHO = re.compile(r"<h([1-6])\b", re.I)
 def checar_estrutura(paginas):
     ruins = []
     for p in paginas:
-        niveis = [int(n) for n in CABECALHO.findall(ler(p))]
+        niveis = [int(n) for n in CABECALHO.findall(sem_comentario(ler(p)))]
         if niveis.count(1) != 1:
             ruins.append(u"%s: %d elementos h1 (deve haver exatamente um)"
                          % (rel(p), niveis.count(1)))
@@ -215,8 +215,17 @@ def checar_estrutura(paginas):
 HREF = re.compile(r'(?:href|src)="([^"]+)"')
 
 
+COMENTARIO = re.compile(r"<!--.*?-->", re.S)
+
+
+def sem_comentario(html):
+    """Comentário não é link nem título. O léxico regulatório, esse continua
+    lendo o comentário: ele viaja no HTML e aparece em ver-código-fonte."""
+    return COMENTARIO.sub(u" ", html)
+
+
 def ancoras(caminho):
-    return set(re.findall(r'\bid="([^"]+)"', ler(caminho)))
+    return set(re.findall(r'\bid="([^"]+)"', sem_comentario(ler(caminho))))
 
 
 def checar_links(paginas):
@@ -225,7 +234,7 @@ def checar_links(paginas):
     ruins = []
     for p in paginas:
         base = os.path.dirname(p)
-        for alvo in HREF.findall(ler(p)):
+        for alvo in HREF.findall(sem_comentario(ler(p))):
             if re.match(r"^(https?:|mailto:|tel:|data:)", alvo):
                 continue
             arquivo, _, frag = alvo.partition("#")
