@@ -419,7 +419,7 @@ def pagina_escrito(e):
 </main>''' % (esc(e["categoria"]), esc(e["titulo"]), esc(e["dek"]),
               e["data_extenso"], e["foto"], e["foto"], e["foto"],
               u"\n".join(u"      " + l for l in e["html"].split(u"\n")))
-    return casca(miolo, {"titulo": u"%s — Bruno Hardt" % e["titulo"],
+    return casca(miolo, {"titulo": u"%s – Bruno Hardt" % e["titulo"],
                          "descricao": e["dek"], "ativo": "escritos",
                          "ogtipo": "article", "ogslug": e["slug"]},
                  u"escritos/%s.html" % e["slug"], jsonld_artigo(e))

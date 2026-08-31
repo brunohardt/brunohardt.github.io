@@ -81,7 +81,11 @@ LEXICO = [
 ]
 
 TAG = re.compile(r"<[^>]+>")
-VERBETE_HTML = re.compile(r'<figure class="verbete".*?</figure>', re.S)
+# o montador emite `class="verbete verbete--ementa"`, e nao `class="verbete"`:
+# sem o [^"]* esta expressao nunca casou, e a voz do site vinha carregando a
+# ementa junto desde a estreia. O lexico da 2.1 lia o vocabulario do
+# desembargador como se fosse do autor.
+VERBETE_HTML = re.compile(r'<figure class="verbete[^"]*".*?</figure>', re.S)
 SCRIPT = re.compile(r"<script\b.*?</script>", re.S)
 
 
@@ -95,6 +99,24 @@ def texto_da_voz_do_site(html):
     html = VERBETE_HTML.sub(u" ", html)
     html = SCRIPT.sub(u" ", html)
     return re.sub(r"\s+", u" ", TAG.sub(u" ", html))
+
+
+# ====================================================== 1b. tipografia (§3)
+TRAVESSAO = re.compile(u"—|&#8212;|&#x2014;|&mdash;", re.I)
+
+
+def checar_tipografia(paginas):
+    """O travessão não é do site; a meia-risca é (§3).
+
+    Roda sobre a voz do site, e nunca sobre o HTML cru: a ementa vem extraída
+    byte a byte (§2.2), e trocar o travessão de um desembargador para agradar
+    à composição seria falsificar a prova para passar numa régua de estilo."""
+    ruins = []
+    for p in paginas:
+        if TRAVESSAO.search(texto_da_voz_do_site(ler(p))):
+            ruins.append(u"%s: travessão na voz do site – use a meia-risca (–)"
+                         % rel(p))
+    return ruins
 
 
 def checar_lexico(paginas):
@@ -699,6 +721,7 @@ def checar_no_navegador(paginas):
 # ================================================================== main
 CHECAGENS = (
     (u"léxico regulatório", lambda pgs: checar_lexico(pgs)),
+    (u"tipografia", lambda pgs: checar_tipografia(pgs)),
     (u"prova", lambda pgs: checar_prova()),
     (u"crédito publicável", lambda pgs: checar_credito()),
     (u"data de publicação", lambda pgs: checar_data()),

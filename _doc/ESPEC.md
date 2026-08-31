@@ -189,6 +189,17 @@ Peça errada se corrige; publicado erra na frente de todo mundo.
 corpo. Rótulo, data e navegação são grotesca. **Data em serifada é o que faz um
 site parecer blog.**
 
+**O travessão não é do site; a meia-risca é.** Onde a prosa precisar de um
+inciso, ela usa `–` (`&#8211;`), nunca `—` (`&#8212;`). É preferência de
+composição, não de gramática: na Crimson Pro o travessão longo abre um vão que
+divide a linha em duas, e a medida daqui é curta demais para aguentar isso duas
+vezes num parágrafo. O verificador recusa a montagem que trouxer um.
+
+> **A régua não alcança a citação.** O teste roda sobre a voz do site, e não
+> sobre o HTML cru: ementa vem extraída byte a byte (§2.2), e trocar o
+> travessão de um desembargador para agradar à composição seria falsificar a
+> prova. O que está dentro de um bloco `verbete` fica como o tribunal escreveu.
+
 **Desde 30/08/2026 toda figura do site é fotografia gerada por prompt**, e não
 desenho gerado por script. O guilhoché saiu - dele, do `guilhoche.py` e dos seis
 SVG. Os prompts estão em `_doc/PROMPTS.md`, no repositório, pelo mesmo motivo que o
