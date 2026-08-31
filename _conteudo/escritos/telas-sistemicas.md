@@ -1,6 +1,6 @@
 ---
-titulo: Quando a tela do sistema não prova a contratação
-dek: Documento unilateral, ônus da prova e o problema de provar fato negativo.
+titulo: A empresa cobra, o cliente nega: de quem é a prova?
+dek: A defesa clássica é o print do próprio sistema – que prova só que o registro existe. O que os tribunais têm exigido no lugar dele.
 chamada: A captura de tela do sistema interno é documento que a parte produz sozinha, sobre si mesma. O que os tribunais têm exigido além dela.
 categoria: Prova
 foto: vidro
@@ -19,8 +19,8 @@ controla, e sem participação de quem se diz prejudicado.
 
 ## O que a tela é
 
-É documento unilateral. Não perde valor por isso - nenhum documento é descartado
-por ter sido feito por uma das partes -, mas o seu peso depende de não estar
+É documento unilateral. Não perde valor por isso – nenhum documento é descartado
+por ter sido feito por uma das partes –, mas o seu peso depende de não estar
 sozinho. Sozinha, a tela prova que existe um registro no sistema da fornecedora,
 que é precisamente o que ninguém discute: o consumidor não nega que a cobrança
 apareça; nega que a tenha contratado.
@@ -57,7 +57,7 @@ inteiro_teor_conferido: sim
 RECURSO ESPECIAL. PROCESSUAL CIVIL. ACÓRDÃO PROFERIDO EM IRDR. CONTRATOS BANCÁRIOS. EMPRÉSTIMO CONSIGNADO. DOCUMENTO PARTICULAR. IMPUGNAÇÃO DA AUTENTICIDADE DA ASSINATURA. ÔNUS DA PROVA. RECURSO ESPECIAL PARCIALMENTE CONHECIDO E, NESSA EXTENSÃO, DESPROVIDO. 1. Para os fins do art. 1.036 do CPC/2015, a tese firmada é a seguinte: "Na hipótese em que o consumidor/autor impugnar a autenticidade da assinatura constante em contrato bancário juntado ao processo pela instituição financeira, caberá a esta o ônus de provar a sua autenticidade ( CPC, arts. 6º, 368 e 429, II)."2. Julgamento do caso concreto. 2.1. A negativa de prestação jurisdicional não foi demonstrada, pois deficiente sua fundamentação, já que o recorrente não especificou como o acórdão de origem teria se negado a enfrentar questões aduzidas pelas partes, tampouco discorreu sobre as matérias que entendeu por omissas. Aplicação analógica da Súmula 284/STF.2.2. O acórdão recorrido imputou o ônus probatório à instituição financeira, conforme a tese acima firmada, o que impõe o desprovimento do recurso especial. 3. Recurso especial parcialmente conhecido e, nessa extensão, desprovido.
 :::
 
-Vale registrar que essa regra não nasceu para punir a fornecedora. Ela nasce de
+Essa regra não nasceu para punir a fornecedora. Ela nasce de
 uma constatação de fato: a prova está toda de um lado só. Quando o processo
 desloca esse ônus, não está presumindo a fraude; está pondo o encargo onde ele
 pode ser cumprido.
@@ -105,8 +105,8 @@ independentes; o print permite verificar que alguém apertou a tecla de captura.
 
 ## Onde a linha contrária para
 
-Para exatamente aí. Quando o conjunto digital vem incompleto - o contrato sem o
-relatório de autenticação, o aceite sem o log, a tela sem nada em volta -, o
+Para exatamente aí. Quando o conjunto digital vem incompleto – o contrato sem o
+relatório de autenticação, o aceite sem o log, a tela sem nada em volta –, o
 mesmo tribunal mantém a inexistência da contratação.
 
 :::verbete 78-contrato-digital-sem-dossie-completo-nao-prova
@@ -160,10 +160,21 @@ emitida pela própria fornecedora, é indício forte de que a contratação não
 partiu de quem estava sendo cobrado. O documento que prova isso é da fornecedora
 também, e é ela quem o emite todo mês.
 
-## O que fica
+## O que está na mão de quem foi cobrado
 
 A tela do sistema não é imprestável, e tratá-la como se fosse é uma tese ruim:
-os tribunais não a rejeitam pela origem. O que eles fazem é medir o conjunto em
-que ela aparece. A pergunta útil, portanto, não é se a tela é admissível. É o
-que veio com ela, o que podia ter vindo e não veio, e qual dos dois lados tinha
+os tribunais não a rejeitam pela origem. O que eles medem é o conjunto – o que
+veio com ela, o que podia ter vindo e não veio, e qual dos dois lados tinha
 condições de juntar o que falta.
+
+Para quem encontra na fatura um serviço que nunca pediu, a consequência prática
+vem em duas partes. A primeira é saber o que não lhe cabe: provar que não
+contratou não é encargo de quem nega – é de quem cobra, que tem o sistema, o
+registro e a gravação. A segunda é que o caso se fortalece com o que está ao
+alcance de qualquer pessoa: as faturas guardadas mês a mês, que mostram a
+cobrança e, muitas vezes, o consumo zerado do serviço; o protocolo de cada
+ligação em que a contratação foi negada; o extrato que mostra que valor nenhum
+entrou na conta. E, diante da empresa, a exigência certa não é "o print": é o
+contrato, a gravação do aceite, o relatório de autenticação – o dossiê que, se
+a contratação existiu, existe também. Quando ele não vem, essa ausência não é
+um detalhe. É, muitas vezes, a prova.
