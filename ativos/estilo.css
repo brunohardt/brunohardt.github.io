@@ -64,7 +64,7 @@
   /* o site e claro, e so claro: decisao do Bruno em 30/08/2026.
      `light` fixo mantem barra de rolagem e controle nativo em claro
      mesmo com o sistema do leitor em modo escuro. */
-  color-scheme:light;
+  color-scheme:light only;
 
   --papel:#FBF9F2;         /* marfim quente */
   --papel-2:#F2EFE3;       /* faixa do rodapé, cartão */

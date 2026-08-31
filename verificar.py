@@ -357,6 +357,9 @@ def checar_links(paginas):
             if re.match(r"^(https?:|mailto:|tel:|data:)", alvo):
                 continue
             arquivo, _, frag = alvo.partition("#")
+            # a folha de estilo viaja com ?v=<hash> para furar cache;
+            # a consulta nao faz parte do caminho no disco
+            arquivo = arquivo.partition("?")[0]
             destino = p if not arquivo else os.path.normpath(os.path.join(base, arquivo))
             if not os.path.exists(destino):
                 ruins.append(u"%s: aponta para %s, que não existe" % (rel(p), alvo))

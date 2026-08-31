@@ -16,6 +16,7 @@ da capa. Acrescentar um texto é acrescentar um arquivo.
 
 REQUISITO: python-markdown (`pip install -r requirements.txt`).
 """
+import hashlib
 import io, os, re, sys, unicodedata
 
 try:
@@ -337,6 +338,7 @@ def casca(miolo, meta, saida_rel, jsonld=u""):
                        SITE + u"ativos/og/%s.png" % meta.get("ogslug", u"site"))
               .replace(u"{{ogtipo}}", meta.get("ogtipo", u"website"))
               .replace(u"{{jsonld}}", jsonld)
+              .replace(u"{{versaocss}}", versao_css())
               .replace(u"{{raiz}}", raiz))
     ativo = meta.get("ativo", u"")
     for nome in (u"escritos", u"atuacao", u"sobre"):
@@ -362,6 +364,19 @@ def juntar_estilo():
     escrever(saida, u"\n".join(corpo) + u"\n")
     return len(partes), os.path.getsize(saida)
 
+
+def versao_css():
+    """Hash curto do estilo.css montado, para o link da folha.
+
+    O GitHub Pages serve o CSS com max-age=600, e um navegador que ja tinha a
+    folha antiga continua com ela por dez minutos -- foi o que fez a paleta
+    escura sobreviver a um recarregamento em 30/08/2026. Com a versao no
+    endereco, folha nova e endereco novo, e nao ha cache que segure.
+    """
+    caminho = os.path.join(RAIZ, 'ativos', 'estilo.css')
+    if not os.path.isfile(caminho):
+        return '0'
+    return hashlib.sha1(io.open(caminho, 'rb').read()).hexdigest()[:8]
 
 def pagina_escrito(e):
     miolo = u'''<main id="miolo" class="envelope leitura">
