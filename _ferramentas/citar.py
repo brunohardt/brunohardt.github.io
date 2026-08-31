@@ -141,7 +141,9 @@ def credito_do_verbete(campos, nome):
     return credito
 
 
-ITEM = re.compile(r"(?=\b\d{1,2}\.\s+[A-ZÀ-Ú])")
+# Ementa civel numera "1. ", "2. "; ementa penal costuma numerar "I - ", "II - "
+# (as vezes com meia-risca). Nos dois casos a divisao e do relator, nao minha.
+ITEM = re.compile(r"(?=\b\d{1,2}\.\s+[A-ZÀ-Ú])|(?=\b[IVX]{1,5}\s*[-–]\s+[A-ZÀ-Ú])")
 CORTE = u"[…]"
 
 
