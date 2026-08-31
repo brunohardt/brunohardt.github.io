@@ -39,14 +39,34 @@ não há a que voltar.
 
 ## Malha de aço
 
-> **Este motivo é o mais arriscado dos quatro para o orçamento de peso**, e vale
-> saber disso antes de gerar. Trama regular e fina é detalhe de alta frequência
-> em cada pixel: é exatamente a "textura de ponta a ponta, sem área lisa" que o
-> passo 4 do *Ao receber a arte* descreve como densa demais para comprimir. Os
-> dois prompts abaixo já trazem duas defesas - trama grossa o bastante para o fio
-> individual se ler, e uma queda da luz para a sombra numa das bordas, que dá ao
-> compressor uma região lisa. Se ainda assim o `receber.py` recusar, é aqui que
-> se mexe: engrossar mais a trama, nunca retocar a imagem.
+> **A arte foi gerada, medida e aceita em 31/08/2026**, e o que se previu aqui
+> não se confirmou - fica registrado porque a previsão errada é o que ensina.
+>
+> A previsão era que a malha fosse o motivo mais arriscado dos quatro para o
+> orçamento de peso: trama regular e fina é detalhe de alta frequência em cada
+> pixel, que é a "textura de ponta a ponta, sem área lisa" do passo 4 do *Ao
+> receber a arte*. As duas defesas escritas nos prompts - trama grossa o
+> bastante para o fio individual se ler, e uma queda da luz para a sombra numa
+> das bordas - resolveram com folga: os três arquivos couberam em **q86, o
+> degrau mais alto da escada**, sem descer um passo. `malha-alta` 623 KB de 900,
+> `malha-larga` 510 KB de 640, `malha-media` 174 KB de 190.
+>
+> As medidas do `verificar.py` também passaram folgadas: metade reservada com
+> média 0,008 na deitada e 0,028 na em pé (teto 0,09), e matiz 175° e 164°
+> (faixa 148-196). A metade reservada da deitada é a **mais calma das quatro**
+> do site - o título assenta bem nela. A da em pé é a mais agitada, no mesmo
+> patamar da do papel, que já estava publicada.
+>
+> **Duas coisas para quem regerar.** Primeira: as duas voltaram com desfoque -
+> a em pé amolece no topo, a deitada no canto superior esquerdo e na borda
+> direita -, contra o "sem desfoque" que os prompts pedem com todas as letras.
+> Aceitou-se porque ali o desfoque faz o trabalho da margem lisa, e não a mancha
+> que a regra teme; não é licença para o quadro inteiro amolecer. Segunda: os
+> dois eixos vieram com 11° de diferença de matiz entre si, e eles aparecem lado
+> a lado - lâmina no site, chapa no feed. Se der para casar melhor, melhor.
+>
+> Se algum dia o `receber.py` recusar uma regeração, é aqui que se mexe:
+> engrossar mais a trama, nunca retocar a imagem.
 
 ### 1. Malha de aço - deitada
 
