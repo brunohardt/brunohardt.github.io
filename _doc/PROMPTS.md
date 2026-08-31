@@ -6,7 +6,13 @@ a origem das anteriores - e por isso moram no repositório. Prompt que vive só
 numa conversa de gerador não é recuperável: quando a arte precisar de retoque,
 não há a que voltar.
 
-## Regras que valem para os seis
+> **O arquivo passou a guardar só o que está pendente.** Os prompts das três
+> fotos que já estão no ar - vidro canelado, bordas de papel e ardósia - saíram
+> daqui em 31/08/2026, por decisão de quem assina. Eles não deixaram de existir:
+> estão no histórico do git, no commit anterior a este. Se alguma das três
+> precisar de retoque, é de lá que se recupera o prompt - `git log -p _doc/PROMPTS.md`.
+
+## Regras que valem para os dois
 
 - **Duas gerações por escrito**: uma deitada e uma em pé. Cada formato usa a arte
   cortada no próprio eixo longo; cortar contra o eixo esmaga o desenho.
@@ -27,86 +33,39 @@ não há a que voltar.
 
 | Escrito | Motivo | Arquivos |
 |---|---|---|
-| `telas-sistemicas` | vidro canelado | `ativos/img/vidro-larga.jpg` · `vidro-alta.jpg` |
-| `sumula-479` | bordas de papel | `ativos/img/papel-larga.jpg` · `papel-alta.jpg` |
-| `tema-929` | ardósia | `ativos/img/ardosia-larga.jpg` · `ardosia-alta.jpg` |
+| quarto escrito, de novembro - sem slug ainda | malha de aço | `ativos/img/malha-larga.jpg` · `malha-alta.jpg` |
 
 ---
 
-## 1. Vidro canelado - deitada
+## Malha de aço
+
+> **Este motivo é o mais arriscado dos quatro para o orçamento de peso**, e vale
+> saber disso antes de gerar. Trama regular e fina é detalhe de alta frequência
+> em cada pixel: é exatamente a "textura de ponta a ponta, sem área lisa" que o
+> passo 4 do *Ao receber a arte* descreve como densa demais para comprimir. Os
+> dois prompts abaixo já trazem duas defesas - trama grossa o bastante para o fio
+> individual se ler, e uma queda da luz para a sombra numa das bordas, que dá ao
+> compressor uma região lisa. Se ainda assim o `receber.py` recusar, é aqui que
+> se mexe: engrossar mais a trama, nunca retocar a imagem.
+
+### 1. Malha de aço - deitada
 
 ```
-Create a photorealistic macro photograph of a thick panel of fluted reeded
-glass, the kind used in a door, filling the entire frame. Its vertical ribs run
-slightly diagonally across the image, and a single distant light source behind
-the glass, placed to the right, is refracted by each rib into a soft vertical
-band of pale light. No object is visible behind the glass, only light. Studio,
-black background, no props.
+Create a photorealistic macro photograph of a taut sheet of woven steel wire
+mesh, the kind used as an industrial sieve, filling the entire frame. The weave
+runs slightly diagonally across the image, coarse enough that each individual
+wire reads clearly and the square openings between the wires are plainly
+visible. A hard raking light from the right grazes the mesh, so every crossing
+of one wire over another casts its own small shadow. Nothing is visible through
+the openings, only darkness. Studio, black background, no props, no frame, rim
+or selvage around the mesh.
 
-Composition: extreme close-up, no recognisable scale, the ribs bleeding off all
+Composition: extreme close-up, no recognisable scale, the weave bleeding off all
 four edges. Aspect ratio 16:9. The left half of the frame falls into near-black
 and runs the full height of the picture, top edge to bottom edge, where a title
-will be set later in warm off-white. Nothing of interest sits in the top quarter
-or the bottom quarter: the picture will be cropped to a wide 3.2:1 band and must
-still read after that crop. Shot with a macro lens at f/11, deep depth of field
-- everything in the frame is in sharp focus, front to back, with no blur
-anywhere.
-
-Style: sober low-key editorial photography, dark overall. The shadows carry one
-colour and one only: a deep, desaturated pine green that leans blue, hue around
-170 degrees, close to hex #245C53. Not cyan, not emerald, not olive, not steel
-blue. Low saturation throughout, no glow, no lens flare, no bokeh, no added
-vignette. At least 3000 pixels on the long edge.
-
-Do not include: any text, letters, numbers, objects, hands, people, faces, logos
-or brand marks. No blurred areas, no shallow depth of field. No colour other
-than that pine green and neutral greys.
-```
-
-## 2. Vidro canelado - em pé
-
-```
-Create a photorealistic macro photograph of a thick panel of fluted reeded
-glass, the kind used in a door, filling the entire frame. Its ribs run
-horizontally, slightly diagonally across the image, and a single distant light
-source behind the glass, placed above, is refracted by each rib into a soft band
-of pale light. No object is visible behind the glass, only light. Studio, black
-background, no props.
-
-Composition: extreme close-up, no recognisable scale, the ribs bleeding off all
-four edges. Aspect ratio 3:4, portrait. The bottom half of the frame falls into
-near-black and runs the full width of the picture, left edge to right edge,
-where a title will be set later in warm off-white. Nothing of interest sits in
-the left eighth or the right eighth: the picture will be cropped to 4:5 and must
-still read after that crop. Shot with a macro lens at f/11, deep depth of field
-- everything in the frame is in sharp focus, front to back, with no blur
-anywhere.
-
-Style: sober low-key editorial photography, dark overall. The shadows carry one
-colour and one only: a deep, desaturated pine green that leans blue, hue around
-170 degrees, close to hex #245C53. Not cyan, not emerald, not olive, not steel
-blue. Low saturation throughout, no glow, no lens flare, no bokeh, no added
-vignette. At least 3000 pixels on the long edge.
-
-Do not include: any text, letters, numbers, objects, hands, people, faces, logos
-or brand marks. No blurred areas, no shallow depth of field. No colour other
-than that pine green and neutral greys.
-```
-
-## 3. Bordas de papel - deitada
-
-```
-Create a photorealistic macro photograph of the cut edges of a thick stack of
-uncoated paper, seen almost edge-on, so that each individual sheet reads as a
-fine parallel line and the stack fills the entire frame. A hard raking light
-from the right grazes across the edges, catching the fibre of the paper. Studio,
-black background, no props, no printing on the paper.
-
-Composition: extreme close-up, no recognisable scale, the lines running
-diagonally and bleeding off all four edges. Aspect ratio 16:9. The left half of
-the frame falls into near-black and runs the full height of the picture, top
-edge to bottom edge, where a title will be set later in warm off-white. Nothing
-of interest sits in the top quarter or the bottom quarter: the picture will be
+will be set later in warm off-white. The light falls off smoothly into shadow at
+the far right edge as well, leaving a calm unbusy margin there. Nothing of
+interest sits in the top quarter or the bottom quarter: the picture will be
 cropped to a wide 3.2:1 band and must still read after that crop. Shot with a
 macro lens at f/11, deep depth of field - everything in the frame is in sharp
 focus, front to back, with no blur anywhere.
@@ -117,89 +76,32 @@ colour and one only: a deep, desaturated pine green that leans blue, hue around
 blue. Low saturation throughout, no glow, no lens flare, no bokeh, no added
 vignette. At least 3000 pixels on the long edge.
 
-Do not include: any text, letters, numbers, printing, objects, hands, people,
-faces, logos or brand marks. No blurred areas, no shallow depth of field. No
-colour other than that pine green and neutral greys.
-```
-
-## 4. Bordas de papel - em pé
-
-```
-Create a photorealistic macro photograph of the cut edges of a thick stack of
-uncoated paper, seen almost edge-on, so that each individual sheet reads as a
-fine parallel line and the stack fills the entire frame. A hard raking light
-from above grazes across the edges, catching the fibre of the paper. Studio,
-black background, no props, no printing on the paper.
-
-Composition: extreme close-up, no recognisable scale, the lines running
-diagonally and bleeding off all four edges. Aspect ratio 3:4, portrait. The
-bottom half of the frame falls into near-black and runs the full width of the
-picture, left edge to right edge, where a title will be set later in warm
-off-white. Nothing of interest sits in the left eighth or the right eighth: the
-picture will be cropped to 4:5 and must still read after that crop. Shot with a
-macro lens at f/11, deep depth of field - everything in the frame is in sharp
-focus, front to back, with no blur anywhere.
-
-Style: sober low-key editorial photography, dark overall. The shadows carry one
-colour and one only: a deep, desaturated pine green that leans blue, hue around
-170 degrees, close to hex #245C53. Not cyan, not emerald, not olive, not steel
-blue. Low saturation throughout, no glow, no lens flare, no bokeh, no added
-vignette. At least 3000 pixels on the long edge.
-
-Do not include: any text, letters, numbers, printing, objects, hands, people,
-faces, logos or brand marks. No blurred areas, no shallow depth of field. No
-colour other than that pine green and neutral greys.
-```
-
-## 5. Ardósia - deitada
-
-> O original mandava a luz da esquerda e reservava a metade direita. Como o
-> título mora sempre à esquerda, os dois foram invertidos aqui.
-
-```
-Create a photorealistic macro photograph of the surface of a slab of dark slate,
-filling the entire frame: fine mineral grain, the shallow steps where the stone
-was split, and one thin pale vein running diagonally across it. A hard raking
-light from the right grazes the surface, so every texture casts its own small
-shadow. Studio, no props.
-
-Composition: extreme close-up, flat-on view, no recognisable scale, the surface
-bleeding off all four edges. Aspect ratio 16:9. The left half of the frame falls
-into near-black and runs the full height of the picture, top edge to bottom
-edge, where a title will be set later in warm off-white. Nothing of interest
-sits in the top quarter or the bottom quarter, and the pale vein stays out of
-the left half: the picture will be cropped to a wide 3.2:1 band and must still
-read after that crop. Shot with a macro lens at f/11, deep depth of field -
-everything in the frame is in sharp focus, front to back, with no blur anywhere.
-
-Style: sober low-key editorial photography, dark overall. The shadows carry one
-colour and one only: a deep, desaturated pine green that leans blue, hue around
-170 degrees, close to hex #245C53. Not cyan, not emerald, not olive, not steel
-blue. Low saturation throughout, no glow, no lens flare, no bokeh, no added
-vignette. At least 3000 pixels on the long edge.
-
 Do not include: any text, letters, numbers, objects, hands, people, faces, logos
 or brand marks. No blurred areas, no shallow depth of field. No colour other
 than that pine green and neutral greys.
 ```
 
-## 6. Ardósia - em pé
+### 2. Malha de aço - em pé
 
 ```
-Create a photorealistic macro photograph of the surface of a slab of dark slate,
-filling the entire frame: fine mineral grain, the shallow steps where the stone
-was split, and one thin pale vein running diagonally across it. A hard raking
-light from above grazes the surface, so every texture casts its own small
-shadow. Studio, no props.
+Create a photorealistic macro photograph of a taut sheet of woven steel wire
+mesh, the kind used as an industrial sieve, filling the entire frame. The weave
+runs slightly diagonally across the image, coarse enough that each individual
+wire reads clearly and the square openings between the wires are plainly
+visible. A hard raking light from above grazes the mesh, so every crossing of
+one wire over another casts its own small shadow. Nothing is visible through the
+openings, only darkness. Studio, black background, no props, no frame, rim or
+selvage around the mesh.
 
-Composition: extreme close-up, flat-on view, no recognisable scale, the surface
-bleeding off all four edges. Aspect ratio 3:4, portrait. The bottom half of the
-frame falls into near-black and runs the full width of the picture, left edge to
-right edge, where a title will be set later in warm off-white. Nothing of
-interest sits in the left eighth or the right eighth, and the pale vein stays
-out of the bottom half: the picture will be cropped to 4:5 and must still read
-after that crop. Shot with a macro lens at f/11, deep depth of field -
-everything in the frame is in sharp focus, front to back, with no blur anywhere.
+Composition: extreme close-up, no recognisable scale, the weave bleeding off all
+four edges. Aspect ratio 3:4, portrait. The bottom half of the frame falls into
+near-black and runs the full width of the picture, left edge to right edge,
+where a title will be set later in warm off-white. The light falls off smoothly
+into shadow at the top edge as well, leaving a calm unbusy margin there. Nothing
+of interest sits in the left eighth or the right eighth: the picture will be
+cropped to 4:5 and must still read after that crop. Shot with a macro lens at
+f/11, deep depth of field - everything in the frame is in sharp focus, front to
+back, with no blur anywhere.
 
 Style: sober low-key editorial photography, dark overall. The shadows carry one
 colour and one only: a deep, desaturated pine green that leans blue, hue around
