@@ -33,7 +33,7 @@ não há a que voltar.
 
 | Escrito | Motivo | Arquivos |
 |---|---|---|
-| quarto escrito, de novembro - sem slug ainda | malha de aço | `ativos/img/malha-larga.jpg` · `malha-alta.jpg` |
+| prova-nova (datado de 24/08, aniversário do julgamento das ADIs) | malha de aço | `ativos/img/malha-larga.jpg` · `malha-alta.jpg` |
 
 ---
 
