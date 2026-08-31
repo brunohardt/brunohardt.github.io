@@ -183,16 +183,30 @@ Peça errada se corrige; publicado erra na frente de todo mundo.
 | Marca | **Prata** (família `Marca`), caixa-alta, entreletra larga |
 | Título e corpo | **Crimson Pro** (família `Serifada`), garalda |
 | Rótulo, dek, data, navegação | **Archivo** (família `Grotesca`) |
-| Figura | guilhoché — epitrocoides geradas, uma por escrito |
+| Figura | na página, guilhoché gerado, um por escrito · nas chapas de compartilhamento, a arte de ondas, uma só para todas |
 
 **A regra tipográfica, medida no site da S&C:** serifada só em título, marca e
 corpo. Rótulo, data e navegação são grotesca. **Data em serifada é o que faz um
 site parecer blog.**
 
-As figuras são **geradas** por `guilhoche.py`, nunca desenhadas: variante nova é
-parâmetro novo, não arquivo novo. A faixa larga do topo do artigo usa
-**variantes horizontais da curva de interferência** — a roseta não sobrevive ao
-recorte em 16:5, e uma forma espelhada por acidente é pior que figura nenhuma.
+As figuras **da página** são geradas por `guilhoche.py`, nunca desenhadas:
+variante nova é parâmetro novo, não arquivo novo. A faixa larga do topo do
+artigo usa **variantes horizontais da curva de interferência** — a roseta não
+sobrevive ao recorte em 16:5, e uma forma espelhada por acidente é pior que
+figura nenhuma.
+
+**As chapas de compartilhamento são a exceção, e ela foi medida na S&C.** Ali a
+peça editorial não traz ilustração feita para o texto: traz uma forma abstrata
+neutra, de dois tons e contraste baixo, **reaproveitada em toda publicação** —
+o mesmo arquivo aparece embaixo de qualquer título. Quem carrega o sentido é o
+título, e a imagem existe para dar peso, não para explicar.
+
+Por isso a chapa usa `ativos/img/onda-alta.jpg` e `ativos/img/onda-larga.jpg`,
+uma arte só para todos os escritos: ondas em marfim sobre pedra, sangrando pelos
+quatro lados. Cada formato usa a que se corta no **próprio eixo longo** — a em
+pé na tarja vertical da prévia, a deitada na faixa do feed —, porque cortar
+contra o eixo esmaga o desenho. E **a tipografia nunca fica por cima da arte:**
+fica ao lado, no marfim, que é o que mantém o título legível.
 
 Nenhum valor de cor, corpo ou espaço é escrito à mão fora de
 `ativos/estilo/10-tokens.css`.
@@ -337,7 +351,7 @@ apenas recusa publicar sem elas, ou com elas velhas.
   aceitando o custo da migração: `SITE` no `montar.py`, canonical, `og:url` e os
   dois `@id` do JSON-LD, mais todo link já compartilhado apontando para o
   endereço velho.
-- **Duas chapas por escrito**, geradas do mesmo guilhoché: `og/<slug>.png` em
+- **Duas chapas por escrito**, com a mesma arte de ondas: `og/<slug>.png` em
   1200×630, que é a prévia de link, e `og/<slug>-feed.png` em 1080×1350, que é o
   post do Instagram. São formatos com trabalhos diferentes, e um não substitui o
   outro. A montagem exige só a primeira: link compartilhado sem `og:image`

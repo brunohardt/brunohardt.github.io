@@ -27,21 +27,31 @@ SAIDA = os.path.join(ATIVOS, "og")
 # nao substitui o outro -- recortar a deitada em quadrado perde o titulo pelas
 # bordas, porque ela foi desenhada deitada. So a primeira e exigida pela
 # montagem; a de feed nao afeta o site e por isso nao derruba o build.
+# A arte e uma so, reaproveitada em todo escrito -- e o que a Sullivan &
+# Cromwell faz na peca editorial: forma abstrata neutra, dois tons, contraste
+# baixo, sem relacao com o assunto do texto. Quem carrega o sentido e o titulo.
+#
+# Cada formato usa a arte cortada no proprio eixo longo: a em pe na tarja
+# vertical da previa, a deitada na faixa do feed. Cortar contra o eixo esmaga
+# o desenho e some com o movimento das linhas.
+#
+# A tipografia nunca fica POR CIMA da arte: fica ao lado, no marfim. E assim
+# na referencia, e e o que mantem o titulo legivel.
 FORMATOS = (
     dict(sufixo=u"", larg=1200, alt=630,
-         pad=u"74px 78px", alto=u"720px",
-         fig=u"right:-150px;top:50%;transform:translateY(-50%);"
-             u"width:660px;height:660px",
+         pad=u"74px 78px", alto=u"100%",
+         arte=u"onda-alta.jpg",
+         tarja=u"right:0;top:0;width:504px;height:100%",
+         caixa=u"inset:0 504px 0 0",
          regua=6, rotulo_px=19, gap=26, marca_px=30, oab_px=17,
-         corpos=(76, 64, 54)),
+         corpos=(64, 54, 46)),
     dict(sufixo=u"-feed", larg=1080, alt=1350,
          pad=u"104px 92px", alto=u"100%",
-         # em pe sobra miolo: a figura cresce e sobe para o centro, em vez
-         # de se encolher num canto e deixar meia chapa vazia
-         fig=u"right:-170px;top:52%;transform:translateY(-50%);"
-             u"width:980px;height:980px",
+         arte=u"onda-larga.jpg",
+         tarja=u"left:0;top:0;width:100%;height:700px",
+         caixa=u"inset:700px 0 0 0",
          regua=8, rotulo_px=23, gap=34, marca_px=38, oab_px=21,
-         corpos=(112, 94, 78)),
+         corpos=(96, 82, 68)),
 )
 
 CAB = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.S)
@@ -85,11 +95,11 @@ CARTAO = u"""<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
     width:%(larg)dpx;height:%(alt)dpx;overflow:hidden;position:relative;
     background:#FBF9F2;color:#14181A;
   }
-  /* o guilhoché sangra pela direita: presença, não ilustração */
-  .figura{position:absolute;%(fig)s;opacity:.5}
+  /* a arte ocupa uma tarja inteira e sangra: presença, não ilustração */
+  .figura{position:absolute;%(tarja)s;object-fit:cover;display:block}
   .regua{position:absolute;left:0;top:0;width:100%%;height:%(regua)dpx;background:#245C53}
   .caixa{
-    position:absolute;inset:0;padding:%(pad)s;
+    position:absolute;%(caixa)s;padding:%(pad)s;
     display:flex;flex-direction:column;justify-content:space-between;
   }
   .alto{max-width:%(alto)s}
@@ -165,12 +175,10 @@ def main():
             continue
         chapas.append((slug,
                        meta.get("categoria", u"Escrito"),
-                       meta.get("titulo", slug),
-                       uri("guilhoche-%s.svg" % meta.get("guilhoche", "1"))))
+                       meta.get("titulo", slug)))
 
     # a chapa do site: capa, atuação, sobre e índice compartilham esta
-    chapas.append((u"site", u"Escritos",
-                   u"Bruno Hardt", uri("guilhoche-2.svg")))
+    chapas.append((u"site", u"Escritos", u"Bruno Hardt"))
 
     temp = os.path.join(SAIDA, "_chapa.html")
     with sync_playwright() as pw:
@@ -179,9 +187,10 @@ def main():
             pag = navegador.new_page(
                 viewport={"width": f["larg"], "height": f["alt"]},
                 device_scale_factor=1)
-            for slug, rotulo, titulo, figura in chapas:
+            arte = uri(os.path.join("img", f["arte"]))
+            for slug, rotulo, titulo in chapas:
                 io.open(temp, "w", encoding="utf-8", newline="\n").write(
-                    cartao(rotulo, titulo, figura, f))
+                    cartao(rotulo, titulo, arte, f))
                 pag.goto("file:///" + temp.replace("\\", "/"))
                 pag.wait_for_timeout(120)      # as fontes terminam de assentar
                 nome = slug + f["sufixo"] + ".png"
