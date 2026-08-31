@@ -169,7 +169,7 @@ Peça errada se corrige; publicado erra na frente de todo mundo.
   não há build. É a segunda dependência do projeto e a mais pesada, assumida de
   propósito: as regras da §2.1 e o contraste valem mais que a propriedade de
   clonar e montar em qualquer máquina. Quem clonar precisa de
-  `pip install -r requirements.txt` e `playwright install`.
+  `pip install -r _ferramentas/requirements.txt` e `playwright install`.
 
 ---
 
@@ -191,7 +191,7 @@ site parecer blog.**
 
 **Desde 30/08/2026 toda figura do site é fotografia gerada por prompt**, e não
 desenho gerado por script. O guilhoché saiu - dele, do `guilhoche.py` e dos seis
-SVG. Os prompts estão em `PROMPTS.md`, no repositório, pelo mesmo motivo que o
+SVG. Os prompts estão em `_doc/PROMPTS.md`, no repositório, pelo mesmo motivo que o
 `guilhoche.py` estava: são a origem das imagens, e origem que vive só numa
 conversa de gerador não é recuperável.
 
@@ -319,16 +319,27 @@ _conteudo/
 ativos/estilo/                 ESTILO — um módulo por assunto
   00-fontes 10-tokens 20-base 30-topo 40-vitrine
   50-cartoes 60-rodape 70-leitura 90-movimento
-montar.py                      MONTAGEM (monta e verifica)
-citar.py                       cola o bloco de prova dentro de um escrito
-receber.py                     a foto que veio de fora vira os tres arquivos do site
-og.py                          as imagens de card, duas por escrito
-PROMPTS.md                     a origem das fotos - o que guilhoche.py era
-verificar.py                   VERIFICAÇÃO
+_ferramentas/                  FERRAMENTA — nada disto vai ao ar
+  montar.py                    MONTAGEM (monta e verifica)
+  verificar.py                 VERIFICAÇÃO
+  citar.py                     cola o bloco de prova dentro de um escrito
+  receber.py                   a foto que veio de fora vira os tres arquivos do site
+  og.py                        as imagens de card, duas por escrito
+  requirements.txt             as tres dependencias
+_doc/
+  ESPEC.md                     esta especificação
+  PROMPTS.md                   a origem das fotos - o que guilhoche.py era
 
 index.html · escritos.html · atuacao.html · sobre.html
 escritos/*.html · ativos/estilo.css      GERADOS — nunca editar
 ```
+
+**A raiz é só o que vai ao ar.** Na raiz fica o que o GitHub Pages serve — as
+quatro páginas, `escritos/`, `ativos/` — e mais nada além do que o git exige:
+`.gitattributes`, `.gitignore`, `.nojekyll`. Fonte, ferramenta e documento têm
+cada um o seu diretório, e o prefixo `_` marca o que não se publica. Cada
+ferramenta acha a raiz um andar acima de si mesma, então roda de onde se quiser:
+`python _ferramentas/montar.py`.
 
 **As cinco regras que sustentam a separação:**
 
@@ -361,7 +372,7 @@ termos que derruba a montagem.
 
 **3. Implementar** no módulo certo — e só nele.
 
-**4. Provar.** `python montar.py` — que monta e, em seguida, verifica. Um
+**4. Provar.** `python _ferramentas/montar.py` — que monta e, em seguida, verifica. Um
 comando só: montar sem verificar não é montagem, é rascunho de HTML, e a §2.3
 não deixa isso ser uma escolha de quem digita. Verde, commita.
 
@@ -387,10 +398,10 @@ navegador, com Playwright (§2.3). A foto entra no navegador como `data:` URI:
 canvas de origem `file://` fica contaminado e o `getImageData` passa a lançar.
 
 A imagem de card não é gerada pela montagem: abrir navegador para fotografar
-oito chapas é caro para pagar a cada build. `python og.py` gera; a montagem
+oito chapas é caro para pagar a cada build. `python _ferramentas/og.py` gera; a montagem
 apenas recusa publicar sem elas, ou com elas velhas.
 
-**A foto não é gerada por nada aqui** — vem de fora, do prompt em `PROMPTS.md`.
+**A foto não é gerada por nada aqui** — vem de fora, do prompt em `_doc/PROMPTS.md`.
 Por isso ela é o único insumo do site que o repositório não sabe reproduzir, e
 por isso a régua sobre ela é de medida e não de existência: aceitar a imagem que
 voltou sem medi-la seria confiar num gerador que não é determinístico.

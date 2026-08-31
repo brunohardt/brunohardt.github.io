@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """Recebe a arte gerada e produz os dois arquivos que o site usa.
 
-    python receber.py <motivo> <arquivo-deitada> <arquivo-em-pe>
-    python receber.py vidro "C:\\Users\\Hardt\\Downloads\\a.jpg" "...\\b.jpg"
+    python _ferramentas/receber.py <motivo> <arquivo-deitada> <arquivo-em-pe>
+    python _ferramentas/receber.py vidro "C:\\Users\\Hardt\\Downloads\\a.jpg" "...\\b.jpg"
 
 A foto e o unico insumo do site que vem de fora - de um gerador, pelo prompt de
-PROMPTS.md. Ela chega grande: 2 a 4 MB, no tamanho que o gerador entrega. A
+_doc/PROMPTS.md. Ela chega grande: 2 a 4 MB, no tamanho que o gerador entrega. A
 lamina da capa e o LCP da pagina, e 3 MB de LCP e uma capa que nao pinta em rede
 ruim, que e onde a maior parte da audiencia esta.
 
@@ -30,11 +30,11 @@ O QUE ELE FAZ, e por que:
     a foto voltou errada, quem se corrige e o prompt - imagem retocada a mao nao
     se reproduz na proxima.
 
-Depois de rodar, `python montar.py` mede o resultado e recusa o que nao servir.
+Depois de rodar, `python _ferramentas/montar.py` mede o resultado e recusa o que nao servir.
 """
 import io, os, sys
 
-RAIZ = os.path.dirname(os.path.abspath(__file__))
+RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # a ferramenta mora em _ferramentas/; a raiz e um andar acima
 IMG = os.path.join(RAIZ, "ativos", "img")
 
 # TRES arquivos por motivo, e cada um serve um trabalho:
@@ -110,7 +110,7 @@ def main():
     try:
         import PIL  # noqa: F401
     except ImportError:
-        sys.exit(u"Pillow ausente: pip install -r requirements.txt")
+        sys.exit(u"Pillow ausente: pip install -r _ferramentas/requirements.txt")
 
     if not os.path.isdir(IMG):
         os.makedirs(IMG)
@@ -118,7 +118,7 @@ def main():
     for eixo, regra in sorted(EIXOS.items()):
         origem = deitada if regra["de"] == "deitada" else em_pe
         ok = receber(motivo, origem, eixo) and ok
-    print(u"\n  %s recebido. Rode `python og.py` e depois `python montar.py`."
+    print(u"\n  %s recebido. Rode `python _ferramentas/og.py` e depois `python _ferramentas/montar.py`."
           % motivo)
     sys.exit(0 if ok else 1)
 

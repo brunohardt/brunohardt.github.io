@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Verificador do site.
 
-    python verificar.py
+    python _ferramentas/verificar.py
 
 A ESPEC não é boa intenção: as regras dela viram teste aqui, e teste que falha
 derruba a publicação. O ciclo da §6 é emendar a espec, escrever a verificação,
@@ -11,7 +11,7 @@ São nove checagens (ESPEC §6). Seis leem os arquivos; três precisam de
 navegador e rodam com Playwright, porque contraste, movimento e estouro só
 existem depois que o CSS foi aplicado.
 
-REQUISITO: playwright (`pip install -r requirements.txt` e `playwright install`).
+REQUISITO: playwright (`pip install -r _ferramentas/requirements.txt` e `playwright install`).
 """
 import base64, io, os, re, sys, glob
 
@@ -22,7 +22,7 @@ try:
 except AttributeError:
     pass
 
-RAIZ = os.path.dirname(os.path.abspath(__file__))
+RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # a ferramenta mora em _ferramentas/; a raiz e um andar acima
 ESCRITOS_MD = os.path.join(RAIZ, "_conteudo", "escritos")
 ATIVOS = os.path.join(RAIZ, "ativos")
 ESTILO = os.path.join(ATIVOS, "estilo")
@@ -288,7 +288,7 @@ def checar_rascunho(paginas):
 # ====================================================== 6. imagem de card
 #
 # Gerar a imagem é caro (abre navegador), então não entra na montagem: entra
-# como verificação. O que se proíbe não é esquecer de rodar `python og.py` — é
+# como verificação. O que se proíbe não é esquecer de rodar `python _ferramentas/og.py` — é
 # publicar com o card faltando, ou com um card que mostra um título antigo.
 OG = os.path.join(ATIVOS, "og")
 
@@ -300,19 +300,19 @@ def checar_og(paginas):
     for slug in esperados:
         png = os.path.join(OG, slug + ".png")
         if not os.path.exists(png):
-            ruins.append(u"falta ativos/og/%s.png — rode `python og.py`" % slug)
+            ruins.append(u"falta ativos/og/%s.png — rode `python _ferramentas/og.py`" % slug)
             continue
         md = os.path.join(ESCRITOS_MD, slug + ".md")
         if os.path.exists(md) and os.path.getmtime(md) > os.path.getmtime(png):
             ruins.append(u"ativos/og/%s.png e mais velha que o escrito — "
-                         u"rode `python og.py`" % slug)
+                         u"rode `python _ferramentas/og.py`" % slug)
             continue
         # a chapa E a foto: trocar a foto sem regerar a chapa deixa o
         # card mostrando imagem antiga - o mesmo erro do titulo antigo
         for arq in fotos_do_escrito(md):
             if os.path.getmtime(arq) > os.path.getmtime(png):
                 ruins.append(u"ativos/og/%s.png e mais velha que %s - "
-                             u"rode `python og.py`" % (slug, rel(arq)))
+                             u"rode `python _ferramentas/og.py`" % (slug, rel(arq)))
                 break
     return ruins
 
@@ -320,7 +320,7 @@ def checar_og(paginas):
 # ==================================================== 6.1 a foto do escrito
 #
 # Desde 30/08/2026 toda figura do site e fotografia gerada por prompt
-# (PROMPTS.md), e nao desenho de script. Prompt nao e deterministico: a mesma
+# (_doc/PROMPTS.md), e nao desenho de script. Prompt nao e deterministico: a mesma
 # instrucao devolve arte diferente a cada rodada. Entao o que trava a qualidade
 # nao e o prompt - e a MEDIDA da imagem que voltou.
 #
@@ -406,7 +406,7 @@ def checar_fotos(paginas):
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
-        return [u"playwright ausente: pip install -r requirements.txt "
+        return [u"playwright ausente: pip install -r _ferramentas/requirements.txt "
                 u"&& playwright install"]
 
     arquivos = []
@@ -442,7 +442,7 @@ def checar_fotos(paginas):
             for sufixo, teto in FOTO_PESO_KB.items():
                 if nome.endswith(sufixo) and kb > teto:
                     ruins.append(u"%s: %.0f KB, teto %d - rode `python "
-                                 u"receber.py`" % (nome, kb, teto))
+                                 u"_ferramentas/receber.py`" % (nome, kb, teto))
             lado = u"metade esquerda" if deitada else u"metade de baixo"
             if m["media"] > FOTO_ESCURA_MEDIA:
                 ruins.append(u"%s: a %s tem luminancia media %.3f (teto %.2f) - "
@@ -615,7 +615,7 @@ def checar_no_navegador(paginas):
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
-        return [u"playwright ausente: pip install -r requirements.txt "
+        return [u"playwright ausente: pip install -r _ferramentas/requirements.txt "
                 u"&& playwright install"]
 
     ruins = []
@@ -714,7 +714,7 @@ CHECAGENS = (
 def main():
     pgs = paginas_geradas()
     if not pgs:
-        sys.exit(u"nao ha pagina gerada: rode `python montar.py` antes")
+        sys.exit(u"nao ha pagina gerada: rode `python _ferramentas/montar.py` antes")
 
     total = 0
     for nome, fn in CHECAGENS:

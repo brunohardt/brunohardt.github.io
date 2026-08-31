@@ -216,12 +216,12 @@ than that pine green and neutral greys.
 
 ## Ao receber a arte
 
-1. `python receber.py <motivo> <deitada.jpg> <em-pe.jpg>` - direto do Downloads,
+1. `python _ferramentas/receber.py <motivo> <deitada.jpg> <em-pe.jpg>` - direto do Downloads,
    sem passo intermediario. Ele produz os tres arquivos que o site usa
    (`-media`, `-larga`, `-alta`), redimensiona, comprime ate caber no
    orcamento de peso e apaga o metadado. Nao recorta e nao clareia: enquadramento
    e luz sao decisao do prompt.
-2. `python og.py` refaz as chapas, e `python montar.py` mede a foto: matiz do verde contra `--acento`,
+2. `python _ferramentas/og.py` refaz as chapas, e `python _ferramentas/montar.py` mede a foto: matiz do verde contra `--acento`,
    luminância da metade reservada, e recusa foto que não exista para um escrito
    publicado.
 3. Se o verde vier ciano, ou a metade reservada vier clara, é o prompt que se

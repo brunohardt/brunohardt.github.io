@@ -3,14 +3,14 @@
 
 Do corpus da advocacia (tipo `ementa` ou `enunciado`, inferido pela classe):
 
-    python citar.py <escrito> <verbete>
-    python citar.py sumula-479 10-sumula-479-fortuito-interno
-    python citar.py sumula-479 10            # o prefixo basta
+    python _ferramentas/citar.py <escrito> <verbete>
+    python _ferramentas/citar.py sumula-479 10-sumula-479-fortuito-interno
+    python _ferramentas/citar.py sumula-479 10            # o prefixo basta
 
 Ementa longa entra recortada, e o corte aparece. Primeiro se olha o que ha:
 
-    python citar.py sumula-479 29 --ver      # lista os trechos numerados
-    python citar.py sumula-479 29 --manter 0,6-8
+    python _ferramentas/citar.py sumula-479 29 --ver      # lista os trechos numerados
+    python _ferramentas/citar.py sumula-479 29 --manter 0,6-8
 
 Os trechos sao os itens numerados do proprio acordao -- a divisao e do
 relator, nao minha. Cada corte vira [...] no texto colado, posto pelo script.
@@ -18,8 +18,8 @@ relator, nao minha. Cada corte vira [...] no texto colado, posto pelo script.
 De uma consulta a fonte oficial (tipo `consulta`) — andamento de tema
 repetitivo, texto de lei, enunciado que não está no corpus:
 
-    python citar.py <escrito> --consulta <arquivo> --url <URL> [--titulo "..."]
-    python citar.py tema-929 --consulta trecho.txt --url https://processo.stj.jus.br/...
+    python _ferramentas/citar.py <escrito> --consulta <arquivo> --url <URL> [--titulo "..."]
+    python _ferramentas/citar.py tema-929 --consulta trecho.txt --url https://processo.stj.jus.br/...
 
 O arquivo é lido verbatim e vai inteiro para o bloco: o trecho se copia da
 página e se salva num arquivo, nunca se redigita na linha de comando.
@@ -37,7 +37,8 @@ repositório da advocacia, aplicada ao que vai a público (ESPEC §2.2).
 import io, os, re, sys, datetime
 
 CORPUS = r"C:\Users\Hardt\Dev\HARDT - ADVOCACIA\conhecimento\jurisprudencia"
-ESCRITOS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_conteudo", "escritos")
+RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # a ferramenta mora em _ferramentas/; a raiz e um andar acima
+ESCRITOS = os.path.join(RAIZ, "_conteudo", "escritos")
 
 
 def ler(p):
@@ -229,7 +230,7 @@ def do_corpus(alvo, escrito, chave, ver=False, manter=None):
             uma_linha = u" ".join(t.split())
             print(u"  [%2d] %4d p.  %s%s" % (i, len(t.split()), uma_linha[:96],
                                              u"..." if len(uma_linha) > 96 else u""))
-        print(u"\n  para colar um recorte:  python citar.py %s %s --manter 0,3-5" % (escrito, chave))
+        print(u"\n  para colar um recorte:  python _ferramentas/citar.py %s %s --manter 0,3-5" % (escrito, chave))
         return
 
     tipo = inferir_tipo(campos, vid)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Montador do site.
 
-    python montar.py
+    python _ferramentas/montar.py
 
 Fonte em `_fonte/` e `_conteudo/`, saída na raiz. Nada de monolito:
 
@@ -14,7 +14,7 @@ A regra 4 da ESPEC vive aqui: **escrito novo não toca em HTML**. De um único
 Markdown saem três coisas — a página do artigo, a entrada do índice e o cartão
 da capa. Acrescentar um texto é acrescentar um arquivo.
 
-REQUISITO: python-markdown (`pip install -r requirements.txt`).
+REQUISITO: python-markdown (`pip install -r _ferramentas/requirements.txt`).
 """
 import hashlib
 import io, os, re, sys, unicodedata
@@ -22,9 +22,9 @@ import io, os, re, sys, unicodedata
 try:
     import markdown
 except ImportError:
-    sys.exit("falta a dependencia: pip install -r requirements.txt")
+    sys.exit("falta a dependencia: pip install -r _ferramentas/requirements.txt")
 
-RAIZ = os.path.dirname(os.path.abspath(__file__))
+RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # a ferramenta mora em _ferramentas/; a raiz e um andar acima
 PARTES = os.path.join(RAIZ, "_fonte", "partes")
 PAGINAS = os.path.join(RAIZ, "_fonte", "paginas")
 ESCRITOS = os.path.join(RAIZ, "_conteudo", "escritos")
@@ -179,14 +179,14 @@ def carregar_escritos(problemas):
                              u"publica\u00e7\u00e3o, e falta" % nome)
         # A foto e requisito de publicacao (ESPEC 3): uma por escrito, nos
         # dois eixos. Sem ela a capa sai com buraco, e buraco na capa e pior
-        # que atraso. O prompt que a gera esta em PROMPTS.md.
+        # que atraso. O prompt que a gera esta em _doc/PROMPTS.md.
         if meta.get("foto"):
             for eixo in ("media", "larga", "alta"):
                 arq = os.path.join(IMG, "%s-%s.jpg" % (meta["foto"], eixo))
                 if not os.path.isfile(arq):
                     problemas.append(
                         u"%s: falta ativos/img/%s-%s.jpg — gere pelo prompt "
-                        u"de PROMPTS.md" % (nome, meta["foto"], eixo))
+                        u"de _doc/PROMPTS.md" % (nome, meta["foto"], eixo))
         corpo = render_verbetes(corpo, slug, rascunho, problemas)
         meta.update({
             "slug": slug,

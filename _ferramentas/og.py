@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Gera as imagens de compartilhamento — uma por escrito, mais a do site.
 
-    python og.py
+    python _ferramentas/og.py
 
 Link compartilhado sem `og:image` renderiza caixa cinza, e todo o tráfego
 previsto vem do Instagram: são justamente as semanas de divulgação que rodariam
@@ -17,7 +17,7 @@ faltar imagem, ou se ela for mais velha que o Markdown que a originou.
 """
 import io, os, re, sys, glob
 
-RAIZ = os.path.dirname(os.path.abspath(__file__))
+RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # a ferramenta mora em _ferramentas/; a raiz e um andar acima
 ESCRITOS = os.path.join(RAIZ, "_conteudo", "escritos")
 ATIVOS = os.path.join(RAIZ, "ativos")
 SAIDA = os.path.join(ATIVOS, "og")
@@ -36,7 +36,7 @@ SAIDA = os.path.join(ATIVOS, "og")
 # `-alta` no post em pe. Cortar contra o eixo esmaga o desenho.
 #
 # O titulo mora onde a foto reserva o quase-preto: na esquerda da deitada, no
-# rodape da em pe (PROMPTS.md). Rotulo em --acento-claro, porque o pinho de
+# rodape da em pe (_doc/PROMPTS.md). Rotulo em --acento-claro, porque o pinho de
 # #245C53 sobre o quase-preto da 2,47:1 e some.
 FORMATOS = (
     dict(sufixo=u"", larg=1200, alt=630, eixo=u"larga",
@@ -155,7 +155,7 @@ def main():
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
-        sys.exit(u"playwright ausente: pip install -r requirements.txt "
+        sys.exit(u"playwright ausente: pip install -r _ferramentas/requirements.txt "
                  u"&& playwright install")
 
     if not os.path.isdir(SAIDA):
