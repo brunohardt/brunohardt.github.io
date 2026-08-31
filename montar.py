@@ -35,7 +35,10 @@ MES = ["", "janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho",
 
 
 def ler(p):
-    return io.open(p, encoding="utf-8", newline="\n").read()
+    # normaliza o fim de linha na leitura: as expressoes que acham os blocos
+    # de prova casam com \n, e um checkout com autocrlf=true transforma o
+    # arquivo em CRLF sem ninguem pedir (aconteceu no merge da estreia).
+    return io.open(p, encoding="utf-8", newline="\n").read().replace("\r\n", "\n")
 
 
 def escrever(p, s):

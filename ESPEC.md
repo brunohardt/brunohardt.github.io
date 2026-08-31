@@ -150,7 +150,14 @@ Peça errada se corrige; publicado erra na frente de todo mundo.
   gambiarra, e gambiarra em CSS é o que estoura em 320px. Sem o script as réguas
   continuam navegando o trilho, e nenhum escrito fica inalcançável.
 - **Zero rastreador, zero cookie, zero coleta.**
-- Contraste **AA** em claro e escuro, os dois testados separadamente.
+- **O site é claro, e só claro.** Não há tema escuro: quem estiver com o
+  sistema em modo escuro recebe a mesma página marfim. Foi decisão do Bruno em
+  30/08/2026, depois de ver a estreia no ar em modo noturno e não reconhecer o
+  design que aprovou. O preço está aceito: leitor de tela escura recebe uma
+  página clara, e a paleta escura que existia foi apagada, não desligada.
+- Contraste **AA**, medido também com `prefers-color-scheme: dark` — ali o teste
+  não mede uma segunda paleta, mede que ela não voltou: se o fundo deixar de ser
+  marfim sob modo escuro, a montagem para.
 - Nenhum estouro horizontal de 320px a 1600px.
 - Toda animação dentro de `prefers-reduced-motion: no-preference`, e o
   **estado-base é o final** — quem pede movimento reduzido recebe a página
@@ -170,7 +177,7 @@ Peça errada se corrige; publicado erra na frente de todo mundo.
 
 | | |
 |---|---|
-| Fundo | marfim `--papel` · faixa `--papel-2` · escuro |
+| Fundo | marfim `--papel` · faixa `--papel-2` — sem tema escuro |
 | Tinta | `--tinta` · secundária `--tinta-2` · muda `--mudo` |
 | Acento | **um só**: pinho `--acento` |
 | Marca | **Prata** (família `Marca`), caixa-alta, entreletra larga |

@@ -61,7 +61,10 @@
    TOKENS — marfim e pinho
    ========================================================================= */
 :root{
-  color-scheme:light dark;
+  /* o site e claro, e so claro: decisao do Bruno em 30/08/2026.
+     `light` fixo mantem barra de rolagem e controle nativo em claro
+     mesmo com o sistema do leitor em modo escuro. */
+  color-scheme:light;
 
   --papel:#FBF9F2;         /* marfim quente */
   --papel-2:#F2EFE3;       /* faixa do rodapé, cartão */
@@ -83,24 +86,8 @@
   --larg:1280px;
   --ease:cubic-bezier(.22,.7,.2,1);
 }
-@media (prefers-color-scheme:dark){
-  :root{
-    --papel:#12161A;
-    --papel-2:#171C21;
-    --tinta:#EDEAE0;
-    --tinta-2:#C6C8C1;
-    --mudo:#969C9C;
-    --acento:#7FCFBD;
-    --linha:#282F34;
-    --linha-forte:#3A4348;
-    --separador:#6C7579;
-    --foco:#7FCFBD;
-    --barra:rgba(18,22,26,.92);
-  }
-}
 @media (prefers-contrast:more){
   :root{--mudo:#454D51;--linha:#B9B09A}
-  @media (prefers-color-scheme:dark){:root{--mudo:#B9BEBE;--linha:#485258}}
 }
 
 /* ============================================================================

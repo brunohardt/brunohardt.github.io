@@ -36,7 +36,10 @@ def paginas_geradas():
 
 
 def ler(p):
-    return io.open(p, encoding="utf-8", newline="\n").read()
+    # normaliza o fim de linha na leitura: as expressoes que acham os blocos
+    # de prova casam com \n, e um checkout com autocrlf=true transforma o
+    # arquivo em CRLF sem ninguem pedir (aconteceu no merge da estreia).
+    return io.open(p, encoding="utf-8", newline="\n").read().replace("\r\n", "\n")
 
 
 def rel(p):
@@ -463,12 +466,25 @@ def checar_no_navegador(paginas):
         for p in paginas:
             url = "file:///" + p.replace("\\", "/")
 
-            # 6. contraste AA, os dois temas testados separadamente
+            # 6. contraste AA sob os dois ajustes de sistema.
+            #
+            # O site nao tem tema escuro: e claro, e so claro (ESPEC 2.3). O
+            # passe com color_scheme="dark" nao existe mais para medir uma
+            # segunda paleta -- existe para provar que ela nao voltou. Se
+            # alguem reintroduzir um @media (prefers-color-scheme:dark), o
+            # fundo deixa de ser marfim aqui e a montagem para.
             for tema in ("light", "dark"):
                 pag = navegador.new_page(color_scheme=tema, viewport={"width": 1280, "height": 900})
                 pag.goto(url)
                 for achado in pag.evaluate(JS_CONTRASTE):
                     ruins.append(u"%s [%s]: contraste %s" % (rel(p), tema, achado))
+                if tema == "dark":
+                    fundo = pag.evaluate(
+                        "getComputedStyle(document.body).backgroundColor")
+                    if fundo.replace(" ", "") not in ("rgb(251,249,242)", "rgb(242,239,227)"):
+                        ruins.append(
+                            u"%s: com o sistema em modo escuro o fundo virou %s "
+                            u"- o site e claro, e so claro" % (rel(p), fundo))
                 pag.close()
 
             # 7. movimento: quem pede redução recebe a página pronta

@@ -1,3 +1,12 @@
 # a pagina foi auditada byte a byte em LF; manter assim no checkout
 *.html text eol=lf
 .nojekyll text eol=lf
+
+# O montador e o verificador acham os blocos de prova por expressao com 
+.
+# Um `git checkout` com autocrlf=true trocava para CRLF e a prova sumia --
+# aconteceu no merge da estreia, em 30/08/2026.
+*.md    text eol=lf
+*.css   text eol=lf
+*.js    text eol=lf
+*.py    text eol=lf
