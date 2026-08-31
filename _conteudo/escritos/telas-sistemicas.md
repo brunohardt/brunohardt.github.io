@@ -1,6 +1,6 @@
 ---
 titulo: A empresa cobra, o cliente nega: de quem é a prova?
-dek: A defesa clássica é o print do próprio sistema – que prova só que o registro existe. O que os tribunais têm exigido no lugar dele.
+dek: A resposta clássica da empresa é o print do próprio sistema – que prova só que o registro existe. O que os tribunais têm exigido no lugar dele.
 chamada: A captura de tela do sistema interno é documento que a parte produz sozinha, sobre si mesma. O que os tribunais têm exigido além dela.
 categoria: Prova
 foto: vidro
