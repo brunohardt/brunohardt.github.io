@@ -510,7 +510,9 @@ a:focus-visible{
   padding-top:clamp(20px,2.6vw,28px);border-top:1px solid var(--linha-forte);
   display:grid;gap:clamp(16px,2vw,22px);
 }
-@media (min-width:640px){.ficha{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* quatro itens: 2x2 a partir de 640px. Tres colunas deixariam o ultimo
+   sozinho numa segunda linha, e a Formacao pede largura para o titulo. */
+@media (min-width:640px){.ficha{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .ficha div{display:grid;gap:.4em}
 .ficha dt{
   font-family:var(--sans);font-size:.76rem;font-weight:560;

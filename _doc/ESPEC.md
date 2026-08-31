@@ -260,8 +260,8 @@ Nenhum valor de cor, corpo ou espaço é escrito à mão fora de
 | **Capa** (`index.html`) | capa de revista pura: o trilho em destaque (§4.1) e os demais em cartões |
 | **Escritos** | índice completo, datado; a busca nasce aqui quando houver ~10 textos |
 | **Escrito** | faixa, título, dek, data, corpo, blocos de prova com o rótulo do tipo |
-| **Atuação** | três áreas, dois ou três parágrafos cada — não lista de tópicos |
-| **Sobre** | foto, e-mail, cartão `.vcf`, localização, formação e comissões |
+| **Atuação** | três áreas, dois ou três parágrafos cada — não lista de tópicos; o concurso público é recorte dentro de Direito público, nunca quarta área (§4.2) |
+| **Sobre** | foto, e-mail, cartão `.vcf`, localização, formação, trajetória (§4.2) e comissões |
 
 Cada uma é página própria: menu que aponta para âncora da mesma página é
 incoerente.
@@ -304,6 +304,66 @@ por isso perde o visitante que chega sem conhecê-lo. A fonte de tráfego previs
 
 **Comissão só entra no Sobre depois da nomeação.** Pedir para entrar não é ser
 membro.
+
+### 4.2 O que o Sobre diz de quem ele descreve
+
+Emendado em 31/08/2026, quando o CV chegou e destravou a seção que estava
+parada desde 30/08. O currículo tinha sido escrito para recrutador, e quase
+tudo nele é verdadeiro; o que muda, na página, é o leitor. Estas são as regras
+que sobraram da releitura, e cada uma existe porque uma linha do CV foi
+recusada.
+
+**Casa anterior entra pelo órgão, nunca pela vara ou pela promotoria.**
+"Tribunal de Justiça de Santa Catarina", não "1ª Vara da Comarca de Pomerode".
+O órgão basta para conferir, e a comarca não: as três casas ficam na cidade
+onde ele hoje advoga, inclusive contra o Município, e nomear o gabinete é dizer
+ao juízo que se minutava decisão do outro lado da mesa dele. A Procuradoria-Geral
+do Município de Pomerode entra com o nome inteiro porque órgão de procuradoria
+não tem unidade menor — e porque verificabilidade é o único fundamento pelo qual
+esta seção pode existir.
+
+**Não se contam anos; nomeiam-se casas, num intervalo agregado.** "Seis anos de
+produção jurídica" é a linguagem do currículo, e ali é honesta porque as datas
+estão logo abaixo. Na página, sem as datas ao lado, o número é lido como seis
+anos de advocacia — quando cinco deles são estágio e a inscrição saiu em
+ago/2026. A trajetória é uma frase só, com uma baliza só, e a palavra **estágio**
+aparece com todas as letras. O leitor faz a conta; a página não a faz por ele.
+
+**Resultado de causa não entra, e causa pública não é exceção.** O item mais
+forte do CV era a fundamentação que culminou no RE 1.355.208 (Tema 1.184/STF).
+A §2.1 proíbe menção a caso e a resultado sem abrir exceção para ente estatal,
+repercussão geral ou julgado público. O julgado ser público não muda quem o
+invoca, nem para quê.
+
+**Escritório que contrata é descrito, nunca nomeado.** O trabalho prestado a
+outro escritório entra pelo que é — redação em contencioso, com a data —, e o
+nome fica fora: contratante é cliente, e a relação ser continuada não a torna
+outra coisa. A data importa por um segundo motivo: o trabalho começa em 2024 e
+a inscrição sai em 2026, e o verbo tem de ser um que não pressuponha inscrição.
+**Escrever peça não é postular**, e é essa a diferença que a frase precisa
+carregar.
+
+**Título de terceiro não empresta lastro.** O trabalho de conclusão entra pelo
+título, pela instituição e pelo ano. A orientadora consta da ficha catalográfica
+do próprio trabalho, e nada se perde em verificabilidade ao não repetir aqui o
+nome de uma professora numa página que, por mais sóbria que seja, é publicidade
+de advogado.
+
+**Certificado não é título.** Curso de uso de ferramenta não entra ao lado da
+graduação. O que sustenta competência em IA aplicada é o Ordir e o ferramental —
+que são obra, e obra pesa mais.
+
+**O concurso público é recorte de Direito público, e aparece com a palavra
+"ênfase".** Não "especialista", que a §2.1 proíbe, e não "especialidade", que o
+verificador não pega e a §2.1 alcança do mesmo jeito. O recorte entra na
+`descricao` das duas páginas de propósito: é a única superfície do site que
+trabalha antes do clique, e é decisão de aquisição declarada — num site cuja §1
+diz que não é vitrine de serviços.
+
+> **O método continua sem casa fixa.** O parágrafo do acervo saiu em 30/08 e o
+> CV daria como devolvê-lo pela biografia; ficou decidido esperar o artigo de
+> outubro. O preço segue o mesmo que foi anotado então: até lá, nenhuma página
+> fixa diz ao leitor como a jurisprudência daqui é conferida.
 
 ---
 

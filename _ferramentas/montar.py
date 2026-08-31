@@ -303,7 +303,7 @@ def jsonld_pessoa():
   "jobTitle": "Advogado", "url": "%(s)s",
   "email": "hardtbruno@hotmail.com", "telephone": "+5547992261494",
   "identifier": { "@type": "PropertyValue", "propertyID": "OAB/SC", "value": "79.648" },
-  "knowsAbout": ["Direito público", "Direito criminal", "Direito cível"],
+  "knowsAbout": ["Direito público", "Concurso público", "Direito criminal", "Direito cível"],
   "knowsLanguage": "pt-BR",
   "areaServed": [
     { "@type": "City", "name": "Pomerode", "addressRegion": "SC", "addressCountry": "BR" },
