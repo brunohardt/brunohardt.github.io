@@ -1,17 +1,17 @@
 ---
-titulo: O Tema 929 não foi cancelado
-dek: Uma pesquisa por inteligência artificial afirmou que sim; a página do STJ diz outra coisa. A rotina que ficou do erro – o que se confere, onde e em que momento.
-chamada: Uma pesquisa de inteligência artificial afirmou que sim. A página do tribunal diz outra coisa – e a rotina que pega esse erro antes da petição custa minutos.
+titulo: A IA disse que o Tema 929 foi cancelado. Não foi.
+dek: A frase falsa veio com a mesma fluência das verdadeiras – é assim que essas ferramentas erram. As conferências e as travas que seguram o erro antes da petição.
+chamada: Uma ferramenta de pesquisa afirmou o cancelamento de um tema que segue em julgamento no STJ. O que se confere antes de citar – e as travas que conferem sozinhas.
 categoria: Método
 foto: ardosia
 data: 2026-08-19 20:00
 rascunho: nao
 ---
 
-Em agosto, ao levantar precedentes sobre repetição de indébito, uma ferramenta
-de pesquisa jurídica assistida por inteligência artificial afirmou, com todas as
-letras, que o Tema Repetitivo 929 do Superior Tribunal de Justiça havia sido
-cancelado.
+Em agosto, numa pesquisa de precedentes sobre repetição de indébito, uma
+ferramenta de pesquisa jurídica assistida por inteligência artificial afirmou,
+com todas as letras, que o Tema Repetitivo 929 do Superior Tribunal de Justiça
+havia sido cancelado.
 
 A página do próprio tribunal diz outra coisa.
 
@@ -61,46 +61,38 @@ pedido corriqueiro em ação de consumo. Uma petição que desse o tema por
 cancelado não estaria só desatualizada: estaria afirmando, com número de tema e
 tudo, o contrário do que existe.
 
-## O erro quase passou
+## O erro que não avisa
 
-Convém contar como o erro foi pego, porque não foi por método – e a dica vale
-mais honesta. Foi estranhamento: a afirmação não combinava com o que eu
-lembrava do andamento daquele tema, abri a página do tribunal, e ela dizia o
-contrário. Se o tema fosse outro, um que eu não acompanhasse, o cancelamento
-teria entrado na pesquisa como entra qualquer dado verdadeiro. A rotina da
-próxima seção veio depois, por causa disso: a memória não estará de plantão em
-toda pesquisa, e é por isso que a defesa não pode ser a memória.
+O cancelamento inventado não veio com cara de erro. Veio fluente, sem
+hesitação, sem ressalva, sem mudança de registro – a frase falsa com a mesma
+sintaxe segura das verdadeiras ao redor. É assim que essas ferramentas erram:
+no texto que devolvem, não existe sinal nenhum de qual linha é a que não se
+sustenta. Quem espera notar o erro pelo jeito dele espera um aviso que não
+vem.
 
-O que o episódio ensina é onde essas ferramentas erram – num lugar que o olho
-não alcança. A resposta veio fluente, sem hesitação, sem ressalva, sem mudança
-de registro; a frase falsa tinha a mesma sintaxe segura das verdadeiras ao
-redor. Não há, no texto gerado, nenhum sinal de qual linha é a que não se
-sustenta. E há um agravante com cara de elogio: a ferramenta acerta na maior
-parte das vezes. A que erra sempre é inofensiva, porque ninguém a usa; a que
-quase sempre acerta ensina a confiar, e a confiança baixa a guarda justamente
-na vez em que ela erra. Não existe taxa de acerto que dispense a conferência –
-existe taxa de acerto que a faz parecer dispensável.
+E há um agravante com cara de elogio: elas acertam na maior parte das vezes. A
+ferramenta que erra sempre é inofensiva, porque ninguém a usa; a que quase
+sempre acerta ensina a confiar, e a confiança baixa a guarda justamente na vez
+em que ela erra. Não existe taxa de acerto que dispense a conferência – existe
+taxa de acerto que a faz parecer dispensável. Contra um erro que não avisa,
+atenção não é defesa. Defesa é rotina – e, melhor que rotina, trava que
+funcione sozinha.
 
-## O que conferir, onde e quando
+## O que se confere, onde e quando
 
-A dica não é "confira", que todo mundo dá e não muda hábito nenhum. A dica é o
-que se confere, em que fonte e em que momento – porque é nesses três pontos que
-a conferência de verdade se separa de reler o mesmo resumo com mais atenção.
-
-O que se confere são seis coisas, com o julgado aberto: número do processo,
-classe, órgão julgador, relator, data de julgamento e data de publicação. E uma
-sétima, que é a que decide: se a ementa diz o que a pesquisa afirmou que ela
-diz. Precedente que existe, mas que decide outra coisa, é o erro mais comum
-dessas ferramentas – e o mais difícil de pegar depois, quando o parágrafo já
-está escrito e soa bem.
+A conferência não é reler o resumo com mais atenção. É abrir o julgado e
+comparar seis coisas: número do processo, classe, órgão julgador, relator,
+data de julgamento e data de publicação. E uma sétima, que é a que decide: se
+a ementa diz o que a pesquisa afirmou que ela diz. Precedente que existe, mas
+que decide outra coisa, é o erro mais comum dessas ferramentas – e o mais
+difícil de pegar depois, quando o parágrafo já está escrito e soa bem.
 
 A fonte é a base de jurisprudência, onde está a transcrição do julgado – não a
 resposta gerada sobre ela. São camadas diferentes do mesmo produto: embaixo, o
-acervo; em cima, a prosa que o resume. Perguntar de novo à ferramenta, por
-isso, não confere nada – a segunda resposta sai da mesma camada que a primeira,
-com a mesma fluência. Enunciado de súmula é a exceção, porque súmula não tem
-inteiro teor: o que se confere ali é o texto e a vigência, na página do próprio
-tribunal.
+acervo; em cima, a prosa que o resume. Perguntar de novo à ferramenta não
+confere nada – a segunda resposta sai da mesma camada que a primeira, com a
+mesma fluência. Enunciado de súmula é a exceção, porque súmula não tem inteiro
+teor: o texto e a vigência se conferem na página do próprio tribunal.
 
 Mesmo quando o resumo acerta, ele perde. Ementa resumida por terceiro é resumo
 de resumo – a ementa já é a síntese que o tribunal fez do acórdão –, e o que
@@ -109,44 +101,62 @@ se provou e o que não se provou naqueles autos. Em direito do consumidor, é a
 moldura fática que diz se o precedente serve ao caso.
 
 O momento é o primeiro uso, na hora em que o julgado já está aberto na tela –
-ali custa minutos, e aquele julgado nunca mais entra numa peça sem ter sido
-lido. Deixar para depois é criar um mutirão de cinquenta acórdãos que nunca
-acontece.
+ali custa minutos. Deixar para depois é criar um mutirão de cinquenta acórdãos
+que nunca acontece.
 
 ## Andamento envelhece sozinho
 
-Se a atenção tiver de ser desigual, que pese na categoria do andamento – e o
-Tema 929 é dela. Ementa de acórdão transitado é um fato estável, e um resumo
-dela erra pouco quanto ao que foi decidido. Já a situação de um tema repetitivo
-é um estado, e estado muda: afeta, suspende, desafeta, julga, transita. Um
-texto que descreve um estado envelhece sozinho, sem que ninguém o altere – o
-resumo que era verdadeiro em 2023 amanhece falso numa quarta-feira qualquer, e
-segue circulando com a mesma cara. O mesmo vale para incidente de resolução de
-demandas repetitivas e para súmula em revisão.
+A conferência é mais urgente numa categoria: a do andamento – e o Tema 929 é
+dela. Ementa de acórdão transitado é um fato estável, e um resumo dela erra
+pouco quanto ao que foi decidido. Já a situação de um tema repetitivo é um
+estado, e estado muda: afeta, suspende, desafeta, julga, transita. Um texto
+que descreve um estado envelhece sozinho, sem que ninguém o altere – o resumo
+que era verdadeiro em 2023 amanhece falso numa quarta-feira qualquer, e segue
+circulando com a mesma cara. O mesmo vale para incidente de resolução de
+demandas repetitivas e para súmula em revisão; vale, com força, para a
+peça-modelo que afirma "o tema segue suspenso" e envelhece dentro da pasta,
+sem avisar. Modelo não se confere uma vez; confere-se a cada uso.
 
-A consequência menos óbvia é com os modelos. Peça-modelo que afirma andamento –
-"o tema segue suspenso", "pendente de julgamento" – é texto que descreve
-estado, e envelhece do mesmo jeito, dentro da pasta, sem avisar. Modelo não se
-confere uma vez; confere-se a cada uso.
+## As travas que conferem sozinhas
 
-Nesses casos, ter conferido um dia não basta – a data da consulta é parte da
-afirmação. É por isso que, no trecho lá de cima, a data do acesso está impressa
-junto com o andamento: sem ela, este texto estaria a um julgamento de distância
-de cometer o erro que descreve.
+Rotina que depende de disciplina falha justamente no dia mais cheio. Por isso,
+na prática que sustenta estas páginas, os cuidados de cima viraram travas –
+gravadas em ferramenta, não em memória. Três valem o relato, porque nenhuma
+exige mais do que decidir onde a conferência mora.
 
-## A regra que ficou
+A primeira é o estado gravado no próprio julgado. Todo acórdão entra no acervo
+de trabalho marcado como não conferido, e assim permanece até que alguém abra
+o inteiro teor e compare – uma vez, para sempre. Enquanto a marca não muda,
+nada que cite aquele julgado monta: a peça não fecha, e a recusa nomeia o
+julgado que faltou conferir. O "confiro depois" deixa de ser promessa porque o
+depois é bloqueado.
 
-Nada disso é novidade, e a regra não é minha. "Só cite o que você leu" é
-conselho de primeiro dia de estágio. O que mudou foi o adversário: o resumo de
-terceiro, que já foi ementa copiada às pressas, hoje é um parágrafo que escreve
-bem, acerta quase sempre e erra com a mesma cara com que acerta.
+A segunda é a comparação com a fonte, caractere a caractere. Nada é
+redigitado: a citação entra por extração, o que se recorta vira […] no lugar
+exato do corte, e, na montagem, cada trecho citado é confrontado com o
+documento de origem. Divergência interrompe e aponta o caractere em que os
+textos se separam. É uma máquina burra de propósito: ela não entende o que lê,
+e por isso a fluência não a convence – distingue o certo do errado do único
+jeito que não falha, comparando.
 
-Mudou também o tamanho da aposta, conforme onde o erro cai. Numa petição,
-precedente errado se corrige nos autos – constrange, custa credibilidade com o
-juízo, e acaba ali. Publicado, fica: indexado, citável por quem leu e
-acreditou, afirmando o que não é verdade muito depois de o autor ter mudado de
-ideia. A régua sobe junto com a duração do texto.
+A terceira já apareceu neste texto: a data impressa. Consulta de andamento sai
+com a data do acesso ao lado, como no bloco lá de cima – porque andamento é
+estado, e a afirmação sobre um estado não vale sem a data em que foi
+verdadeira.
 
-A regra que ficou é curta, e serve em qualquer mesa: jurisprudência nunca de
-memória, nunca de resumo de terceiro. Só se cita o que se abriu – e, quando o
-que se cita é andamento, o que se abriu no mês passado já é memória.
+Nenhuma das três pede ferramenta especial. A versão mínima, sem uma linha de
+código, é a mesma em espírito: os julgados do escritório num lugar só, cada um
+com a anotação de conferido ou não, e nenhuma citação saindo de outro lugar.
+
+## A regra embaixo das travas
+
+Nada disso é novidade. "Só cite o que você leu" é conselho de primeiro dia de
+estágio. O que mudou foi o adversário: o resumo de terceiro, que já foi ementa
+copiada às pressas, hoje é um parágrafo que escreve bem, acerta quase sempre e
+erra com a mesma cara com que acerta. E mudou o alcance do erro: numa petição,
+o precedente errado se corrige nos autos; publicado, fica – indexado, citável,
+afirmando o que não é verdade muito depois da correção.
+
+A regra embaixo de tudo continua curta: jurisprudência nunca de memória, nunca
+de resumo de terceiro. Só se cita o que se abriu – e, quando o que se cita é
+andamento, o que se abriu no mês passado já é memória.
