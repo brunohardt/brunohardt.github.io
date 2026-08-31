@@ -22,34 +22,29 @@ ESCRITOS = os.path.join(RAIZ, "_conteudo", "escritos")
 ATIVOS = os.path.join(RAIZ, "ativos")
 SAIDA = os.path.join(ATIVOS, "og")
 
-# Duas chapas por escrito, do mesmo guilhoche (ESPEC 7): a previa de link, que
-# e deitada, e o post do Instagram, que e em pe. Sao trabalhos diferentes e um
-# nao substitui o outro -- recortar a deitada em quadrado perde o titulo pelas
-# bordas, porque ela foi desenhada deitada. So a primeira e exigida pela
-# montagem; a de feed nao afeta o site e por isso nao derruba o build.
-# A arte e uma so, reaproveitada em todo escrito -- e o que a Sullivan &
-# Cromwell faz na peca editorial: forma abstrata neutra, dois tons, contraste
-# baixo, sem relacao com o assunto do texto. Quem carrega o sentido e o titulo.
+# Duas chapas por escrito (ESPEC 7): a previa de link, que e deitada, e o post
+# do Instagram, que e em pe. Sao trabalhos diferentes e um nao substitui o
+# outro -- recortar a deitada em 4:5 perde o titulo pelas bordas.
 #
-# Cada formato usa a arte cortada no proprio eixo longo: a em pe na tarja
-# vertical da previa, a deitada na faixa do feed. Cortar contra o eixo esmaga
-# o desenho e some com o movimento das linhas.
+# Desde 30/08/2026 a chapa e a MESMA FOTO da capa do escrito, sangrando pelos
+# quatro lados, com o titulo em marfim por cima. Antes era arte abstrata unica
+# com a tipografia ao lado, no marfim; mudou porque quem ve o card e clica
+# precisa encontrar a mesma imagem do outro lado do clique. Card, capa e artigo
+# sao uma linguagem so.
 #
-# A tipografia nunca fica POR CIMA da arte: fica ao lado, no marfim. E assim
-# na referencia, e e o que mantem o titulo legivel.
+# Cada formato usa a foto do proprio eixo: a `-larga` na previa deitada, a
+# `-alta` no post em pe. Cortar contra o eixo esmaga o desenho.
+#
+# O titulo mora onde a foto reserva o quase-preto: na esquerda da deitada, no
+# rodape da em pe (PROMPTS.md). Rotulo em --acento-claro, porque o pinho de
+# #245C53 sobre o quase-preto da 2,47:1 e some.
 FORMATOS = (
-    dict(sufixo=u"", larg=1200, alt=630,
-         pad=u"74px 78px", alto=u"100%",
-         arte=u"onda-alta.jpg",
-         tarja=u"right:0;top:0;width:504px;height:100%",
-         caixa=u"inset:0 504px 0 0",
+    dict(sufixo=u"", larg=1200, alt=630, eixo=u"larga",
+         pad=u"74px 78px", caixa=u"inset:0 42% 0 0",
          regua=6, rotulo_px=19, gap=26, marca_px=30, oab_px=17,
          corpos=(64, 54, 46)),
-    dict(sufixo=u"-feed", larg=1080, alt=1350,
-         pad=u"104px 92px", alto=u"100%",
-         arte=u"onda-larga.jpg",
-         tarja=u"left:0;top:0;width:100%;height:700px",
-         caixa=u"inset:700px 0 0 0",
+    dict(sufixo=u"-feed", larg=1080, alt=1350, eixo=u"alta",
+         pad=u"104px 92px", caixa=u"inset:48% 0 0 0",
          regua=8, rotulo_px=23, gap=34, marca_px=38, oab_px=21,
          corpos=(96, 82, 68)),
 )
@@ -93,32 +88,32 @@ CARTAO = u"""<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
   *{margin:0;padding:0;box-sizing:border-box}
   body{
     width:%(larg)dpx;height:%(alt)dpx;overflow:hidden;position:relative;
-    background:#FBF9F2;color:#14181A;
+    background:#14181A;color:#FBF9F2;
   }
-  /* a arte ocupa uma tarja inteira e sangra: presença, não ilustração */
-  .figura{position:absolute;%(tarja)s;object-fit:cover;display:block}
-  .regua{position:absolute;left:0;top:0;width:100%%;height:%(regua)dpx;background:#245C53}
+  /* a foto sangra pelos quatro lados: a chapa e a capa, no formato do card */
+  .figura{position:absolute;inset:0;width:100%%;height:100%%;object-fit:cover;display:block}
+  .regua{position:absolute;left:0;top:0;width:100%%;height:%(regua)dpx;background:#5FA394}
   .caixa{
     position:absolute;%(caixa)s;padding:%(pad)s;
     display:flex;flex-direction:column;justify-content:space-between;
   }
-  .alto{max-width:%(alto)s}
   .rotulo{
     font-family:"Grotesca",sans-serif;font-size:%(rotulo_px)dpx;font-weight:600;
-    letter-spacing:.15em;text-transform:uppercase;color:#245C53;
+    letter-spacing:.15em;text-transform:uppercase;color:#5FA394;
     margin-bottom:%(gap)dpx;
   }
   h1{
     font-family:"Serifada",Georgia,serif;font-weight:500;
     font-size:%(corpo)dpx;line-height:1.08;letter-spacing:-.006em;
-    color:#14181A;text-wrap:balance;
+    color:#FBF9F2;text-wrap:balance;
   }
-  .baixo{display:flex;align-items:baseline;gap:20px}
+  /* a marca nao quebra: "BRUNO" numa linha e "HARDT" na outra e outra marca */
+  .baixo{display:flex;align-items:baseline;gap:20px;white-space:nowrap}
   .marca{
     font-family:"Marca","Serifada",Georgia,serif;font-size:%(marca_px)dpx;
-    letter-spacing:.095em;text-transform:uppercase;color:#14181A;
+    letter-spacing:.095em;text-transform:uppercase;color:#FBF9F2;
   }
-  .oab{font-family:"Grotesca",sans-serif;font-size:%(oab_px)dpx;font-weight:450;color:#5F686C}
+  .oab{font-family:"Grotesca",sans-serif;font-size:%(oab_px)dpx;font-weight:450;color:#B9CFC8}
 </style></head><body>
   <img class="figura" src="%(figura)s" alt="">
   <div class="regua"></div>
@@ -173,12 +168,23 @@ def main():
         if not meta:
             print(u"  %s: sem metadados, pulado" % slug)
             continue
+        if not meta.get("foto"):
+            print(u"  %s: sem campo 'foto', pulado" % slug)
+            continue
         chapas.append((slug,
                        meta.get("categoria", u"Escrito"),
-                       meta.get("titulo", slug)))
+                       meta.get("titulo", slug),
+                       meta["foto"],
+                       meta.get("data", u"")))
 
-    # a chapa do site: capa, atuação, sobre e índice compartilham esta
-    chapas.append((u"site", u"Escritos", u"Bruno Hardt"))
+    # A chapa do site -- capa, atuacao, sobre e indice compartilham esta -- usa
+    # a foto do escrito mais recente, que e a mesma que abre a capa. Card e
+    # capa mostram a mesma imagem tambem aqui.
+    recentes = sorted((c for c in chapas if c[4]), key=lambda c: c[4],
+                      reverse=True)
+    if recentes:
+        chapas.append((u"site", u"Escritos", u"Bruno Hardt",
+                       recentes[0][3], u""))
 
     temp = os.path.join(SAIDA, "_chapa.html")
     with sync_playwright() as pw:
@@ -187,8 +193,8 @@ def main():
             pag = navegador.new_page(
                 viewport={"width": f["larg"], "height": f["alt"]},
                 device_scale_factor=1)
-            arte = uri(os.path.join("img", f["arte"]))
-            for slug, rotulo, titulo in chapas:
+            for slug, rotulo, titulo, foto, _ in chapas:
+                arte = uri(os.path.join("img", "%s-%s.jpg" % (foto, f["eixo"])))
                 io.open(temp, "w", encoding="utf-8", newline="\n").write(
                     cartao(rotulo, titulo, arte, f))
                 pag.goto("file:///" + temp.replace("\\", "/"))

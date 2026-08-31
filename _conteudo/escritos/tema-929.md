@@ -3,7 +3,7 @@ titulo: O Tema 929 não foi cancelado
 dek: Um erro de pesquisa automatizada, a conferência na fonte, e o que isso ensina.
 chamada: Uma pesquisa de inteligência artificial afirmou que sim. A fonte diz o contrário - e é por isso que jurisprudência não se cita de resumo.
 categoria: Método
-guilhoche: 3
+foto: ardosia
 rascunho: sim
 ---
 

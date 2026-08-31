@@ -34,7 +34,7 @@
 <link rel="preload" href="./ativos/marca.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="./ativos/serif.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="./ativos/sans.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="./ativos/estilo.css?v=14894462">
+<link rel="stylesheet" href="./ativos/estilo.css?v=08c18a29">
 
 <script type="application/ld+json">
 {
@@ -106,26 +106,26 @@
   </div>
 </header>
 
-<main id="miolo" class="envelope">
+<!-- sem `envelope`: a lamina sangra borda a borda, e quem volta a
+     medida de 1280 e a grade, num envelope proprio (ESPEC 4.1). -->
+<main id="miolo">
   <h1 class="so-leitor">Bruno Hardt &#8212; advogado, OAB/SC n.&#160;79.648</h1>
 
   <section class="vitrine" aria-labelledby="vit">
     <h2 class="so-leitor" id="vit">Em destaque</h2>
     <div class="trilho" tabindex="0" role="region" aria-label="Escritos em destaque, rol&#225;vel na horizontal">
       <article class="lamina" id="e1">
-        <div class="lamina-interna">
-          <img class="guilhoche" src="ativos/guilhoche-1.svg" alt="" width="1000" height="1000">
-          <div>
-            <p class="rotulo">Responsabilidade civil</p>
-            <h2><a href="escritos/sumula-479.html">A Súmula 479 e o que ela não alcança</a></h2>
-            <p class="dek">Que a instituição financeira responde pela fraude de terceiro já está pacificado. A questão interessante é outra: onde os tribunais têm dito que a súmula para.</p>
-            <span class="data">30 de agosto de 2026</span>
-          </div>
+        <img class="lamina-foto" src="ativos/img/papel-media.jpg"
+             srcset="ativos/img/papel-media.jpg 1200w, ativos/img/papel-larga.jpg 2400w"
+             sizes="100vw" alt="" fetchpriority="high">
+        <div class="lamina-texto">
+          <h2><a href="escritos/sumula-479.html">A Súmula 479 e o que ela não alcança</a></h2>
         </div>
       </article>
     </div>
   </section>
 
+  <div class="envelope">
   <section class="secao" aria-labelledby="esc">
     <div class="cabeca">
       <h2 class="rotulo" id="esc">Mais escritos</h2>
@@ -139,10 +139,11 @@
           <p class="dek">Documento unilateral, ônus da prova e o problema de provar fato negativo.</p>
           <span class="data">12 de agosto de 2026</span>
         </div>
-        <img class="figura" src="ativos/guilhoche-2.svg" alt="" width="1000" height="1000">
+        <img class="figura" src="ativos/img/vidro-media.jpg" alt="" loading="lazy">
       </li>
     </ul>
   </section>
+  </div>
 
 </main>
 

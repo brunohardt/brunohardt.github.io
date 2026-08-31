@@ -183,30 +183,70 @@ Peça errada se corrige; publicado erra na frente de todo mundo.
 | Marca | **Prata** (família `Marca`), caixa-alta, entreletra larga |
 | Título e corpo | **Crimson Pro** (família `Serifada`), garalda |
 | Rótulo, dek, data, navegação | **Archivo** (família `Grotesca`) |
-| Figura | na página, guilhoché gerado, um por escrito · nas chapas de compartilhamento, a arte de ondas, uma só para todas |
+| Figura | **fotografia**, uma por escrito, em dois eixos - a mesma imagem na capa, na faixa do artigo e nas chapas de compartilhamento |
 
 **A regra tipográfica, medida no site da S&C:** serifada só em título, marca e
 corpo. Rótulo, data e navegação são grotesca. **Data em serifada é o que faz um
 site parecer blog.**
 
-As figuras **da página** são geradas por `guilhoche.py`, nunca desenhadas:
-variante nova é parâmetro novo, não arquivo novo. A faixa larga do topo do
-artigo usa **variantes horizontais da curva de interferência** — a roseta não
-sobrevive ao recorte em 16:5, e uma forma espelhada por acidente é pior que
-figura nenhuma.
+**Desde 30/08/2026 toda figura do site é fotografia gerada por prompt**, e não
+desenho gerado por script. O guilhoché saiu - dele, do `guilhoche.py` e dos seis
+SVG. Os prompts estão em `PROMPTS.md`, no repositório, pelo mesmo motivo que o
+`guilhoche.py` estava: são a origem das imagens, e origem que vive só numa
+conversa de gerador não é recuperável.
 
-**As chapas de compartilhamento são a exceção, e ela foi medida na S&C.** Ali a
-peça editorial não traz ilustração feita para o texto: traz uma forma abstrata
-neutra, de dois tons e contraste baixo, **reaproveitada em toda publicação** —
-o mesmo arquivo aparece embaixo de qualquer título. Quem carrega o sentido é o
-título, e a imagem existe para dar peso, não para explicar.
+A referência continua sendo a S&C, e ela é a do *hero*: fotografia escura,
+sangrando de borda a borda, com o título em marfim por cima. **Isto revoga a
+regra de 30/08 segundo a qual a tipografia nunca fica sobre a arte.** Ela existia
+porque a arte de então era clara, de dois tons, e branco sobre ela dava 1,6:1. A
+arte agora é escura por composição: metade do quadro é quase-preta *porque é ali
+que o título vai*.
 
-Por isso a chapa usa `ativos/img/onda-alta.jpg` e `ativos/img/onda-larga.jpg`,
-uma arte só para todos os escritos: ondas em marfim sobre pedra, sangrando pelos
-quatro lados. Cada formato usa a que se corta no **próprio eixo longo** — a em
-pé na tarja vertical da prévia, a deitada na faixa do feed —, porque cortar
-contra o eixo esmaga o desenho. E **a tipografia nunca fica por cima da arte:**
-fica ao lado, no marfim, que é o que mantém o título legível.
+**Uma foto por escrito, declarada no `foto:` do frontmatter**, e não uma arte
+única reaproveitada. Isso também revoga a regra anterior, e o custo é explícito:
+cada escrito passa a dever **duas gerações** - uma deitada e uma em pé -, e sem
+elas o site não monta. A dívida nasceu quitada, porque os três prompts cobrem os
+três escritos que existem, e **vence no quarto texto**, em novembro, que é
+justamente quando o estoque acaba. Se em algum momento a foto virar o que atrasa
+a publicação, é esta decisão que se revê primeiro, não a cadência.
+
+| Escrito | Motivo | Por quê |
+|---|---|---|
+| `telas-sistemicas` | vidro canelado | vê-se a luz, não se vê o que está atrás |
+| `sumula-479` | bordas de papel | o autos, de perfil |
+| `tema-929` | ardósia | a fonte, e o que nela está gravado |
+
+A afinidade entre motivo e assunto é escolha assumida, e ela contraria o que a
+S&C faz - lá a imagem dá peso e não explica. Com foto por escrito essa fronteira
+já tinha caído; melhor cair de propósito.
+
+**Cada eixo se corta no próprio eixo longo.** A deitada nasce em 16:9 e serve a
+lâmina (3,2:1), a faixa do artigo (16:5), o cartão da grade (16:7) e a prévia de
+link (1,9:1) - todos cortes no eixo curto, que a textura macro atravessa sem
+sofrer. A em pé nasce em 3:4 e serve o post do feed (4:5). Cortar contra o eixo
+esmaga o desenho, e foi por isso que a arte anterior também tinha dois arquivos.
+
+**A foto chega de 2 a 4 MB e não é isso que se serve.** `receber.py` produz três
+arquivos por motivo: `-media` (1200px), que é o que o telefone baixa e o que a
+faixa e o cartão usam sempre; `-larga` (2400px), o candidato grande do `srcset`
+da lâmina e a fonte do `og.py`; e `-alta` (1800px, em pé), que não é servida a
+ninguém - só o `og.py` a usa. A maior parte da audiência vem do Instagram, no
+telefone: mandar 2400px para pintar uma faixa de 390 CSS px é o desperdício que
+espremer qualidade não conserta. A qualidade não é fixa, o teto de peso é que
+manda - textura fina é o pior caso do JPEG e custa o dobro de uma foto lisa.
+
+**A metade reservada é composição, não sobra.** Deitada: a metade esquerda, de
+topo a base, porque o título recua na medida de 1280 e fica alinhado com a marca.
+Em pé: a metade de baixo, de ponta a ponta.
+
+**Prompt não é determinístico, então o que trava a qualidade é a medida.** O
+`verificar.py` mede cada foto: luminância média e percentil 90 da metade
+reservada, matiz do verde, proporção e tamanho. Só a média deixaria passar a foto
+com uma veia clara atravessando exatamente onde o título cai.
+
+`--acento-claro` (#5FA394) existe por causa disso: `--acento` é #245C53 e dá
+**2,47:1** sobre o quase-preto - some. Não é acento novo, é o mesmo pinho na
+luminância que a superfície escura pede.
 
 Nenhum valor de cor, corpo ou espaço é escrito à mão fora de
 `ativos/estilo/10-tokens.css`.
@@ -234,6 +274,17 @@ Nenhum campo marca destaque — a regra é a recência, e o frontmatter não tem
 `destaque`. Escolher a manchete à mão todo mês é passo manual que nada verifica,
 e num sistema que já depende inteiro da disciplina do autor, um passo manual a
 menos vale mais que a escolha que ele daria.
+
+**A lâmina sangra de borda a borda e traz só o título.** Ela sai do `envelope` -
+a grade volta à medida de 1280 num envelope próprio - e ocupa metade da altura da
+janela, que é o que foi medido no original: 450px numa de 900. Sem rótulo, sem
+dek, sem data: quatro blocos de texto sobre uma fotografia é banner
+institucional, e o hero da referência tem só o título. O dek e a data continuam
+existindo no cartão e na página do escrito, que é onde o leitor decide se lê.
+
+O título recua na medida de 1280 com o mesmo gutter da barra, o que o alinha com
+a marca logo acima - é assim no original. Abaixo de 700px não sobra metade
+esquerda: o título ocupa a largura toda e desce para o rodapé da lâmina.
 
 A referência é a S&C, medida: cinco lâminas com indicadores, 450px de altura numa
 janela de 900, e dezessete cartões abaixo. Dela não se copia o número, e sim a
@@ -270,8 +321,9 @@ ativos/estilo/                 ESTILO — um módulo por assunto
   50-cartoes 60-rodape 70-leitura 90-movimento
 montar.py                      MONTAGEM (monta e verifica)
 citar.py                       cola o bloco de prova dentro de um escrito
-guilhoche.py                   gera as epitrocoides
-og.py                          as imagens de card, uma por escrito
+receber.py                     a foto que veio de fora vira os tres arquivos do site
+og.py                          as imagens de card, duas por escrito
+PROMPTS.md                     a origem das fotos - o que guilhoche.py era
 verificar.py                   VERIFICAÇÃO
 
 index.html · escritos.html · atuacao.html · sobre.html
@@ -324,17 +376,24 @@ não deixa isso ser uma escolha de quem digita. Verde, commita.
 | Links | href interno aponta para arquivo que não existe |
 | Rascunho | escrito com `rascunho: sim` tem pagina gerada, esta linkado na capa ou no indice, ou vazou o marcador |
 | **Data** | escrito publicado (`rascunho: nao`) sem `data` |
-| **Imagem de card** | falta `ativos/og/<slug>.png`, ou ela e mais velha que o escrito |
+| **Imagem de card** | falta `ativos/og/<slug>.png`, ou ela e mais velha que o escrito **ou que a foto dele** |
+| **Foto do escrito** | falta um dos tres arquivos; passa do teto de peso; a metade reservada nao e escura (media ou p90); o verde esta fora de 148-196 graus; a proporcao contraria o eixo; menos de 2400px na borda longa |
 | Contraste AA | qualquer texto abaixo de 4.5:1 (3:1 se grande), nos dois temas |
 | Movimento | `animation` fora de `prefers-reduced-motion`, **ou o trilho anda sob `reduce`** — medido pela posição, porque timer de JavaScript não aparece em `getComputedStyle` |
 | Estouro | largura de rolagem maior que a janela, de 320 a 1600px |
 
-As oito primeiras são estáticas — leem os arquivos. As três últimas rodam no
-navegador, com Playwright (§2.3).
+As oito primeiras são estáticas — leem os arquivos. As quatro últimas rodam no
+navegador, com Playwright (§2.3). A foto entra no navegador como `data:` URI:
+canvas de origem `file://` fica contaminado e o `getImageData` passa a lançar.
 
 A imagem de card não é gerada pela montagem: abrir navegador para fotografar
-quatro chapas é caro para pagar a cada build. `python og.py` gera; a montagem
+oito chapas é caro para pagar a cada build. `python og.py` gera; a montagem
 apenas recusa publicar sem elas, ou com elas velhas.
+
+**A foto não é gerada por nada aqui** — vem de fora, do prompt em `PROMPTS.md`.
+Por isso ela é o único insumo do site que o repositório não sabe reproduzir, e
+por isso a régua sobre ela é de medida e não de existência: aceitar a imagem que
+voltou sem medi-la seria confiar num gerador que não é determinístico.
 
 > O léxico regulatório é o mesmo padrão que `scripts/verificar_lexico.py` já faz
 > no repositório da advocacia. Vale portar a ideia, não o código.
@@ -351,12 +410,17 @@ apenas recusa publicar sem elas, ou com elas velhas.
   aceitando o custo da migração: `SITE` no `montar.py`, canonical, `og:url` e os
   dois `@id` do JSON-LD, mais todo link já compartilhado apontando para o
   endereço velho.
-- **Duas chapas por escrito**, com a mesma arte de ondas: `og/<slug>.png` em
+- **Duas chapas por escrito, com a foto do próprio escrito**: `og/<slug>.png` em
   1200×630, que é a prévia de link, e `og/<slug>-feed.png` em 1080×1350, que é o
   post do Instagram. São formatos com trabalhos diferentes, e um não substitui o
   outro. A montagem exige só a primeira: link compartilhado sem `og:image`
   renderiza caixa cinza, justamente nas semanas de divulgação. A de feed não
   afeta o site, e por isso não derruba o build.
+- **A chapa é a capa, no formato do card.** Foto sangrando, título em marfim por
+  cima, rótulo em `--acento-claro`. Quem vê o card no Instagram e clica precisa
+  encontrar a mesma imagem do outro lado do clique: card, capa e artigo são uma
+  linguagem só. A chapa do site usa a foto do escrito mais recente, que é a mesma
+  que abre a capa.
 - **O post vem depois do artigo, nunca antes.** O site é a fonte; o Instagram
   (`@hardt.adv`) leva a ele. A conta pessoal não publica escrito — publicidade de
   advogado vive no perfil profissional, que é o alcançado pela §2.1.

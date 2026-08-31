@@ -40,11 +40,12 @@
 .cartao h3 a:hover{text-decoration-color:color-mix(in srgb, currentColor 38%, transparent)}
 .cartao .dek{font-size:.92rem;line-height:1.4}
 .cartao .data{margin-top:auto;padding-top:.7em}
-/* a figura preenche a faixa, como a imagem larga da grade do original: o
-   guilhoche e quadrado, entao ele e recortado — o miolo da roseta e o que
-   interessa, e o recorte deixa a faixa cheia em vez de vazia nas laterais */
+/* a figura preenche a faixa, como a imagem larga da grade do original. A foto
+   nasce em 16:9 e aqui é cortada em 16:7 pelo meio: a metade quase-preta, que
+   é a esquerda, sobra para o cartão como peso — no cartão o título já mora no
+   marfim, embaixo, e não precisa dela. */
 .cartao .figura{
   display:block;width:100%;height:auto;aspect-ratio:16/7;
   object-fit:cover;object-position:center;
-  background:var(--papel-2);border-top:1px solid var(--linha);
+  background:var(--tinta);border-top:1px solid var(--linha);
 }

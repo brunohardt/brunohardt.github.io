@@ -1,46 +1,72 @@
 /* ============================================================================
    A VITRINE — o escrito em destaque
-   Proporções medidas no original: manchete serifada em peso 500, entrelinha
-   1,0, entreletra levemente negativa. Rótulo, dek e data em grotesca.
+
+   Medida no hero da S&C: a lâmina sangra de borda a borda, ocupa metade da
+   altura da janela (450 numa de 900), e traz SÓ o título — sem rótulo, sem dek,
+   sem data. Quatro blocos de texto sobre uma fotografia é banner institucional;
+   um título só é capa de revista.
+
+   O título mora na metade esquerda porque é ali que a foto reserva o
+   quase-preto (PROMPTS.md), e recua na medida de 1280 com o mesmo gutter da
+   barra — é o que o alinha com a marca, logo acima.
    ========================================================================= */
-.vitrine{position:relative;padding-block:clamp(20px,3vw,36px) clamp(30px,4.6vw,52px)}
+.vitrine{position:relative;margin-bottom:clamp(24px,3.4vw,44px)}
 .trilho{
   display:grid;grid-auto-flow:column;grid-auto-columns:100%;
   overflow-x:auto;overscroll-behavior-x:contain;
   scroll-snap-type:x mandatory;scrollbar-width:none;
 }
 .trilho::-webkit-scrollbar{display:none}
-.lamina{scroll-snap-align:start;min-width:0}
-.lamina-interna{display:grid;gap:clamp(20px,3.4vw,48px);align-items:center}
-@media (min-width:700px){
-  .lamina-interna{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr)}
-}
-.guilhoche{
-  display:block;width:100%;height:auto;aspect-ratio:16/10;
-  object-fit:contain;padding:clamp(14px,2.4vw,32px);
-  background:var(--papel-2);border:1px solid var(--linha);
-}
-@media (min-width:700px){.guilhoche{aspect-ratio:4/3}}
 
+.lamina{
+  position:relative;scroll-snap-align:start;min-width:0;
+  height:clamp(330px,50vh,600px);
+  /* enquanto a foto não pinta, o fundo já é escuro: título em marfim sobre
+     marfim é o pisca que a chapa escura existe para evitar */
+  background:var(--tinta);
+}
+.lamina-foto{
+  position:absolute;inset:0;display:block;
+  width:100%;height:100%;object-fit:cover;object-position:center;
+}
+.lamina-texto{
+  position:relative;height:100%;
+  max-width:var(--larg);margin-inline:auto;padding-inline:var(--gutter);
+  display:flex;flex-direction:column;justify-content:center;
+}
 .lamina h2{
-  margin:.34em 0 0;
+  margin:0;max-width:min(46rem,54%);
   font-family:var(--serif);font-weight:500;
-  font-size:clamp(1.9rem,4.6vw,3.4rem);
-  line-height:1.02;letter-spacing:-.005em;text-wrap:balance;
-  color:var(--tinta);
+  font-size:clamp(1.9rem,4.4vw,3.5rem);
+  line-height:1.03;letter-spacing:-.005em;text-wrap:balance;
+  color:var(--sobre-foto);
 }
-.lamina h2 a{text-decoration-color:transparent}
-.lamina h2 a:hover{text-decoration-color:color-mix(in srgb, currentColor 38%, transparent)}
-.lamina .dek{margin:.85em 0 0;max-width:36rem;font-size:1.02rem;line-height:1.45}
-.lamina .data{display:block;margin-top:1.15em}
+.lamina h2 a{color:inherit;text-decoration-color:transparent}
+.lamina h2 a:hover{text-decoration-color:color-mix(in srgb, currentColor 42%, transparent)}
+/* a lâmina inteira é o alvo, como no original; o link continua sendo o título,
+   que é o que o leitor de tela anuncia */
+.lamina h2 a::after{content:"";position:absolute;inset:0}
+.lamina h2 a:focus-visible{outline:2px solid var(--sobre-foto);outline-offset:6px}
 
-.reguas{display:flex;gap:9px;align-items:center;margin-top:clamp(20px,2.8vw,30px)}
-.reguas a{
-  display:block;width:38px;height:2px;background:var(--linha-forte);
-  text-indent:-999em;overflow:hidden;text-decoration:none;
-  transition:background .22s var(--ease);
+/* Abaixo de 700px não sobra metade esquerda: o título ocupa a largura toda e
+   desce para o rodapé da lâmina, onde a foto continua escura. */
+@media (max-width:699px){
+  .lamina-texto{justify-content:flex-end;padding-bottom:clamp(22px,6vw,38px)}
+  .lamina h2{max-width:none}
 }
-.reguas a:hover{background:var(--acento)}
-/* a lamina em que o trilho esta. So faz sentido porque ele anda sozinho */
-.reguas a[aria-current]{background:var(--acento)}
-.reguas a:focus-visible{outline:2px solid var(--foco);outline-offset:6px}
+
+/* as réguas ficam SOBRE a foto, no canto de baixo, como no original */
+.reguas{
+  position:absolute;left:0;right:0;bottom:clamp(16px,2.6vw,30px);
+  max-width:var(--larg);margin-inline:auto;padding-inline:var(--gutter);
+  display:flex;gap:9px;align-items:center;
+}
+.reguas a{
+  display:block;width:38px;height:2px;text-indent:-999em;overflow:hidden;
+  background:color-mix(in srgb, var(--sobre-foto) 42%, transparent);
+  text-decoration:none;transition:background .22s var(--ease);
+}
+.reguas a:hover{background:var(--acento-claro)}
+/* a lâmina em que o trilho está. Só faz sentido porque ele anda sozinho */
+.reguas a[aria-current]{background:var(--acento-claro)}
+.reguas a:focus-visible{outline:2px solid var(--sobre-foto);outline-offset:6px}

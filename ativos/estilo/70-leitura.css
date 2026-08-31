@@ -30,13 +30,15 @@
 }
 .leitura .creditos .autor{font-family:var(--sans);font-size:.86rem;font-weight:450;color:var(--tinta-2)}
 
-/* a faixa é 16:5 NATIVA (faixa-N.svg), então não há recorte: sem
-   `object-fit:cover`, a curva cabe inteira e não vira forma espelhada por
-   acidente. Foi a razão de existir da família horizontal (ESPEC §3). */
-.guilhoche--artigo{
-  aspect-ratio:auto;object-fit:fill;padding:0;
+/* a faixa é a mesma foto da capa, cortada em 16:5. A foto é textura macro sem
+   escala reconhecível: cortá-la no eixo curto não a espelha nem a esmaga, que
+   era o risco da roseta e a razão de existir da família horizontal do
+   guilhoché. Sem moldura — a chapa é escura e a moldura clara a contradiz. */
+.foto--artigo{
+  display:block;width:100%;height:auto;aspect-ratio:16/5;
+  object-fit:cover;object-position:center;
   margin-block:clamp(22px,3vw,38px);
-  border:1px solid var(--linha);background:var(--papel-2);
+  background:var(--tinta);
 }
 
 /* o corpo: medida de leitura, e nada mais largo que ela */

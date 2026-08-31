@@ -3,7 +3,7 @@ titulo: A Súmula 479 e o que ela não alcança
 dek: Onde termina o fortuito interno, segundo os próprios tribunais que o aplicam.
 chamada: Que a instituição financeira responde pela fraude de terceiro já está pacificado. A questão interessante é outra: onde os tribunais têm dito que a súmula para.
 categoria: Responsabilidade civil
-guilhoche: 1
+foto: papel
 data: 2026-08-30 21:00
 rascunho: nao
 ---

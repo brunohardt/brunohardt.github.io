@@ -3,7 +3,7 @@ titulo: Quando a tela do sistema não prova a contratação
 dek: Documento unilateral, ônus da prova e o problema de provar fato negativo.
 chamada: A captura de tela do sistema interno é documento que a parte produz sozinha, sobre si mesma. O que os tribunais têm exigido além dela.
 categoria: Prova
-guilhoche: 2
+foto: vidro
 data: 2026-08-12 20:00
 rascunho: nao
 ---

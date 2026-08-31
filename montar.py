@@ -29,6 +29,7 @@ PARTES = os.path.join(RAIZ, "_fonte", "partes")
 PAGINAS = os.path.join(RAIZ, "_fonte", "paginas")
 ESCRITOS = os.path.join(RAIZ, "_conteudo", "escritos")
 ESTILO = os.path.join(RAIZ, "ativos", "estilo")
+IMG = os.path.join(RAIZ, "ativos", "img")
 SITE = "https://brunohardt.github.io/"
 
 MES = ["", "janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho",
@@ -168,7 +169,7 @@ def carregar_escritos(problemas):
             problemas.append(u"%s: faltou o bloco de metadados" % nome)
             continue
         rascunho = meta.get("rascunho", "nao").lower() == "sim"
-        for exigido in ("titulo", "dek", "categoria", "guilhoche"):
+        for exigido in ("titulo", "dek", "categoria", "foto"):
             if not meta.get(exigido):
                 problemas.append(u"%s: falta o campo '%s'" % (nome, exigido))
         # A data e a da PUBLICACAO (ESPEC 1.1). O escrito em estoque ainda nao
@@ -176,6 +177,16 @@ def carregar_escritos(problemas):
         if not rascunho and not meta.get("data"):
             problemas.append(u"%s: publicado sem 'data' \u2014 ela \u00e9 a da "
                              u"publica\u00e7\u00e3o, e falta" % nome)
+        # A foto e requisito de publicacao (ESPEC 3): uma por escrito, nos
+        # dois eixos. Sem ela a capa sai com buraco, e buraco na capa e pior
+        # que atraso. O prompt que a gera esta em PROMPTS.md.
+        if meta.get("foto"):
+            for eixo in ("media", "larga", "alta"):
+                arq = os.path.join(IMG, "%s-%s.jpg" % (meta["foto"], eixo))
+                if not os.path.isfile(arq):
+                    problemas.append(
+                        u"%s: falta ativos/img/%s-%s.jpg — gere pelo prompt "
+                        u"de PROMPTS.md" % (nome, meta["foto"], eixo))
         corpo = render_verbetes(corpo, slug, rascunho, problemas)
         meta.update({
             "slug": slug,
@@ -199,25 +210,31 @@ def cartao(e, raiz=u""):
           <p class="dek">%s</p>
           <span class="data">%s</span>
         </div>
-        <img class="figura" src="%sativos/guilhoche-%s.svg" alt="" width="1000" height="1000">
+        <img class="figura" src="%sativos/img/%s-media.jpg" alt="" loading="lazy">
       </li>''' % (esc(e["categoria"]), raiz, e["slug"], esc(e["titulo"]),
-                  esc(e["dek"]), e["data_extenso"], raiz, e["guilhoche"])
+                  esc(e["dek"]), e["data_extenso"], raiz, e["foto"])
 
 
 def lamina(e, i):
+    """A lamina: foto sangrando borda a borda, e so o titulo por cima.
+
+    No hero da S&C nao ha rotulo, dek nem data - so o titulo, grande, sobre a
+    metade escura da foto. E o que separa capa de revista de banner
+    institucional. O dek e a data continuam existindo no cartao e na pagina do
+    escrito, que e onde o leitor decide se le.
+
+    A primeira lamina e o LCP da capa: carrega cedo e com prioridade. As outras
+    sao preguicosas - estao fora da tela ate o trilho andar."""
+    carga = u' fetchpriority="high"' if i == 1 else u' loading="lazy"'
     return u'''      <article class="lamina" id="e%d">
-        <div class="lamina-interna">
-          <img class="guilhoche" src="ativos/guilhoche-%s.svg" alt="" width="1000" height="1000">
-          <div>
-            <p class="rotulo">%s</p>
-            <h2><a href="escritos/%s.html">%s</a></h2>
-            <p class="dek">%s</p>
-            <span class="data">%s</span>
-          </div>
+        <img class="lamina-foto" src="ativos/img/%s-media.jpg"
+             srcset="ativos/img/%s-media.jpg 1200w, ativos/img/%s-larga.jpg 2400w"
+             sizes="100vw" alt=""%s>
+        <div class="lamina-texto">
+          <h2><a href="escritos/%s.html">%s</a></h2>
         </div>
-      </article>''' % (i, e["guilhoche"], esc(e["categoria"]), e["slug"],
-                       esc(e["titulo"]), esc(e.get("chamada") or e["dek"]),
-                       e["data_extenso"])
+      </article>''' % (i, e["foto"], e["foto"], e["foto"], carga,
+                       e["slug"], esc(e["titulo"]))
 
 
 def montar_capa(escritos):
@@ -250,7 +267,9 @@ def montar_capa(escritos):
              % u"\n".join(u'      <a href="#e%d">%d</a>' % (i + 1, i + 1)
                           for i in range(len(destaques)))) if len(destaques) > 1 else u""))
     if resto:
-        partes.append(u'''  <section class="secao" aria-labelledby="esc">
+        # a grade volta a medida de 1280; so a lamina sangra
+        partes.append(u'''  <div class="envelope">
+  <section class="secao" aria-labelledby="esc">
     <div class="cabeca">
       <h2 class="rotulo" id="esc">Mais escritos</h2>
       <a class="mais" href="escritos.html">Ver todos</a>
@@ -258,7 +277,8 @@ def montar_capa(escritos):
     <ul class="grade">
 %s
     </ul>
-  </section>''' % u"\n".join(cartao(e) for e in resto))
+  </section>
+  </div>''' % u"\n".join(cartao(e) for e in resto))
     return u"\n\n".join(partes)
 
 
@@ -387,14 +407,17 @@ def pagina_escrito(e):
       <p class="dek">%s</p>
       <p class="creditos"><span class="data">%s</span><span class="autor">Bruno Hardt</span></p>
     </header>
-    <img class="guilhoche guilhoche--artigo" src="../ativos/faixa-%s.svg" alt="" width="1600" height="500">
+    <img class="foto--artigo" src="../ativos/img/%s-media.jpg"
+         srcset="../ativos/img/%s-media.jpg 1200w, ../ativos/img/%s-larga.jpg 2400w"
+         sizes="(min-width: 1424px) 1216px, calc(100vw - 2 * clamp(20px, 4.4vw, 72px))"
+         alt="" fetchpriority="high">
     <div class="corpo">
 %s
     </div>
   </article>
   <nav class="volta"><a href="../escritos.html">Todos os escritos</a></nav>
 </main>''' % (esc(e["categoria"]), esc(e["titulo"]), esc(e["dek"]),
-              e["data_extenso"], e["guilhoche"],
+              e["data_extenso"], e["foto"], e["foto"], e["foto"],
               u"\n".join(u"      " + l for l in e["html"].split(u"\n")))
     return casca(miolo, {"titulo": u"%s — Bruno Hardt" % e["titulo"],
                          "descricao": e["dek"], "ativo": "escritos",

@@ -13,7 +13,7 @@ existem depois que o CSS foi aplicado.
 
 REQUISITO: playwright (`pip install -r requirements.txt` e `playwright install`).
 """
-import io, os, re, sys, glob
+import base64, io, os, re, sys, glob
 
 # O console do Windows abre em cp1252 e transforma "léxico" em "l?xico". O
 # relatório é para ser lido.
@@ -306,6 +306,161 @@ def checar_og(paginas):
         if os.path.exists(md) and os.path.getmtime(md) > os.path.getmtime(png):
             ruins.append(u"ativos/og/%s.png e mais velha que o escrito — "
                          u"rode `python og.py`" % slug)
+            continue
+        # a chapa E a foto: trocar a foto sem regerar a chapa deixa o
+        # card mostrando imagem antiga - o mesmo erro do titulo antigo
+        for arq in fotos_do_escrito(md):
+            if os.path.getmtime(arq) > os.path.getmtime(png):
+                ruins.append(u"ativos/og/%s.png e mais velha que %s - "
+                             u"rode `python og.py`" % (slug, rel(arq)))
+                break
+    return ruins
+
+
+# ==================================================== 6.1 a foto do escrito
+#
+# Desde 30/08/2026 toda figura do site e fotografia gerada por prompt
+# (PROMPTS.md), e nao desenho de script. Prompt nao e deterministico: a mesma
+# instrucao devolve arte diferente a cada rodada. Entao o que trava a qualidade
+# nao e o prompt - e a MEDIDA da imagem que voltou.
+#
+# Duas coisas sao medidas, e sao as duas que quebram a pagina:
+#
+#   1. A metade reservada precisa ser escura de verdade, porque o titulo vai em
+#      marfim por cima dela. Media E percentil 90: so a media deixa passar a
+#      foto com uma veia clara atravessando exatamente onde o titulo cai.
+#   2. O verde precisa ser O verde. `--acento` e #245C53, matiz ~170 graus.
+#      "Teal" tanto da o pinho quanto da ciano, e ciano na maior imagem do site
+#      briga com o unico acento dele.
+#
+# A medicao roda no proprio Chromium que a verificacao ja abre. A imagem entra
+# como data: URI porque canvas de origem file:// fica contaminado e o
+# getImageData passa a lancar.
+FOTO_ESCURA_MEDIA = 0.09     # luminancia relativa: 7:1 contra o marfim
+FOTO_ESCURA_P90 = 0.17       # 4,6:1 - nenhuma faixa clara na area do titulo
+FOTO_MATIZ = (148, 196)      # graus; #245C53 esta em 170
+FOTO_LADO_MINIMO = 1200      # px na borda longa
+# tetos de peso, por eixo. O da -media e orcamento de rede: e o arquivo que o
+# telefone baixa, e a lamina e o LCP da capa.
+FOTO_PESO_KB = {"-media.jpg": 190, "-larga.jpg": 640, "-alta.jpg": 900}
+
+MEDIDA_JS = u"""async (uri) => {
+  const img = new Image();
+  img.src = uri;
+  await img.decode();
+  const W = 240, H = Math.max(1, Math.round(240 * img.naturalHeight / img.naturalWidth));
+  const c = document.createElement('canvas');
+  c.width = W; c.height = H;
+  const g = c.getContext('2d', {willReadFrequently: true});
+  g.drawImage(img, 0, 0, W, H);
+  const d = g.getImageData(0, 0, W, H).data;
+  const lin = v => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+  const deitada = img.naturalWidth >= img.naturalHeight;
+  const lums = [], matizes = [];
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const i = (y * W + x) * 4;
+    const r = d[i] / 255, gg = d[i + 1] / 255, b = d[i + 2] / 255;
+    const L = 0.2126 * lin(r) + 0.7152 * lin(gg) + 0.0722 * lin(b);
+    // a metade que o prompt reserva: esquerda na deitada, rodape na em pe
+    if (deitada ? x < W / 2 : y > H / 2) lums.push(L);
+    const mx = Math.max(r, gg, b), mn = Math.min(r, gg, b), amp = mx - mn;
+    const meio = (mx + mn) / 2;
+    if (amp > 0.05 && meio > 0.05 && meio < 0.7) {
+      let h;
+      if (mx === r) h = 60 * (((gg - b) / amp) % 6);
+      else if (mx === gg) h = 60 * ((b - r) / amp + 2);
+      else h = 60 * ((r - gg) / amp + 4);
+      matizes.push((h + 360) % 360);
+    }
+  }
+  lums.sort((a, b) => a - b);
+  matizes.sort((a, b) => a - b);
+  return {
+    largura: img.naturalWidth, altura: img.naturalHeight,
+    media: lums.reduce((a, b) => a + b, 0) / lums.length,
+    p90: lums[Math.floor(lums.length * 0.9)],
+    matiz: matizes.length ? matizes[Math.floor(matizes.length / 2)] : null,
+    coloridos: matizes.length / (W * H),
+  };
+}"""
+
+FOTO_NO_ESCRITO = re.compile(r"^foto:\s*(\S+)\s*$", re.M)
+
+
+def fotos_do_escrito(md):
+    """Os dois eixos da foto que o escrito declara, se existirem em disco."""
+    if not os.path.exists(md):
+        return []
+    m = FOTO_NO_ESCRITO.search(ler(md))
+    if not m:
+        return []
+    saida = []
+    for eixo in ("media", "larga", "alta"):
+        arq = os.path.join(ATIVOS, "img", "%s-%s.jpg" % (m.group(1), eixo))
+        if os.path.isfile(arq):
+            saida.append(arq)
+    return saida
+
+
+def checar_fotos(paginas):
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        return [u"playwright ausente: pip install -r requirements.txt "
+                u"&& playwright install"]
+
+    arquivos = []
+    for md in sorted(glob.glob(os.path.join(ESCRITOS_MD, "*.md"))):
+        for arq in fotos_do_escrito(md):
+            if arq not in arquivos:
+                arquivos.append(arq)
+    if not arquivos:
+        return []
+
+    ruins = []
+    with sync_playwright() as pw:
+        navegador = pw.chromium.launch()
+        pag = navegador.new_page()
+        pag.goto("about:blank")
+        for arq in arquivos:
+            uri = u"data:image/jpeg;base64," + base64.b64encode(
+                io.open(arq, "rb").read()).decode("ascii")
+            m = pag.evaluate(MEDIDA_JS, uri)
+            nome, larg, alt = rel(arq), m["largura"], m["altura"]
+            deitada = larg >= alt
+            proporcao = larg / float(alt)
+            if nome.endswith("-larga.jpg") and proporcao < 1.5:
+                ruins.append(u"%s: %dx%d nao e deitada - a lamina corta em 3,2:1 "
+                             u"e nao ha o que cortar" % (nome, larg, alt))
+            if nome.endswith("-alta.jpg") and proporcao > 0.85:
+                ruins.append(u"%s: %dx%d nao e em pe - a chapa de feed cortaria "
+                             u"contra o eixo" % (nome, larg, alt))
+            if max(larg, alt) < FOTO_LADO_MINIMO:
+                ruins.append(u"%s: %dx%d - pequena demais para sangrar borda a "
+                             u"borda" % (nome, larg, alt))
+            kb = os.path.getsize(arq) / 1024.0
+            for sufixo, teto in FOTO_PESO_KB.items():
+                if nome.endswith(sufixo) and kb > teto:
+                    ruins.append(u"%s: %.0f KB, teto %d - rode `python "
+                                 u"receber.py`" % (nome, kb, teto))
+            lado = u"metade esquerda" if deitada else u"metade de baixo"
+            if m["media"] > FOTO_ESCURA_MEDIA:
+                ruins.append(u"%s: a %s tem luminancia media %.3f (teto %.2f) - "
+                             u"o titulo em marfim nao aguenta"
+                             % (nome, lado, m["media"], FOTO_ESCURA_MEDIA))
+            elif m["p90"] > FOTO_ESCURA_P90:
+                ruins.append(u"%s: a %s e escura na media, mas tem area clara "
+                             u"(p90 %.3f, teto %.2f) - o titulo cai em cima dela"
+                             % (nome, lado, m["p90"], FOTO_ESCURA_P90))
+            if m["matiz"] is None or m["coloridos"] < 0.02:
+                ruins.append(u"%s: sem cor nenhuma - o prompt pede pinho nas "
+                             u"sombras e a foto voltou neutra" % nome)
+            elif not (FOTO_MATIZ[0] <= m["matiz"] <= FOTO_MATIZ[1]):
+                ruins.append(u"%s: matiz %d graus, fora da faixa %d-%d - o verde "
+                             u"nao e o pinho de --acento (170)"
+                             % (nome, int(m["matiz"]), FOTO_MATIZ[0], FOTO_MATIZ[1]))
+        pag.close()
+        navegador.close()
     return ruins
 
 
@@ -549,6 +704,7 @@ CHECAGENS = (
     (u"data de publicação", lambda pgs: checar_data()),
     (u"rascunho", lambda pgs: checar_rascunho(pgs)),
     (u"imagem de card", lambda pgs: checar_og(pgs)),
+    (u"foto do escrito", lambda pgs: checar_fotos(pgs)),
     (u"estrutura", lambda pgs: checar_estrutura(pgs)),
     (u"links", lambda pgs: checar_links(pgs)),
     (u"navegador", lambda pgs: checar_no_navegador(pgs)),

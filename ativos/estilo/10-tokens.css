@@ -13,6 +13,11 @@
   --tinta-2:#394145;
   --mudo:#5F686C;
   --acento:#245C53;        /* pinho — o único acento */
+  /* o mesmo pinho, na luminância que a foto escura da lâmina pede.
+     #245C53 sobre o quase-preto dá 2,47:1 e some; este dá 6,46:1.
+     Não é acento novo — é o mesmo verde, medido. */
+  --acento-claro:#5FA394;
+  --sobre-foto:#FBF9F2;    /* o marfim, quando ele é tinta e não fundo */
   --linha:#DED9C9;
   --linha-forte:#C9C2AC;
   --separador:#A79E84;
