@@ -4,7 +4,8 @@ dek: Um erro de pesquisa automatizada, a conferência na fonte, e o que isso ens
 chamada: Uma pesquisa de inteligência artificial afirmou que sim. A fonte diz o contrário - e é por isso que jurisprudência não se cita de resumo.
 categoria: Método
 foto: ardosia
-rascunho: sim
+data: 2026-08-19 20:00
+rascunho: nao
 ---
 
 Em agosto, ao levantar precedentes sobre repetição de indébito, uma ferramenta
