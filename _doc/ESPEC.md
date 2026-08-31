@@ -12,6 +12,14 @@ O periódico de um advogado. A referência declarada é a **Sullivan & Cromwell*
 fundo marfim, a home como publicação datada, e nenhuma chamada para ação em
 lugar nenhum.
 
+A regra foi testada e mantida em 31/08/2026, na revisão do escrito da Súmula
+479: um fecho com convite discreto à página de Atuação foi considerado e
+recusado. A conversão do site é o rodapé — WhatsApp e e-mail, uma dobra abaixo
+do último parágrafo de todo escrito — e o fecho que fala do caso do leitor, sem
+pedir nada, é o texto de conversão. É aposta declarada: se em três meses os
+escritos trouxerem leitor e nenhum contato, esta é a decisão que se revê
+primeiro.
+
 A autoridade de um advogado que ninguém conhece ainda não vem de dizer que é
 bom. Vem do que ele demonstra saber. Por isso a escrita é a primeira coisa da
 página, e não um blog escondido no menu.
@@ -89,11 +97,14 @@ uma ementa, e o site não finge que é. **Extração programática nos três** �
 **Ementa longa entra recortada, e o corte aparece.** Ementa de acórdão passa de
 oitocentas palavras sem esforço, e uma página em que a citação pesa o triplo da
 prosa não é periódico: é repositório. O recorte é feito pelo `citar.py` sobre os
-itens numerados do próprio acórdão — a divisão é do relator, não do autor —,
-cada corte vira `[…]` posto pelo script, e o rótulo passa a dizer **Ementa
-(trecho)**, porque o leitor precisa saber que está vendo um pedaço antes de
-julgar o peso. Nada disso afrouxa a extração programática: o que ficou é byte a
-byte o que estava lá, e o que saiu está marcado. Recortar de modo a inverter o
+itens numerados do próprio acórdão — a divisão é do relator, não do autor —, e
+cada corte vira `[…]` posto pelo script, no lugar exato em que houve corte. É a
+marca que avisa o leitor, não o rótulo: **o rótulo diz só `Ementa`**. O sufixo
+`(trecho)` saiu em 31/08/2026, na revisão da Súmula 479 — rótulo que repete o
+que a marca já mostra é ruído, e o leitor julga o peso vendo *onde* se cortou,
+não sabendo que se cortou em algum lugar. Nada disso afrouxa a extração
+programática: o que ficou é byte a byte o que estava lá, e o que saiu está
+marcado. Recortar de modo a inverter o
 que o acórdão decidiu é a única coisa que a marca não impede, e essa continua
 sendo responsabilidade de quem assina.
 
@@ -290,8 +301,15 @@ menos vale mais que a escolha que ele daria.
 a grade volta à medida de 1280 num envelope próprio - e ocupa metade da altura da
 janela, que é o que foi medido no original: 450px numa de 900. Sem rótulo, sem
 dek, sem data: quatro blocos de texto sobre uma fotografia é banner
-institucional, e o hero da referência tem só o título. O dek e a data continuam
-existindo no cartão e na página do escrito, que é onde o leitor decide se lê.
+institucional, e o hero da referência tem só o título. A chamada e a data
+continuam existindo no cartão, e o dek na página do escrito, que é onde o
+leitor decide se lê.
+
+**O cartão fala com quem ainda não clicou.** Desde 31/08/2026 o cartão mostra a
+`chamada` do frontmatter — a frase escrita para a vitrine — e cai para o `dek`
+quando ela não existe. O `dek` segue sendo o subtítulo da página do escrito e a
+`description` de compartilhamento: são leitores diferentes, e por isso campos
+diferentes.
 
 O título recua na medida de 1280 com o mesmo gutter da barra, o que o alinha com
 a marca logo acima - é assim no original. Abaixo de 700px não sobra metade

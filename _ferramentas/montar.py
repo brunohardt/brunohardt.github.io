@@ -126,11 +126,9 @@ def render_verbetes(md, slug, rascunho, problemas):
         selo = u"" if conferido == "sim" else \
             u'\n    <p class="pendente">Inteiro teor ainda n&#227;o conferido na fonte.</p>'
 
-        # ementa longa entra recortada, e o rótulo diz isso: o leitor precisa
-        # saber que está vendo um trecho antes de julgar o peso (ESPEC §2.2)
+        # ementa longa entra recortada, e quem avisa é a marca [...] no corte;
+        # o rótulo diz só o tipo (ESPEC §2.2, emenda de 31/08/2026)
         rotulo = ROTULO_PROVA[tipo]
-        if meta.get("recorte", u"").strip().lower() == u"sim":
-            rotulo += u" (trecho)"
 
         # o crédito é o julgado, montado pelo citar.py dos campos do verbete.
         # O `fonte` do corpus não entra aqui: é nota de trabalho (ESPEC §2.2).
@@ -203,6 +201,8 @@ def carregar_escritos(problemas):
 
 # ============================================================== fragmentos
 def cartao(e, raiz=u""):
+    # o cartão fala com quem ainda não clicou: a chamada, quando existe, e o
+    # dek como reserva. O dek segue sendo o subtítulo da página (ESPEC §4.1)
     return u'''      <li class="cartao">
         <div class="dentro">
           <p class="rotulo">%s</p>
@@ -212,7 +212,7 @@ def cartao(e, raiz=u""):
         </div>
         <img class="figura" src="%sativos/img/%s-media.jpg" alt="" loading="lazy">
       </li>''' % (esc(e["categoria"]), raiz, e["slug"], esc(e["titulo"]),
-                  esc(e["dek"]), e["data_extenso"], raiz, e["foto"])
+                  esc(e.get("chamada") or e["dek"]), e["data_extenso"], raiz, e["foto"])
 
 
 def lamina(e, i):
